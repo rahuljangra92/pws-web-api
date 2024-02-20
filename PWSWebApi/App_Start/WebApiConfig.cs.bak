@@ -1,0 +1,31 @@
+/* Added by CTA: OAuth is now handled by using the public void ConfigureServices(IServiceCollection services) method in the Startup.cs class. The basic process is to use services.AddAuthentication(options => and then set a series of options. We can chain unto that the actual OAuth settings call services.AddOAuth("Auth_Service_here_such_as_GitHub_Canvas...", options =>. Also remember to add a call to IApplicationBuilder.UseAuthentication() in your public void Configure(IApplicationBuilder app, IHostingEnvironment env) method. Please ensure this call comes before setting up your routes. */
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Net.Http;
+using System.Web.Http;
+using System.Web.Http.Cors;
+using Microsoft.Owin.Security.OAuth;
+using Newtonsoft.Json.Serialization;
+using PWSWebApi.handlers;
+
+namespace PWSWebApi
+{
+    public static class WebApiConfig
+    {
+        public static void Register(HttpConfiguration config)
+        {
+            // var cors = new EnableCorsAttribute("http://192.168.100.107,http://localhost:3000", "*", "*"); // origins, headers, methods
+            config.EnableCors();
+            // config.MessageHandlers.Add(new RequestAccessTokenCookieHandler());
+            config.MessageHandlers.Add(new AuthDelegateHandler());
+            // Web API configuration and services
+            // Configure Web API to use only bearer token authentication.
+            config.SuppressDefaultHostAuthentication();
+            config.Filters.Add(new HostAuthenticationFilter(OAuthDefaults.AuthenticationType));
+            // Web API routes
+            config.MapHttpAttributeRoutes();
+            config.Routes.MapHttpRoute(name: "DefaultApi", routeTemplate: "api/{controller}/{id}", defaults: new { id = RouteParameter.Optional });
+        }
+    }
+}

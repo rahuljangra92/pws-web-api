@@ -1,0 +1,258 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project Sdk="Microsoft.NET.Sdk.Web">
+  <PropertyGroup>
+    <TargetFramework>net6.0</TargetFramework>
+  </PropertyGroup>
+  <ItemGroup>
+    <PackageReference Include="Microsoft.AspNetCore.Owin" Version="6.0.11" />
+    <PackageReference Include="Microsoft.AspNetCore.Diagnostics" Version="*" />
+    <PackageReference Include="Microsoft.Data.SqlClient" Version="5.0.1" />
+    <PackageReference Include="Microsoft.EntityFrameworkCore" Version="5.0.12" />
+    <PackageReference Include="bootstrap" Version="3.0.1" />
+    <PackageReference Include="EntityFramework" Version="6.3.0" />
+    <PackageReference Include="jQuery" Version="1.11.0" />
+    <PackageReference Include="jQuery.Validation" Version="1.12.0" />
+    <PackageReference Include="JWT" Version="9.0.0" />
+    <PackageReference Include="Microsoft.ApplicationInsights" Version="2.16.0" />
+    <PackageReference Include="Microsoft.ApplicationInsights.DependencyCollector" Version="2.16.0" />
+    <PackageReference Include="Microsoft.ApplicationInsights.PerfCounterCollector" Version="2.16.0" />
+    <PackageReference Include="Microsoft.ApplicationInsights.Web" Version="2.16.0" />
+    <PackageReference Include="Microsoft.ApplicationInsights.WindowsServer" Version="2.16.0" />
+    <PackageReference Include="Microsoft.ApplicationInsights.WindowsServer.TelemetryChannel" Version="2.16.0" />
+    <PackageReference Include="Microsoft.AspNet.WebApi.Client" Version="5.2.8" />
+    <PackageReference Include="Microsoft.AspNet.WebApi.Core" Version="2023.727.0" />
+    <PackageReference Include="Microsoft.AspNetCore.Http.Features" Version="3.0.0" />
+    <PackageReference Include="Microsoft.Extensions.Primitives" Version="3.0.0" />
+    <PackageReference Include="Microsoft.IdentityModel.JsonWebTokens" Version="6.18.0" />
+    <PackageReference Include="Microsoft.IdentityModel.Logging" Version="6.18.0" />
+    <PackageReference Include="Microsoft.IdentityModel.Tokens" Version="6.18.0" />
+    <PackageReference Include="Microsoft.IO.RecyclableMemoryStream" Version="2.0.0" />
+    <PackageReference Include="Microsoft.jQuery.Unobtrusive.Validation" Version="3.2.4" />
+    <PackageReference Include="Microsoft.Net.Http.Headers" Version="2.2.8" />
+    <PackageReference Include="Microsoft.OData.Client" Version="7.4.0" />
+    <PackageReference Include="Microsoft.OData.Core" Version="7.0.0" />
+    <PackageReference Include="Microsoft.OData.Edm" Version="7.0.0" />
+    <PackageReference Include="Microsoft.Owin.Security.Google" Version="2.1.1" />
+    <PackageReference Include="Microsoft.Owin.Security.MicrosoftAccount" Version="3.0.0" />
+    <PackageReference Include="Microsoft.Spatial" Version="7.1.0" />
+    <PackageReference Include="Modernizr" Version="2.7.1" />
+    <PackageReference Include="Newtonsoft.Json" Version="12.0.1" />
+    <PackageReference Include="Respond" Version="1.3.0" />
+    <PackageReference Include="RestSharp" Version="106.12.0" />
+    <PackageReference Include="System.Diagnostics.DiagnosticSource" Version="4.7.0" />
+    <PackageReference Include="System.IdentityModel.Tokens.Jwt" Version="6.18.0" />
+    <PackageReference Include="System.Memory" Version="4.5.5" />
+    <PackageReference Include="System.Runtime.CompilerServices.Unsafe" Version="4.6.0" />
+    <PackageReference Include="System.Text.Encodings.Web" Version="4.5.1" />
+  </ItemGroup>
+  <ItemGroup Label="PortingInfo">
+    <!-- DO NOT REMOVE WHILE PORTING
+  D:\SF\Migration\pws-web-api-Development\Port-Net6-pws-web-api-Development\packages\Antlr.3.4.1.9004\lib\Antlr3.Runtime.dll
+  D:\SF\Migration\pws-web-api-Development\Port-Net6-pws-web-api-Development\PWSWebApi\ThirdPartyDlls\DataScope.Select.Core.RestApi.Common.dll
+  D:\SF\Migration\pws-web-api-Development\Port-Net6-pws-web-api-Development\PWSWebApi\ThirdPartyDlls\DataScope.Select.RestApi.Client.dll
+  D:\SF\Migration\pws-web-api-Development\Port-Net6-pws-web-api-Development\PWSWebApi\ThirdPartyDlls\Datastream.DswsApi.NET4.5.dll
+  D:\SF\Migration\pws-web-api-Development\Port-Net6-pws-web-api-Development\packages\elmah.corelibrary.1.2.2\lib\Elmah.dll
+  D:\SF\Migration\pws-web-api-Development\Port-Net6-pws-web-api-Development\packages\EntityFramework.6.1.3\lib\net45\EntityFramework.dll
+  D:\SF\Migration\pws-web-api-Development\Port-Net6-pws-web-api-Development\packages\EntityFramework.6.1.3\lib\net45\EntityFramework.SqlServer.dll
+  D:\SF\Migration\pws-web-api-Development\Port-Net6-pws-web-api-Development\packages\EPPlus.7.0.2\lib\net462\EPPlus.dll
+  D:\SF\Migration\pws-web-api-Development\Port-Net6-pws-web-api-Development\packages\EPPlus.Interfaces.6.1.1\lib\net462\EPPlus.Interfaces.dll
+  D:\SF\Migration\pws-web-api-Development\Port-Net6-pws-web-api-Development\packages\EPPlus.System.Drawing.6.1.1\lib\net462\EPPlus.System.Drawing.dll
+  D:\SF\Migration\pws-web-api-Development\Port-Net6-pws-web-api-Development\PWSWebApi\ThirdPartyDlls\ICSharpCode.AvalonEdit.dll
+  D:\SF\Migration\pws-web-api-Development\Port-Net6-pws-web-api-Development\packages\JWT.8.9.0\lib\net40\JWT.dll
+  D:\SF\Migration\pws-web-api-Development\Port-Net6-pws-web-api-Development\packages\Microsoft.ApplicationInsights.Agent.Intercept.2.4.0\lib\net45\Microsoft.AI.Agent.Intercept.dll
+  D:\SF\Migration\pws-web-api-Development\Port-Net6-pws-web-api-Development\packages\Microsoft.ApplicationInsights.DependencyCollector.2.15.0\lib\net452\Microsoft.AI.DependencyCollector.dll
+  D:\SF\Migration\pws-web-api-Development\Port-Net6-pws-web-api-Development\packages\Microsoft.ApplicationInsights.PerfCounterCollector.2.15.0\lib\net452\Microsoft.AI.PerfCounterCollector.dll
+  D:\SF\Migration\pws-web-api-Development\Port-Net6-pws-web-api-Development\packages\Microsoft.ApplicationInsights.WindowsServer.TelemetryChannel.2.15.0\lib\net452\Microsoft.AI.ServerTelemetryChannel.dll
+  D:\SF\Migration\pws-web-api-Development\Port-Net6-pws-web-api-Development\packages\Microsoft.ApplicationInsights.Web.2.15.0\lib\net452\Microsoft.AI.Web.dll
+  D:\SF\Migration\pws-web-api-Development\Port-Net6-pws-web-api-Development\packages\Microsoft.ApplicationInsights.WindowsServer.2.15.0\lib\net452\Microsoft.AI.WindowsServer.dll
+  D:\SF\Migration\pws-web-api-Development\Port-Net6-pws-web-api-Development\packages\Microsoft.ApplicationInsights.2.15.0\lib\net452\Microsoft.ApplicationInsights.dll
+  D:\SF\Migration\pws-web-api-Development\Port-Net6-pws-web-api-Development\packages\Microsoft.AspNet.Identity.Core.2.2.1\lib\net45\Microsoft.AspNet.Identity.Core.dll
+  D:\SF\Migration\pws-web-api-Development\Port-Net6-pws-web-api-Development\packages\Microsoft.AspNet.Identity.EntityFramework.2.2.1\lib\net45\Microsoft.AspNet.Identity.EntityFramework.dll
+  D:\SF\Migration\pws-web-api-Development\Port-Net6-pws-web-api-Development\packages\Microsoft.AspNet.Identity.Owin.2.2.1\lib\net45\Microsoft.AspNet.Identity.Owin.dll
+  D:\SF\Migration\pws-web-api-Development\Port-Net6-pws-web-api-Development\packages\Microsoft.AspNet.TelemetryCorrelation.1.0.8\lib\net45\Microsoft.AspNet.TelemetryCorrelation.dll
+  D:\SF\Migration\pws-web-api-Development\Port-Net6-pws-web-api-Development\packages\Microsoft.AspNetCore.Http.Abstractions.2.2.0\lib\netstandard2.0\Microsoft.AspNetCore.Http.Abstractions.dll
+  D:\SF\Migration\pws-web-api-Development\Port-Net6-pws-web-api-Development\packages\Microsoft.AspNetCore.Http.Features.2.2.0\lib\netstandard2.0\Microsoft.AspNetCore.Http.Features.dll
+  D:\SF\Migration\pws-web-api-Development\Port-Net6-pws-web-api-Development\packages\Microsoft.AspNetCore.Mvc.Abstractions.2.2.0\lib\netstandard2.0\Microsoft.AspNetCore.Mvc.Abstractions.dll
+  D:\SF\Migration\pws-web-api-Development\Port-Net6-pws-web-api-Development\packages\Microsoft.AspNetCore.Routing.Abstractions.2.2.0\lib\netstandard2.0\Microsoft.AspNetCore.Routing.Abstractions.dll
+  D:\SF\Migration\pws-web-api-Development\Port-Net6-pws-web-api-Development\packages\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.1.0.0\lib\net45\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.dll
+  C:\Program Files (x86)\Reference Assemblies\Microsoft\Framework\.NETFramework\v4.8\Microsoft.CSharp.dll
+  D:\SF\Migration\pws-web-api-Development\Port-Net6-pws-web-api-Development\packages\Microsoft.Extensions.Primitives.2.2.0\lib\netstandard2.0\Microsoft.Extensions.Primitives.dll
+  D:\SF\Migration\pws-web-api-Development\Port-Net6-pws-web-api-Development\packages\Microsoft.IdentityModel.JsonWebTokens.6.17.0\lib\net45\Microsoft.IdentityModel.JsonWebTokens.dll
+  D:\SF\Migration\pws-web-api-Development\Port-Net6-pws-web-api-Development\packages\Microsoft.IdentityModel.Logging.6.17.0\lib\net45\Microsoft.IdentityModel.Logging.dll
+  D:\SF\Migration\pws-web-api-Development\Port-Net6-pws-web-api-Development\packages\Microsoft.IdentityModel.Tokens.6.17.0\lib\net45\Microsoft.IdentityModel.Tokens.dll
+  D:\SF\Migration\pws-web-api-Development\Port-Net6-pws-web-api-Development\packages\Microsoft.IO.RecyclableMemoryStream.1.4.1\lib\net46\Microsoft.IO.RecyclableMemoryStream.dll
+  D:\SF\Migration\pws-web-api-Development\Port-Net6-pws-web-api-Development\packages\Microsoft.Net.Http.Headers.2.2.0\lib\netstandard2.0\Microsoft.Net.Http.Headers.dll
+  D:\SF\Migration\pws-web-api-Development\Port-Net6-pws-web-api-Development\PWSWebApi\ThirdPartyDlls\Microsoft.OData.Client.dll
+  D:\SF\Migration\pws-web-api-Development\Port-Net6-pws-web-api-Development\PWSWebApi\ThirdPartyDlls\Microsoft.OData.Core.dll
+  D:\SF\Migration\pws-web-api-Development\Port-Net6-pws-web-api-Development\PWSWebApi\ThirdPartyDlls\Microsoft.OData.Edm.dll
+  D:\SF\Migration\pws-web-api-Development\Port-Net6-pws-web-api-Development\packages\Microsoft.Owin.Cors.4.0.1\lib\net45\Microsoft.Owin.Cors.dll
+  D:\SF\Migration\pws-web-api-Development\Port-Net6-pws-web-api-Development\packages\Microsoft.Owin.4.0.1\lib\net45\Microsoft.Owin.dll
+  D:\SF\Migration\pws-web-api-Development\Port-Net6-pws-web-api-Development\packages\Microsoft.Owin.Host.SystemWeb.3.0.1\lib\net45\Microsoft.Owin.Host.SystemWeb.dll
+  D:\SF\Migration\pws-web-api-Development\Port-Net6-pws-web-api-Development\packages\Microsoft.Owin.Security.Cookies.3.0.1\lib\net45\Microsoft.Owin.Security.Cookies.dll
+  D:\SF\Migration\pws-web-api-Development\Port-Net6-pws-web-api-Development\packages\Microsoft.Owin.Security.3.0.1\lib\net45\Microsoft.Owin.Security.dll
+  D:\SF\Migration\pws-web-api-Development\Port-Net6-pws-web-api-Development\packages\Microsoft.Owin.Security.Facebook.2.1.0\lib\net45\Microsoft.Owin.Security.Facebook.dll
+  D:\SF\Migration\pws-web-api-Development\Port-Net6-pws-web-api-Development\packages\Microsoft.Owin.Security.Google.2.1.0\lib\net45\Microsoft.Owin.Security.Google.dll
+  D:\SF\Migration\pws-web-api-Development\Port-Net6-pws-web-api-Development\packages\Microsoft.Owin.Security.MicrosoftAccount.2.1.0\lib\net45\Microsoft.Owin.Security.MicrosoftAccount.dll
+  D:\SF\Migration\pws-web-api-Development\Port-Net6-pws-web-api-Development\packages\Microsoft.Owin.Security.OAuth.3.0.1\lib\net45\Microsoft.Owin.Security.OAuth.dll
+  D:\SF\Migration\pws-web-api-Development\Port-Net6-pws-web-api-Development\packages\Microsoft.Owin.Security.Twitter.2.1.0\lib\net45\Microsoft.Owin.Security.Twitter.dll
+  D:\SF\Migration\pws-web-api-Development\Port-Net6-pws-web-api-Development\PWSWebApi\ThirdPartyDlls\Microsoft.Spatial.dll
+  D:\SF\Migration\pws-web-api-Development\Port-Net6-pws-web-api-Development\packages\Microsoft.Web.Infrastructure.1.0.0.0\lib\net40\Microsoft.Web.Infrastructure.dll
+  C:\Program Files (x86)\Reference Assemblies\Microsoft\Framework\.NETFramework\v4.8\mscorlib.dll
+  D:\SF\Migration\pws-web-api-Development\Port-Net6-pws-web-api-Development\packages\Newtonsoft.Json.11.0.2\lib\net45\Newtonsoft.Json.dll
+  D:\SF\Migration\pws-web-api-Development\Port-Net6-pws-web-api-Development\packages\Owin.1.0\lib\net40\Owin.dll
+  C:\Program Files (x86)\Reference Assemblies\Microsoft\Framework\.NETFramework\v4.8\PresentationCore.dll
+  D:\SF\Migration\pws-web-api-Development\Port-Net6-pws-web-api-Development\packages\RestSharp.106.11.7\lib\net452\RestSharp.dll
+  D:\SF\Migration\pws-web-api-Development\Port-Net6-pws-web-api-Development\packages\System.Buffers.4.5.1\lib\netstandard1.1\System.Buffers.dll
+  D:\SF\Migration\pws-web-api-Development\Port-Net6-pws-web-api-Development\packages\System.ComponentModel.Annotations.5.0.0\lib\net461\System.ComponentModel.Annotations.dll
+  C:\Program Files (x86)\Reference Assemblies\Microsoft\Framework\.NETFramework\v4.8\System.ComponentModel.DataAnnotations.dll
+  C:\Program Files (x86)\Reference Assemblies\Microsoft\Framework\.NETFramework\v4.8\System.Configuration.dll
+  C:\Program Files (x86)\Reference Assemblies\Microsoft\Framework\.NETFramework\v4.8\System.Core.dll
+  C:\Program Files (x86)\Reference Assemblies\Microsoft\Framework\.NETFramework\v4.8\System.Data.DataSetExtensions.dll
+  C:\Program Files (x86)\Reference Assemblies\Microsoft\Framework\.NETFramework\v4.8\System.Data.dll
+  C:\Program Files (x86)\Reference Assemblies\Microsoft\Framework\.NETFramework\v4.8\System.Data.Linq.dll
+  D:\SF\Migration\pws-web-api-Development\Port-Net6-pws-web-api-Development\packages\System.Diagnostics.DiagnosticSource.4.6.0\lib\net45\System.Diagnostics.DiagnosticSource.dll
+  C:\Program Files (x86)\Reference Assemblies\Microsoft\Framework\.NETFramework\v4.8\System.dll
+  C:\Program Files (x86)\Reference Assemblies\Microsoft\Framework\.NETFramework\v4.8\System.Drawing.dll
+  D:\SF\Migration\pws-web-api-Development\Port-Net6-pws-web-api-Development\packages\System.IdentityModel.Tokens.Jwt.6.17.0\lib\net45\System.IdentityModel.Tokens.Jwt.dll
+  C:\Program Files (x86)\Reference Assemblies\Microsoft\Framework\.NETFramework\v4.8\System.Management.dll
+  D:\SF\Migration\pws-web-api-Development\Port-Net6-pws-web-api-Development\packages\System.Memory.4.5.4\lib\netstandard1.1\System.Memory.dll
+  C:\Program Files (x86)\Reference Assemblies\Microsoft\Framework\.NETFramework\v4.8\System.Net.Http.dll
+  D:\SF\Migration\pws-web-api-Development\Port-Net6-pws-web-api-Development\packages\Microsoft.AspNet.WebApi.Client.5.2.7\lib\net45\System.Net.Http.Formatting.dll
+  C:\Program Files (x86)\Reference Assemblies\Microsoft\Framework\.NETFramework\v4.8\System.Net.Http.WebRequest.dll
+  C:\Program Files (x86)\Reference Assemblies\Microsoft\Framework\.NETFramework\v4.8\System.Numerics.dll
+  D:\SF\Migration\pws-web-api-Development\Port-Net6-pws-web-api-Development\packages\System.Numerics.Vectors.4.5.0\lib\net46\System.Numerics.Vectors.dll
+  C:\Program Files (x86)\Reference Assemblies\Microsoft\Framework\.NETFramework\v4.8\System.Runtime.Caching.dll
+  D:\SF\Migration\pws-web-api-Development\Port-Net6-pws-web-api-Development\packages\System.Runtime.CompilerServices.Unsafe.4.5.3\lib\netstandard1.0\System.Runtime.CompilerServices.Unsafe.dll
+  C:\Program Files (x86)\Reference Assemblies\Microsoft\Framework\.NETFramework\v4.8\System.Runtime.Serialization.dll
+  C:\Program Files (x86)\Reference Assemblies\Microsoft\Framework\.NETFramework\v4.8\System.Security.dll
+  D:\SF\Migration\pws-web-api-Development\Port-Net6-pws-web-api-Development\packages\System.Text.Encodings.Web.4.5.0\lib\netstandard2.0\System.Text.Encodings.Web.dll
+  C:\Program Files (x86)\Reference Assemblies\Microsoft\Framework\.NETFramework\v4.8\Facades\System.Threading.Tasks.dll
+  C:\Program Files (x86)\Reference Assemblies\Microsoft\Framework\.NETFramework\v4.8\System.Web.Abstractions.dll
+  C:\Program Files (x86)\Reference Assemblies\Microsoft\Framework\.NETFramework\v4.8\System.Web.ApplicationServices.dll
+  D:\SF\Migration\pws-web-api-Development\Port-Net6-pws-web-api-Development\packages\Microsoft.AspNet.Cors.5.2.7\lib\net45\System.Web.Cors.dll
+  C:\Program Files (x86)\Reference Assemblies\Microsoft\Framework\.NETFramework\v4.8\System.Web.dll
+  C:\Program Files (x86)\Reference Assemblies\Microsoft\Framework\.NETFramework\v4.8\System.Web.DynamicData.dll
+  C:\Program Files (x86)\Reference Assemblies\Microsoft\Framework\.NETFramework\v4.8\System.Web.Entity.dll
+  C:\Program Files (x86)\Reference Assemblies\Microsoft\Framework\.NETFramework\v4.8\System.Web.Extensions.dll
+  D:\SF\Migration\pws-web-api-Development\Port-Net6-pws-web-api-Development\packages\Microsoft.AspNet.WebPages.3.2.3\lib\net45\System.Web.Helpers.dll
+  D:\SF\Migration\pws-web-api-Development\Port-Net6-pws-web-api-Development\packages\Microsoft.AspNet.WebApi.Cors.5.2.7\lib\net45\System.Web.Http.Cors.dll
+  D:\SF\Migration\pws-web-api-Development\Port-Net6-pws-web-api-Development\packages\Microsoft.AspNet.WebApi.Core.5.2.7\lib\net45\System.Web.Http.dll
+  D:\SF\Migration\pws-web-api-Development\Port-Net6-pws-web-api-Development\packages\Microsoft.AspNet.WebApi.Owin.5.2.7\lib\net45\System.Web.Http.Owin.dll
+  D:\SF\Migration\pws-web-api-Development\Port-Net6-pws-web-api-Development\packages\Microsoft.AspNet.WebApi.WebHost.5.2.7\lib\net45\System.Web.Http.WebHost.dll
+  D:\SF\Migration\pws-web-api-Development\Port-Net6-pws-web-api-Development\packages\Microsoft.AspNet.Mvc.5.2.3\lib\net45\System.Web.Mvc.dll
+  D:\SF\Migration\pws-web-api-Development\Port-Net6-pws-web-api-Development\packages\Microsoft.AspNet.Web.Optimization.1.1.3\lib\net40\System.Web.Optimization.dll
+  D:\SF\Migration\pws-web-api-Development\Port-Net6-pws-web-api-Development\packages\Microsoft.AspNet.Razor.3.2.3\lib\net45\System.Web.Razor.dll
+  C:\Program Files (x86)\Reference Assemblies\Microsoft\Framework\.NETFramework\v4.8\System.Web.Routing.dll
+  D:\SF\Migration\pws-web-api-Development\Port-Net6-pws-web-api-Development\packages\Microsoft.AspNet.WebPages.3.2.3\lib\net45\System.Web.WebPages.Deployment.dll
+  D:\SF\Migration\pws-web-api-Development\Port-Net6-pws-web-api-Development\packages\Microsoft.AspNet.WebPages.3.2.3\lib\net45\System.Web.WebPages.dll
+  D:\SF\Migration\pws-web-api-Development\Port-Net6-pws-web-api-Development\packages\Microsoft.AspNet.WebPages.3.2.3\lib\net45\System.Web.WebPages.Razor.dll
+  C:\Program Files (x86)\Reference Assemblies\Microsoft\Framework\.NETFramework\v4.8\System.Xml.dll
+  C:\Program Files (x86)\Reference Assemblies\Microsoft\Framework\.NETFramework\v4.8\System.Xml.Linq.dll
+  D:\SF\Migration\pws-web-api-Development\Port-Net6-pws-web-api-Development\PWSWebApi\ThirdPartyDlls\ThomsonReuters.Dss.Core.RestApi.Common.dll
+  D:\SF\Migration\pws-web-api-Development\Port-Net6-pws-web-api-Development\PWSWebApi\ThirdPartyDlls\ThomsonReuters.Dss.RestApi.Client.dll
+  D:\SF\Migration\pws-web-api-Development\Port-Net6-pws-web-api-Development\packages\WebGrease.1.5.2\lib\WebGrease.dll
+  C:\Program Files (x86)\Reference Assemblies\Microsoft\Framework\.NETFramework\v4.8\Facades\Microsoft.Win32.Primitives.dll
+  C:\Program Files (x86)\Reference Assemblies\Microsoft\Framework\.NETFramework\v4.8\Facades\netstandard.dll
+  C:\Program Files (x86)\Reference Assemblies\Microsoft\Framework\.NETFramework\v4.8\Facades\System.AppContext.dll
+  C:\Program Files (x86)\Reference Assemblies\Microsoft\Framework\.NETFramework\v4.8\Facades\System.Collections.Concurrent.dll
+  C:\Program Files (x86)\Reference Assemblies\Microsoft\Framework\.NETFramework\v4.8\Facades\System.Collections.dll
+  C:\Program Files (x86)\Reference Assemblies\Microsoft\Framework\.NETFramework\v4.8\Facades\System.Collections.NonGeneric.dll
+  C:\Program Files (x86)\Reference Assemblies\Microsoft\Framework\.NETFramework\v4.8\Facades\System.Collections.Specialized.dll
+  C:\Program Files (x86)\Reference Assemblies\Microsoft\Framework\.NETFramework\v4.8\Facades\System.ComponentModel.dll
+  C:\Program Files (x86)\Reference Assemblies\Microsoft\Framework\.NETFramework\v4.8\Facades\System.ComponentModel.EventBasedAsync.dll
+  C:\Program Files (x86)\Reference Assemblies\Microsoft\Framework\.NETFramework\v4.8\Facades\System.ComponentModel.Primitives.dll
+  C:\Program Files (x86)\Reference Assemblies\Microsoft\Framework\.NETFramework\v4.8\Facades\System.ComponentModel.TypeConverter.dll
+  C:\Program Files (x86)\Reference Assemblies\Microsoft\Framework\.NETFramework\v4.8\Facades\System.Console.dll
+  C:\Program Files (x86)\Reference Assemblies\Microsoft\Framework\.NETFramework\v4.8\Facades\System.Data.Common.dll
+  C:\Program Files (x86)\Reference Assemblies\Microsoft\Framework\.NETFramework\v4.8\Facades\System.Diagnostics.Contracts.dll
+  C:\Program Files (x86)\Reference Assemblies\Microsoft\Framework\.NETFramework\v4.8\Facades\System.Diagnostics.Debug.dll
+  C:\Program Files (x86)\Reference Assemblies\Microsoft\Framework\.NETFramework\v4.8\Facades\System.Diagnostics.FileVersionInfo.dll
+  C:\Program Files (x86)\Reference Assemblies\Microsoft\Framework\.NETFramework\v4.8\Facades\System.Diagnostics.Process.dll
+  C:\Program Files (x86)\Reference Assemblies\Microsoft\Framework\.NETFramework\v4.8\Facades\System.Diagnostics.StackTrace.dll
+  C:\Program Files (x86)\Reference Assemblies\Microsoft\Framework\.NETFramework\v4.8\Facades\System.Diagnostics.TextWriterTraceListener.dll
+  C:\Program Files (x86)\Reference Assemblies\Microsoft\Framework\.NETFramework\v4.8\Facades\System.Diagnostics.Tools.dll
+  C:\Program Files (x86)\Reference Assemblies\Microsoft\Framework\.NETFramework\v4.8\Facades\System.Diagnostics.TraceSource.dll
+  C:\Program Files (x86)\Reference Assemblies\Microsoft\Framework\.NETFramework\v4.8\Facades\System.Drawing.Primitives.dll
+  C:\Program Files (x86)\Reference Assemblies\Microsoft\Framework\.NETFramework\v4.8\Facades\System.Dynamic.Runtime.dll
+  C:\Program Files (x86)\Reference Assemblies\Microsoft\Framework\.NETFramework\v4.8\Facades\System.Globalization.Calendars.dll
+  C:\Program Files (x86)\Reference Assemblies\Microsoft\Framework\.NETFramework\v4.8\Facades\System.Globalization.dll
+  C:\Program Files (x86)\Reference Assemblies\Microsoft\Framework\.NETFramework\v4.8\Facades\System.Globalization.Extensions.dll
+  C:\Program Files (x86)\Reference Assemblies\Microsoft\Framework\.NETFramework\v4.8\Facades\System.IO.Compression.ZipFile.dll
+  C:\Program Files (x86)\Reference Assemblies\Microsoft\Framework\.NETFramework\v4.8\Facades\System.IO.dll
+  C:\Program Files (x86)\Reference Assemblies\Microsoft\Framework\.NETFramework\v4.8\Facades\System.IO.FileSystem.dll
+  C:\Program Files (x86)\Reference Assemblies\Microsoft\Framework\.NETFramework\v4.8\Facades\System.IO.FileSystem.DriveInfo.dll
+  C:\Program Files (x86)\Reference Assemblies\Microsoft\Framework\.NETFramework\v4.8\Facades\System.IO.FileSystem.Primitives.dll
+  C:\Program Files (x86)\Reference Assemblies\Microsoft\Framework\.NETFramework\v4.8\Facades\System.IO.FileSystem.Watcher.dll
+  C:\Program Files (x86)\Reference Assemblies\Microsoft\Framework\.NETFramework\v4.8\Facades\System.IO.IsolatedStorage.dll
+  C:\Program Files (x86)\Reference Assemblies\Microsoft\Framework\.NETFramework\v4.8\Facades\System.IO.MemoryMappedFiles.dll
+  C:\Program Files (x86)\Reference Assemblies\Microsoft\Framework\.NETFramework\v4.8\Facades\System.IO.Pipes.dll
+  C:\Program Files (x86)\Reference Assemblies\Microsoft\Framework\.NETFramework\v4.8\Facades\System.IO.UnmanagedMemoryStream.dll
+  C:\Program Files (x86)\Reference Assemblies\Microsoft\Framework\.NETFramework\v4.8\Facades\System.Linq.dll
+  C:\Program Files (x86)\Reference Assemblies\Microsoft\Framework\.NETFramework\v4.8\Facades\System.Linq.Expressions.dll
+  C:\Program Files (x86)\Reference Assemblies\Microsoft\Framework\.NETFramework\v4.8\Facades\System.Linq.Parallel.dll
+  C:\Program Files (x86)\Reference Assemblies\Microsoft\Framework\.NETFramework\v4.8\Facades\System.Linq.Queryable.dll
+  C:\Program Files (x86)\Reference Assemblies\Microsoft\Framework\.NETFramework\v4.8\Facades\System.Net.Http.Rtc.dll
+  C:\Program Files (x86)\Reference Assemblies\Microsoft\Framework\.NETFramework\v4.8\Facades\System.Net.NameResolution.dll
+  C:\Program Files (x86)\Reference Assemblies\Microsoft\Framework\.NETFramework\v4.8\Facades\System.Net.NetworkInformation.dll
+  C:\Program Files (x86)\Reference Assemblies\Microsoft\Framework\.NETFramework\v4.8\Facades\System.Net.Ping.dll
+  C:\Program Files (x86)\Reference Assemblies\Microsoft\Framework\.NETFramework\v4.8\Facades\System.Net.Primitives.dll
+  C:\Program Files (x86)\Reference Assemblies\Microsoft\Framework\.NETFramework\v4.8\Facades\System.Net.Requests.dll
+  C:\Program Files (x86)\Reference Assemblies\Microsoft\Framework\.NETFramework\v4.8\Facades\System.Net.Security.dll
+  C:\Program Files (x86)\Reference Assemblies\Microsoft\Framework\.NETFramework\v4.8\Facades\System.Net.Sockets.dll
+  C:\Program Files (x86)\Reference Assemblies\Microsoft\Framework\.NETFramework\v4.8\Facades\System.Net.WebHeaderCollection.dll
+  C:\Program Files (x86)\Reference Assemblies\Microsoft\Framework\.NETFramework\v4.8\Facades\System.Net.WebSockets.Client.dll
+  C:\Program Files (x86)\Reference Assemblies\Microsoft\Framework\.NETFramework\v4.8\Facades\System.Net.WebSockets.dll
+  C:\Program Files (x86)\Reference Assemblies\Microsoft\Framework\.NETFramework\v4.8\Facades\System.ObjectModel.dll
+  C:\Program Files (x86)\Reference Assemblies\Microsoft\Framework\.NETFramework\v4.8\Facades\System.Reflection.dll
+  C:\Program Files (x86)\Reference Assemblies\Microsoft\Framework\.NETFramework\v4.8\Facades\System.Reflection.Emit.dll
+  C:\Program Files (x86)\Reference Assemblies\Microsoft\Framework\.NETFramework\v4.8\Facades\System.Reflection.Emit.ILGeneration.dll
+  C:\Program Files (x86)\Reference Assemblies\Microsoft\Framework\.NETFramework\v4.8\Facades\System.Reflection.Emit.Lightweight.dll
+  C:\Program Files (x86)\Reference Assemblies\Microsoft\Framework\.NETFramework\v4.8\Facades\System.Reflection.Extensions.dll
+  C:\Program Files (x86)\Reference Assemblies\Microsoft\Framework\.NETFramework\v4.8\Facades\System.Reflection.Primitives.dll
+  C:\Program Files (x86)\Reference Assemblies\Microsoft\Framework\.NETFramework\v4.8\Facades\System.Resources.Reader.dll
+  C:\Program Files (x86)\Reference Assemblies\Microsoft\Framework\.NETFramework\v4.8\Facades\System.Resources.ResourceManager.dll
+  C:\Program Files (x86)\Reference Assemblies\Microsoft\Framework\.NETFramework\v4.8\Facades\System.Resources.Writer.dll
+  C:\Program Files (x86)\Reference Assemblies\Microsoft\Framework\.NETFramework\v4.8\Facades\System.Runtime.CompilerServices.VisualC.dll
+  C:\Program Files (x86)\Reference Assemblies\Microsoft\Framework\.NETFramework\v4.8\Facades\System.Runtime.dll
+  C:\Program Files (x86)\Reference Assemblies\Microsoft\Framework\.NETFramework\v4.8\Facades\System.Runtime.Extensions.dll
+  C:\Program Files (x86)\Reference Assemblies\Microsoft\Framework\.NETFramework\v4.8\Facades\System.Runtime.Handles.dll
+  C:\Program Files (x86)\Reference Assemblies\Microsoft\Framework\.NETFramework\v4.8\Facades\System.Runtime.InteropServices.dll
+  C:\Program Files (x86)\Reference Assemblies\Microsoft\Framework\.NETFramework\v4.8\Facades\System.Runtime.InteropServices.RuntimeInformation.dll
+  C:\Program Files (x86)\Reference Assemblies\Microsoft\Framework\.NETFramework\v4.8\Facades\System.Runtime.InteropServices.WindowsRuntime.dll
+  C:\Program Files (x86)\Reference Assemblies\Microsoft\Framework\.NETFramework\v4.8\Facades\System.Runtime.Numerics.dll
+  C:\Program Files (x86)\Reference Assemblies\Microsoft\Framework\.NETFramework\v4.8\Facades\System.Runtime.Serialization.Formatters.dll
+  C:\Program Files (x86)\Reference Assemblies\Microsoft\Framework\.NETFramework\v4.8\Facades\System.Runtime.Serialization.Json.dll
+  C:\Program Files (x86)\Reference Assemblies\Microsoft\Framework\.NETFramework\v4.8\Facades\System.Runtime.Serialization.Primitives.dll
+  C:\Program Files (x86)\Reference Assemblies\Microsoft\Framework\.NETFramework\v4.8\Facades\System.Runtime.Serialization.Xml.dll
+  C:\Program Files (x86)\Reference Assemblies\Microsoft\Framework\.NETFramework\v4.8\Facades\System.Security.Claims.dll
+  C:\Program Files (x86)\Reference Assemblies\Microsoft\Framework\.NETFramework\v4.8\Facades\System.Security.Cryptography.Algorithms.dll
+  C:\Program Files (x86)\Reference Assemblies\Microsoft\Framework\.NETFramework\v4.8\Facades\System.Security.Cryptography.Csp.dll
+  C:\Program Files (x86)\Reference Assemblies\Microsoft\Framework\.NETFramework\v4.8\Facades\System.Security.Cryptography.Encoding.dll
+  C:\Program Files (x86)\Reference Assemblies\Microsoft\Framework\.NETFramework\v4.8\Facades\System.Security.Cryptography.Primitives.dll
+  C:\Program Files (x86)\Reference Assemblies\Microsoft\Framework\.NETFramework\v4.8\Facades\System.Security.Cryptography.X509Certificates.dll
+  C:\Program Files (x86)\Reference Assemblies\Microsoft\Framework\.NETFramework\v4.8\Facades\System.Security.Principal.dll
+  C:\Program Files (x86)\Reference Assemblies\Microsoft\Framework\.NETFramework\v4.8\Facades\System.Security.SecureString.dll
+  C:\Program Files (x86)\Reference Assemblies\Microsoft\Framework\.NETFramework\v4.8\Facades\System.ServiceModel.Duplex.dll
+  C:\Program Files (x86)\Reference Assemblies\Microsoft\Framework\.NETFramework\v4.8\Facades\System.ServiceModel.Http.dll
+  C:\Program Files (x86)\Reference Assemblies\Microsoft\Framework\.NETFramework\v4.8\Facades\System.ServiceModel.NetTcp.dll
+  C:\Program Files (x86)\Reference Assemblies\Microsoft\Framework\.NETFramework\v4.8\Facades\System.ServiceModel.Primitives.dll
+  C:\Program Files (x86)\Reference Assemblies\Microsoft\Framework\.NETFramework\v4.8\Facades\System.ServiceModel.Security.dll
+  C:\Program Files (x86)\Reference Assemblies\Microsoft\Framework\.NETFramework\v4.8\Facades\System.Text.Encoding.dll
+  C:\Program Files (x86)\Reference Assemblies\Microsoft\Framework\.NETFramework\v4.8\Facades\System.Text.Encoding.Extensions.dll
+  C:\Program Files (x86)\Reference Assemblies\Microsoft\Framework\.NETFramework\v4.8\Facades\System.Text.RegularExpressions.dll
+  C:\Program Files (x86)\Reference Assemblies\Microsoft\Framework\.NETFramework\v4.8\Facades\System.Threading.dll
+  C:\Program Files (x86)\Reference Assemblies\Microsoft\Framework\.NETFramework\v4.8\Facades\System.Threading.Overlapped.dll
+  C:\Program Files (x86)\Reference Assemblies\Microsoft\Framework\.NETFramework\v4.8\Facades\System.Threading.Tasks.Parallel.dll
+  C:\Program Files (x86)\Reference Assemblies\Microsoft\Framework\.NETFramework\v4.8\Facades\System.Threading.Thread.dll
+  C:\Program Files (x86)\Reference Assemblies\Microsoft\Framework\.NETFramework\v4.8\Facades\System.Threading.ThreadPool.dll
+  C:\Program Files (x86)\Reference Assemblies\Microsoft\Framework\.NETFramework\v4.8\Facades\System.Threading.Timer.dll
+  C:\Program Files (x86)\Reference Assemblies\Microsoft\Framework\.NETFramework\v4.8\Facades\System.ValueTuple.dll
+  C:\Program Files (x86)\Reference Assemblies\Microsoft\Framework\.NETFramework\v4.8\Facades\System.Xml.ReaderWriter.dll
+  C:\Program Files (x86)\Reference Assemblies\Microsoft\Framework\.NETFramework\v4.8\Facades\System.Xml.XDocument.dll
+  C:\Program Files (x86)\Reference Assemblies\Microsoft\Framework\.NETFramework\v4.8\Facades\System.Xml.XmlDocument.dll
+  C:\Program Files (x86)\Reference Assemblies\Microsoft\Framework\.NETFramework\v4.8\Facades\System.Xml.XmlSerializer.dll
+  C:\Program Files (x86)\Reference Assemblies\Microsoft\Framework\.NETFramework\v4.8\Facades\System.Xml.XPath.dll
+  C:\Program Files (x86)\Reference Assemblies\Microsoft\Framework\.NETFramework\v4.8\Facades\System.Xml.XPath.XDocument.dll
+  -->
+  </ItemGroup>
+</Project>

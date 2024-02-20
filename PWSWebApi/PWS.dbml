@@ -1,0 +1,565 @@
+﻿<?xml version="1.0" encoding="utf-8"?><Database Name="PWS" Class="DataClasses1DataContext" xmlns="http://schemas.microsoft.com/linqtosql/dbml/2007">
+  <Connection Mode="WebSettings" ConnectionString="Data Source=10.135.128.135;Initial Catalog=PWS;User ID=PWSAccess;MultipleActiveResultSets=True;Application Name=EntityFramework" SettingsObjectName="System.Configuration.ConfigurationManager.ConnectionStrings" SettingsPropertyName="PWSConnectionString" Provider="System.Data.SqlClient" />
+  <Table Name="dbo.GridColumnsDetail" Member="GridColumnsDetails">
+    <Type Name="GridColumnsDetail">
+      <Column Name="GridColumnsDetailID" Type="System.Int32" DbType="Int NOT NULL IDENTITY" IsDbGenerated="true" CanBeNull="false" />
+      <Column Name="GridColumnsID" Type="System.Int32" DbType="Int" CanBeNull="true" />
+      <Column Name="ColumnOrder" Type="System.Int32" DbType="Int" CanBeNull="true" />
+      <Column Name="ColumnTitle" Type="System.String" DbType="VarChar(30)" CanBeNull="true" />
+      <Column Name="MinLen" Type="System.Int32" DbType="Int" CanBeNull="true" />
+      <Column Name="MaxLen" Type="System.Int32" DbType="Int" CanBeNull="true" />
+      <Column Name="Datatype" Type="System.String" DbType="VarChar(20)" CanBeNull="true" />
+      <Column Name="Req" Type="System.Int32" DbType="Int" CanBeNull="true" />
+      <Column Name="Formula" Type="System.String" DbType="VarChar(40)" CanBeNull="true" />
+      <Column Name="LookUpID" Type="System.Int32" DbType="Int" CanBeNull="true" />
+      <Column Name="Decimals" Type="System.Int32" DbType="Int" CanBeNull="true" />
+      <Column Name="LookUpIDDep" Type="System.String" DbType="VarChar(100)" CanBeNull="true" />
+    </Type>
+  </Table>
+  <Table Name="dbo.New_Accounts_tmp" Member="New_Accounts_tmps">
+    <Type Name="New_Accounts_tmp">
+      <Column Name="New_Accounts_tmpID" Type="System.Int32" DbType="Int NOT NULL IDENTITY" IsPrimaryKey="true" IsDbGenerated="true" CanBeNull="false" />
+      <Column Name="New_AccountsID" Type="System.Int32" DbType="Int" CanBeNull="true" />
+      <Column Name="AcctCode" Type="System.String" DbType="VarChar(20)" CanBeNull="true" />
+      <Column Name="AcctNum" Type="System.String" DbType="VarChar(40)" CanBeNull="true" />
+      <Column Name="AcctName" Type="System.String" DbType="VarChar(120)" CanBeNull="true" />
+      <Column Name="AcctNickNamePrimary" Type="System.String" DbType="VarChar(60)" CanBeNull="true" />
+      <Column Name="BaseCurr" Type="System.String" DbType="VarChar(3)" CanBeNull="true" />
+      <Column Name="LoadSourceID" Type="System.Int32" DbType="Int" CanBeNull="true" />
+      <Column Name="UserGroupID" Type="System.Int32" DbType="Int" CanBeNull="true" />
+      <Column Name="ReliefMethodID" Type="System.Int32" DbType="Int" CanBeNull="true" />
+      <Column Name="EntityCode" Type="System.String" DbType="VarChar(20)" CanBeNull="true" />
+      <Column Name="OwnedPct" Type="System.Decimal" DbType="Decimal(32,8)" CanBeNull="true" />
+      <Column Name="StartingDate" Type="System.DateTime" DbType="Date" CanBeNull="true" />
+      <Column Name="EndingDate" Type="System.DateTime" DbType="Date" CanBeNull="true" />
+      <Column Name="PortfolioCode" Type="System.String" DbType="VarChar(20)" CanBeNull="true" />
+      <Column Name="UserID" Type="System.Int32" DbType="Int" CanBeNull="true" />
+      <Column Name="UIID" Type="System.Int32" DbType="Int" CanBeNull="true" />
+      <Column Name="LoadDateTime" Type="System.DateTime" DbType="DateTime" CanBeNull="true" />
+      <Column Name="UpdateDateTime" Type="System.DateTime" DbType="DateTime" CanBeNull="true" />
+    </Type>
+  </Table>
+  <Table Name="dbo.New_Accounts" Member="New_Accounts">
+    <Type Name="New_Account">
+      <Column Name="New_AccountsID" Type="System.Int32" DbType="Int NOT NULL IDENTITY" IsPrimaryKey="true" IsDbGenerated="true" CanBeNull="false" />
+      <Column Name="AcctCode" Type="System.String" DbType="VarChar(20)" CanBeNull="true" />
+      <Column Name="AcctNum" Type="System.String" DbType="VarChar(40)" CanBeNull="true" />
+      <Column Name="AcctName" Type="System.String" DbType="VarChar(120)" CanBeNull="true" />
+      <Column Name="AcctNickNamePrimary" Type="System.String" DbType="VarChar(60)" CanBeNull="true" />
+      <Column Name="BaseCurr" Type="System.String" DbType="VarChar(3)" CanBeNull="true" />
+      <Column Name="LoadSourceID" Type="System.Int32" DbType="Int" CanBeNull="true" />
+      <Column Name="UserGroupID" Type="System.Int32" DbType="Int" CanBeNull="true" />
+      <Column Name="TaxLotReliefMethodID" Type="System.Int32" DbType="Int" CanBeNull="true" />
+      <Column Name="EntityCode" Type="System.String" DbType="VarChar(20)" CanBeNull="true" />
+      <Column Name="OwnedPct" Type="System.Decimal" DbType="Decimal(32,8)" CanBeNull="true" />
+      <Column Name="StartingDate" Type="System.DateTime" DbType="Date" CanBeNull="true" />
+      <Column Name="EndingDate" Type="System.DateTime" DbType="Date" CanBeNull="true" />
+      <Column Name="PortfolioCode" Type="System.String" DbType="VarChar(20)" CanBeNull="true" />
+      <Column Name="UserID" Type="System.Int32" DbType="Int" CanBeNull="true" />
+      <Column Name="LoadDateTime" Type="System.DateTime" DbType="DateTime" CanBeNull="true" />
+      <Column Name="UpdateDateTime" Type="System.DateTime" DbType="DateTime" CanBeNull="true" />
+      <Column Name="RetiredDateTime" Type="System.DateTime" DbType="DateTime" CanBeNull="true" />
+      <Column Name="AcctID" Type="System.Int32" DbType="Int" CanBeNull="true" />
+    </Type>
+  </Table>
+  <Table Name="dbo.RptModel" Member="RptModels">
+    <Type Name="RptModel">
+      <Column Name="RptModelID" Type="System.Int32" DbType="Int NOT NULL IDENTITY" IsPrimaryKey="true" IsDbGenerated="true" CanBeNull="false" />
+      <Column Name="ModelID" Type="System.Int32" DbType="Int" CanBeNull="true" />
+      <Column Name="Title" Type="System.String" DbType="VarChar(30)" CanBeNull="true" />
+      <Column Name="AttribTypeID" Type="System.Int32" DbType="Int" CanBeNull="true" />
+      <Column Name="AttribNameID" Type="System.Int32" DbType="Int" CanBeNull="true" />
+      <Column Name="GrpOrd" Type="System.Int32" DbType="Int" CanBeNull="true" />
+      <Column Name="ParentBmkPWSRefID" Type="System.Int32" DbType="Int" CanBeNull="true" />
+      <Column Name="DrillDownModelID" Type="System.Int32" DbType="Int" CanBeNull="true" />
+      <Column Name="BuildUpNameID" Type="System.Int32" DbType="Int" CanBeNull="true" />
+      <Column Name="BuildUpModelID" Type="System.Int32" DbType="Int" CanBeNull="true" />
+      <Column Name="DPID" Type="System.Int32" DbType="Int" CanBeNull="true" />
+      <Column Name="UserID" Type="System.Int32" DbType="Int" CanBeNull="true" />
+      <Column Name="AttribPermissionGroupID" Type="System.Int32" DbType="Int" CanBeNull="true" />
+      <Column Name="LoadDateTime" Type="System.DateTime" DbType="DateTime" CanBeNull="true" />
+      <Column Name="Stat" Type="System.String" DbType="VarChar(1)" CanBeNull="true" />
+      <Column Name="RetiredDateTime" Type="System.DateTime" DbType="DateTime" CanBeNull="true" />
+      <Column Name="LoadSourceID" Type="System.Int32" DbType="Int" CanBeNull="true" />
+      <Column Name="RptModelDesc" Type="System.String" DbType="VarChar(60)" CanBeNull="true" />
+    </Type>
+  </Table>
+  <Table Name="dbo.RptModel_tmp" Member="RptModel_tmps">
+    <Type Name="RptModel_tmp">
+      <Column Name="RptModel_tmpID" Type="System.Int32" DbType="Int NOT NULL IDENTITY" IsPrimaryKey="true" IsDbGenerated="true" CanBeNull="false" />
+      <Column Name="RowOrder" Type="System.Int32" DbType="Int" CanBeNull="true" />
+      <Column Name="ParentRowOrder" Type="System.Int32" DbType="Int" CanBeNull="true" />
+      <Column Name="Levels" Type="System.Int32" DbType="Int" CanBeNull="true" />
+      <Column Name="Title" Type="System.String" DbType="NVarChar(255)" CanBeNull="true" />
+      <Column Name="Description" Type="System.String" DbType="NVarChar(255)" CanBeNull="true" />
+      <Column Name="AttribTypeID" Type="System.Int32" DbType="Int" CanBeNull="true" />
+      <Column Name="[AttribNameID ]" Member="AttribNameID_" Type="System.Int32" DbType="Int" CanBeNull="true" />
+      <Column Name="AttribOrder" Type="System.Decimal" DbType="Decimal(32,4)" CanBeNull="true" />
+      <Column Name="AttribName" Type="System.String" DbType="NVarChar(255)" CanBeNull="true" />
+      <Column Name="ModelTitle" Type="System.String" DbType="NVarChar(255)" CanBeNull="true" />
+      <Column Name="UserGroupID" Type="System.Int32" DbType="Int" CanBeNull="true" />
+      <Column Name="UserID" Type="System.Int32" DbType="Int" CanBeNull="true" />
+      <Column Name="DrillDownModelID" Type="System.Int32" DbType="Int" CanBeNull="true" />
+    </Type>
+  </Table>
+  <Table Name="dbo.Perf_Static" Member="Perf_Statics">
+    <Type Name="Perf_Static">
+      <Column Name="PerfStaticID" Type="System.Int32" DbType="Int NOT NULL IDENTITY" IsPrimaryKey="true" IsDbGenerated="true" CanBeNull="false" />
+      <Column Name="PerfAttribDescr" Type="System.String" DbType="VarChar(200)" CanBeNull="true" />
+      <Column Name="PWSRefString" Type="System.String" DbType="VarChar(800)" CanBeNull="true" />
+      <Column Name="PerfAttribID" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="BeginDate" Type="System.DateTime" DbType="Date" CanBeNull="true" />
+      <Column Name="EndDate" Type="System.DateTime" DbType="Date" CanBeNull="true" />
+      <Column Name="BMV" Type="System.Decimal" DbType="Decimal(32,2)" CanBeNull="true" />
+      <Column Name="EMV" Type="System.Decimal" DbType="Decimal(32,2)" CanBeNull="true" />
+      <Column Name="BegFlow" Type="System.Decimal" DbType="Decimal(32,2)" CanBeNull="true" />
+      <Column Name="NetFlow" Type="System.Decimal" DbType="Decimal(32,2)" CanBeNull="true" />
+      <Column Name="MgtFee" Type="System.Decimal" DbType="Decimal(32,2)" CanBeNull="true" />
+      <Column Name="GRet" Type="System.Decimal" DbType="Decimal(32,8)" CanBeNull="true" />
+      <Column Name="NRet" Type="System.Decimal" DbType="Decimal(32,8)" CanBeNull="true" />
+      <Column Name="StaticData" Type="System.Boolean" DbType="Bit" CanBeNull="true" />
+      <Column Name="DPID" Type="System.Int32" DbType="Int" CanBeNull="true" />
+      <Column Name="UserID" Type="System.Int32" DbType="Int" CanBeNull="true" />
+      <Column Name="LoadDateTime" Type="System.DateTime" DbType="DateTime" CanBeNull="true" />
+      <Column Name="Stat" Type="System.String" DbType="VarChar(1)" CanBeNull="true" />
+      <Column Name="RetiredDateTime" Type="System.DateTime" DbType="DateTime" CanBeNull="true" />
+      <Column Name="LoadSourceID" Type="System.Int32" DbType="Int" CanBeNull="true" />
+      <Column Name="UpdateDateTime" Type="System.DateTime" DbType="DateTime" CanBeNull="true" />
+    </Type>
+  </Table>
+  <Table Name="dbo.PWSClient" Member="PWSClients">
+    <Type Name="PWSClient">
+      <Column Name="PWSClientID" Type="System.Int32" DbType="Int NOT NULL IDENTITY" IsPrimaryKey="true" IsDbGenerated="true" CanBeNull="false" />
+      <Column Name="PWSClientName" Type="System.String" DbType="VarChar(30)" CanBeNull="true" />
+      <Column Name="RetiredDateTime" Type="System.DateTime" DbType="DateTime" CanBeNull="true" />
+      <Column Name="LoadDateTime" Type="System.DateTime" DbType="DateTime" CanBeNull="true" />
+      <Column Name="PWSClientCode" Type="System.String" DbType="VarChar(36)" CanBeNull="true" />
+    </Type>
+  </Table>
+  <Table Name="dbo.SiteMonitor" Member="SiteMonitors">
+    <Type Name="SiteMonitor">
+      <Column Name="UserID" Type="System.Int32" DbType="Int" CanBeNull="true" />
+      <Column Name="HREF" Type="System.String" DbType="VarChar(500)" CanBeNull="true" />
+      <Column Name="Site" Type="System.String" DbType="VarChar(10)" CanBeNull="true" />
+      <Column Name="Scope" Type="System.String" DbType="VarChar(50)" CanBeNull="true" />
+      <Column Name="LoadTimeStamp" Type="System.DateTime" DbType="DateTime" CanBeNull="true" />
+      <Column Name="Misc" Type="System.String" DbType="VarChar(100)" CanBeNull="true" />
+      <Column Name="AutomatedPing" Type="System.Boolean" DbType="Bit" CanBeNull="true" />
+      <Column Name="Session" Type="System.String" DbType="VarChar(200)" CanBeNull="true" />
+    </Type>
+  </Table>
+  <Table Name="dbo.Perf_Static_tmp" Member="Perf_Static_tmps">
+    <Type Name="Perf_Static_tmp">
+      <Column Name="PerfStatic_tmpID" Type="System.Int32" DbType="Int NOT NULL IDENTITY" IsPrimaryKey="true" IsDbGenerated="true" CanBeNull="false" />
+      <Column Name="PerfAttribDescr" Type="System.String" DbType="VarChar(200)" CanBeNull="true" />
+      <Column Name="PerfAttribID" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="BeginDate" Type="System.DateTime" DbType="Date" CanBeNull="true" />
+      <Column Name="EndDate" Type="System.DateTime" DbType="Date" CanBeNull="true" />
+      <Column Name="BMV" Type="System.Decimal" DbType="Decimal(32,2)" CanBeNull="true" />
+      <Column Name="EMV" Type="System.Decimal" DbType="Decimal(32,2)" CanBeNull="true" />
+      <Column Name="BegFlow" Type="System.Decimal" DbType="Decimal(32,2)" CanBeNull="true" />
+      <Column Name="NetFlow" Type="System.Decimal" DbType="Decimal(32,2)" CanBeNull="true" />
+      <Column Name="MgtFee" Type="System.Decimal" DbType="Decimal(32,2)" CanBeNull="true" />
+      <Column Name="GRet" Type="System.Decimal" DbType="Decimal(32,8)" CanBeNull="true" />
+      <Column Name="NRet" Type="System.Decimal" DbType="Decimal(32,8)" CanBeNull="true" />
+      <Column Name="UserID" Type="System.Int32" DbType="Int" CanBeNull="true" />
+      <Column Name="Stat" Type="System.String" DbType="VarChar(1)" CanBeNull="true" />
+      <Column Name="CreateDateTime" Type="System.DateTime" DbType="DateTime" CanBeNull="true" />
+      <Column Name="UpdateDateTime" Type="System.DateTime" DbType="DateTime" CanBeNull="true" />
+      <Column Name="RetiredDateTime" Type="System.DateTime" DbType="DateTime" CanBeNull="true" />
+      <Column Name="DPID" Type="System.Int32" DbType="Int" CanBeNull="true" />
+      <Column Name="LoadSourceID" Type="System.Int32" DbType="Int" CanBeNull="true" />
+    </Type>
+  </Table>
+  <Table Name="dbo.MappingSecurity" Member="MappingSecurities">
+    <Type Name="MappingSecurity">
+      <Column Name="SecurityMappingID" Type="System.Int32" DbType="Int NOT NULL IDENTITY" IsPrimaryKey="true" IsDbGenerated="true" CanBeNull="false" />
+      <Column Name="DPID" Type="System.Int32" DbType="Int" CanBeNull="true" />
+      <Column Name="LoadSourceID" Type="System.Int32" DbType="Int" CanBeNull="true" />
+      <Column Name="SecID" Type="System.Int32" DbType="Int" CanBeNull="true" />
+      <Column Name="DPSecurityID" Type="System.String" DbType="VarChar(50)" CanBeNull="true" />
+      <Column Name="DPSecurityName" Type="System.String" DbType="VarChar(150)" CanBeNull="true" />
+      <Column Name="MappedUsing" Type="System.String" DbType="VarChar(60)" CanBeNull="true" />
+      <Column Name="AcctID" Type="System.Int32" DbType="Int" CanBeNull="true" />
+      <Column Name="BlockRecon" Type="System.Boolean" DbType="Bit" CanBeNull="true" />
+      <Column Name="AdjustShares" Type="System.Int32" DbType="Int" CanBeNull="true" />
+      <Column Name="StartDate" Type="System.DateTime" DbType="Date NOT NULL" CanBeNull="false" />
+      <Column Name="EndDate" Type="System.DateTime" DbType="Date NOT NULL" CanBeNull="false" />
+      <Column Name="LoadDateTime" Type="System.DateTime" DbType="DateTime" CanBeNull="true" />
+    </Type>
+  </Table>
+  <Table Name="dbo.Sec" Member="Secs">
+    <Type Name="Sec">
+      <Column Name="RefID" Type="System.Int32" DbType="Int NOT NULL IDENTITY" IsPrimaryKey="true" IsDbGenerated="true" CanBeNull="false" />
+      <Column Name="SecID" Type="System.Int32" DbType="Int" CanBeNull="true" />
+      <Column Name="PWSRefTypeID" Type="System.Int32" DbType="Int" CanBeNull="true" />
+      <Column Name="SecName1" Type="System.String" DbType="VarChar(30)" CanBeNull="true" />
+      <Column Name="SecName2" Type="System.String" DbType="VarChar(30)" CanBeNull="true" />
+      <Column Name="SecName3" Type="System.String" DbType="VarChar(30)" CanBeNull="true" />
+      <Column Name="SecTypeID" Type="System.Int32" DbType="Int" CanBeNull="true" />
+      <Column Name="SecuritizedID" Type="System.Int32" DbType="Int" CanBeNull="true" />
+      <Column Name="Comingled" Type="System.Boolean" DbType="Bit" CanBeNull="true" />
+      <Column Name="Unitized" Type="System.Boolean" DbType="Bit" CanBeNull="true" />
+      <Column Name="UnderlyingSecID" Type="System.Int32" DbType="Int" CanBeNull="true" />
+      <Column Name="Cusip" Type="System.String" DbType="VarChar(9)" CanBeNull="true" />
+      <Column Name="ISIN" Type="System.String" DbType="VarChar(12)" CanBeNull="true" />
+      <Column Name="RIC" Type="System.String" DbType="VarChar(50)" CanBeNull="true" />
+      <Column Name="Exchg" Type="System.Int32" DbType="Int" CanBeNull="true" />
+      <Column Name="Symbol" Type="System.String" DbType="VarChar(50)" CanBeNull="true" />
+      <Column Name="BloombSymbol" Type="System.String" DbType="VarChar(20)" CanBeNull="true" />
+      <Column Name="IssuerID" Type="System.String" DbType="VarChar(20)" CanBeNull="true" />
+      <Column Name="Issuer" Type="System.String" DbType="VarChar(255)" CanBeNull="true" />
+      <Column Name="AvgCostEligible" Type="System.Boolean" DbType="Bit" CanBeNull="true" />
+      <Column Name="PrincCCYID" Type="System.Int32" DbType="Int" CanBeNull="true" />
+      <Column Name="IncCCYID" Type="System.Int32" DbType="Int" CanBeNull="true" />
+      <Column Name="PriceMult" Type="System.Decimal" DbType="Decimal(32,4)" CanBeNull="true" />
+      <Column Name="Income" Type="System.Int32" DbType="Int" CanBeNull="true" />
+      <Column Name="IntRate" Type="System.Decimal" DbType="Decimal(9,6)" CanBeNull="true" />
+      <Column Name="FloatRate" Type="System.Boolean" DbType="Bit" CanBeNull="true" />
+      <Column Name="CallSchd" Type="System.Boolean" DbType="Bit" CanBeNull="true" />
+      <Column Name="FactorSchd" Type="System.Boolean" DbType="Bit" CanBeNull="true" />
+      <Column Name="IssueDate" Type="System.DateTime" DbType="Date" CanBeNull="true" />
+      <Column Name="BusDayConvID" Type="System.Int32" DbType="Int" CanBeNull="true" />
+      <Column Name="DatedDate" Type="System.DateTime" DbType="Date" CanBeNull="true" />
+      <Column Name="MaturityDate" Type="System.DateTime" DbType="Date" CanBeNull="true" />
+      <Column Name="FirstPayDate" Type="System.DateTime" DbType="Date" CanBeNull="true" />
+      <Column Name="FirstReg" Type="System.Boolean" DbType="Bit" CanBeNull="true" />
+      <Column Name="LastPayDate" Type="System.DateTime" DbType="Date" CanBeNull="true" />
+      <Column Name="LastReg" Type="System.Boolean" DbType="Bit" CanBeNull="true" />
+      <Column Name="DayofPmt" Type="System.Int32" DbType="Int" CanBeNull="true" />
+      <Column Name="Par" Type="System.Decimal" DbType="Decimal(10,6)" CanBeNull="true" />
+      <Column Name="PeriodicityID" Type="System.Int32" DbType="Int" CanBeNull="true" />
+      <Column Name="DayCtBasisID" Type="System.Int32" DbType="Int" CanBeNull="true" />
+      <Column Name="OIPrice" Type="System.Decimal" DbType="Decimal(10,6)" CanBeNull="true" />
+      <Column Name="USState" Type="System.String" DbType="VarChar(2)" CanBeNull="true" />
+      <Column Name="StateTaxStat" Type="System.Boolean" DbType="Bit" CanBeNull="true" />
+      <Column Name="AA" Type="System.Boolean" DbType="Bit" CanBeNull="true" />
+      <Column Name="RecallDistPct" Type="System.Decimal" DbType="Decimal(9,6)" CanBeNull="true" />
+      <Column Name="RecallExpPeriodicityID" Type="System.Int32" DbType="Int" CanBeNull="true" />
+      <Column Name="RecallExpNumPeriods" Type="System.Int32" DbType="Int" CanBeNull="true" />
+      <Column Name="HurdleRate" Type="System.Decimal" DbType="Decimal(9,6)" CanBeNull="true" />
+      <Column Name="HoldbackAmt" Type="System.Decimal" DbType="Decimal(9,6)" CanBeNull="true" />
+      <Column Name="ValMethodID" Type="System.Int32" DbType="Int" CanBeNull="true" />
+      <Column Name="DPID" Type="System.Int32" DbType="Int" CanBeNull="true" />
+      <Column Name="UserID" Type="System.Int32" DbType="Int" CanBeNull="true" />
+      <Column Name="UserGroupID" Type="System.Int32" DbType="Int" CanBeNull="true" />
+      <Column Name="LoadDateTime" Type="System.DateTime" DbType="DateTime" CanBeNull="true" />
+      <Column Name="Stat" Type="System.String" DbType="VarChar(1)" CanBeNull="true" />
+      <Column Name="RetiredDateTime" Type="System.DateTime" DbType="DateTime" CanBeNull="true" />
+      <Column Name="LoadSourceID" Type="System.Int32" DbType="Int" CanBeNull="true" />
+      <Column Name="ETF" Type="System.Boolean" DbType="Bit" CanBeNull="true" />
+      <Column Name="InactiveDate" Type="System.DateTime" DbType="Date" CanBeNull="true" />
+      <Column Name="NewSecID" Type="System.Int32" DbType="Int" CanBeNull="true" />
+      <Column Name="DailyAccrSec" Type="System.Int32" DbType="Int" CanBeNull="true" />
+      <Column Name="SecCode" Type="System.String" DbType="VarChar(36)" CanBeNull="true" />
+    </Type>
+  </Table>
+  <Table Name="dbo.PerfAttrib" Member="PerfAttribs">
+    <Type Name="PerfAttrib">
+      <Column Name="Ranking" Type="System.Int64" DbType="BigInt" CanBeNull="true" />
+      <Column Name="PerfAttribID" Type="System.Int32" DbType="Int NOT NULL IDENTITY" IsPrimaryKey="true" IsDbGenerated="true" CanBeNull="false" />
+      <Column Name="PWSRefID" Type="System.Int32" DbType="Int" CanBeNull="true" />
+      <Column Name="CCYID" Type="System.Int32" DbType="Int" CanBeNull="true" />
+      <Column Name="PerfAttribIDUp" Type="System.Int32" DbType="Int" CanBeNull="true" />
+      <Column Name="DrillDown" Type="System.Boolean" DbType="Bit" CanBeNull="true" />
+      <Column Name="AttribTypeID" Type="System.Int32" DbType="Int" CanBeNull="true" />
+      <Column Name="AttribNameID" Type="System.Int32" DbType="Int" CanBeNull="true" />
+      <Column Name="HierAttribID" Type="System.Int32" DbType="Int" CanBeNull="true" />
+      <Column Name="AssgnStartPt" Type="System.Int32" DbType="Int" CanBeNull="true" />
+      <Column Name="AssgnEndPt" Type="System.Int32" DbType="Int" CanBeNull="true" />
+      <Column Name="DPID" Type="System.Int32" DbType="Int" CanBeNull="true" />
+      <Column Name="LoadSourceID" Type="System.Int32" DbType="Int" CanBeNull="true" />
+      <Column Name="LatestContBegDate" Type="System.DateTime" DbType="Date" CanBeNull="true" />
+      <Column Name="LatestContEndDate" Type="System.DateTime" DbType="Date" CanBeNull="true" />
+      <Column Name="UserID" Type="System.Int32" DbType="Int" CanBeNull="true" />
+      <Column Name="LoadDateTime" Type="System.DateTime" DbType="DateTime" CanBeNull="true" />
+      <Column Name="Stat" Type="System.String" DbType="VarChar(1)" CanBeNull="true" />
+      <Column Name="RetiredDateTime" Type="System.DateTime" DbType="DateTime" CanBeNull="true" />
+      <Column Name="PerfAttribString" Type="System.String" DbType="VarChar(100)" CanBeNull="true" />
+    </Type>
+  </Table>
+  <Table Name="dbo.PwsConfigs" Member="PwsConfigs">
+    <Type Name="PwsConfig">
+      <Column Name="EntryID" Type="System.Int32" DbType="Int NOT NULL IDENTITY" IsPrimaryKey="true" IsDbGenerated="true" CanBeNull="false" />
+      <Column Name="Name" Type="System.String" DbType="VarChar(100)" CanBeNull="true" />
+      <Column Name="Value" Type="System.String" DbType="VarChar(100)" CanBeNull="true" />
+      <Column Name="Comments" Type="System.String" DbType="VarChar(500)" CanBeNull="true" />
+    </Type>
+  </Table>
+  <Table Name="dbo.Users" Member="Users">
+    <Type Name="User">
+      <Column Name="UserID" Type="System.Int32" DbType="Int NOT NULL IDENTITY" IsPrimaryKey="true" IsDbGenerated="true" CanBeNull="false" />
+      <Column Name="UserName" Type="System.String" DbType="VarChar(10)" CanBeNull="true" />
+      <Column Name="UserPassword" Type="System.String" DbType="VarChar(150)" CanBeNull="true" />
+      <Column Name="UserEmailAddress" Type="System.String" DbType="VarChar(150)" CanBeNull="true" />
+      <Column Name="UserFirstName" Type="System.String" DbType="VarChar(100)" CanBeNull="true" />
+      <Column Name="UserLastName" Type="System.String" DbType="VarChar(100)" CanBeNull="true" />
+      <Column Name="UserRoles" Type="System.String" DbType="VarChar(10)" CanBeNull="true" />
+      <Column Name="PWSClientID" Type="System.Int32" DbType="Int" CanBeNull="true" />
+      <Column Name="RetiredDateTime" Type="System.DateTime" DbType="DateTime" CanBeNull="true" />
+      <Column Name="LoadDateTime" Type="System.DateTime" DbType="DateTime" CanBeNull="true" />
+      <Column Name="BrowserTimeoutThreshold" Type="System.Int32" DbType="Int" CanBeNull="true" />
+    </Type>
+  </Table>
+  <Table Name="dbo.ReportBook" Member="ReportBooks">
+    <Type Name="ReportBook">
+      <Column Name="ReportBookID" Type="System.Int32" DbType="Int NOT NULL IDENTITY" IsPrimaryKey="true" IsDbGenerated="true" CanBeNull="false" />
+      <Column Name="ReportBookName1" Type="System.String" DbType="VarChar(200)" CanBeNull="true" />
+      <Column Name="Title1" Type="System.String" DbType="VarChar(250)" CanBeNull="true" />
+      <Column Name="Title2" Type="System.String" DbType="VarChar(250)" CanBeNull="true" />
+      <Column Name="Title3" Type="System.String" DbType="VarChar(50)" CanBeNull="true" />
+      <Column Name="PeriodicityID" Type="System.Int32" DbType="Int" CanBeNull="true" />
+      <Column Name="RecurringDetail" Type="System.String" DbType="VarChar(1000)" CanBeNull="true" />
+      <Column Name="NextEndDate" Type="System.DateTime" DbType="Date" CanBeNull="true" />
+      <Column Name="BusinessDaysAfter" Type="System.Int32" DbType="Int" CanBeNull="true" />
+      <Column Name="LogoID" Type="System.Int32" DbType="Int" CanBeNull="true" />
+      <Column Name="DistributionUserIDs" Type="System.String" DbType="VarChar(800)" CanBeNull="true" />
+      <Column Name="UserID" Type="System.Int32" DbType="Int" CanBeNull="true" />
+      <Column Name="CreateDateTime" Type="System.DateTime" DbType="DateTime" CanBeNull="true" />
+      <Column Name="UpdateDateTime" Type="System.DateTime" DbType="DateTime" CanBeNull="true" />
+      <Column Name="fileSavedName" Type="System.String" DbType="VarChar(100)" CanBeNull="true" />
+      <Column Name="fileSavedDate" Type="System.DateTime" DbType="DateTime" CanBeNull="true" />
+    </Type>
+  </Table>
+  <Table Name="dbo.ReportParamMonitorPDF" Member="ReportParamMonitorPDFs">
+    <Type Name="ReportParamMonitorPDF">
+      <Column Name="ReportRefID" Type="System.Int32" DbType="Int NOT NULL IDENTITY" IsPrimaryKey="true" IsDbGenerated="true" CanBeNull="false" />
+      <Column Name="ReportBookID" Type="System.Int32" DbType="Int" CanBeNull="true" />
+      <Column Name="ReportName" Type="System.String" DbType="VarChar(100)" CanBeNull="true" />
+      <Column Name="RptTemplateNameID" Type="System.Int32" DbType="Int" CanBeNull="true" />
+      <Column Name="RptTemplateName" Type="System.String" DbType="VarChar(100)" CanBeNull="true" />
+      <Column Name="StartDate" Type="System.DateTime" DbType="Date" CanBeNull="true" />
+      <Column Name="EndDate" Type="System.DateTime" DbType="Date" CanBeNull="true" />
+      <Column Name="DelimParams" Type="System.String" DbType="NVarChar(MAX)" CanBeNull="true" />
+      <Column Name="LogoID" Type="System.String" DbType="VarChar(MAX)" CanBeNull="true" />
+      <Column Name="reconCompleteTime" Type="System.DateTime" DbType="DateTime" CanBeNull="true" />
+      <Column Name="dataMissingStartTime" Type="System.DateTime" DbType="DateTime" CanBeNull="true" />
+      <Column Name="fileSavedName" Type="System.String" DbType="VarChar(100)" CanBeNull="true" />
+      <Column Name="fileSavedDate" Type="System.DateTime" DbType="DateTime" CanBeNull="true" />
+      <Column Name="CreateDateTime" Type="System.DateTime" DbType="DateTime" CanBeNull="true" />
+      <Column Name="UserID" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="UserPrefTypeID" Type="System.Int32" DbType="Int" CanBeNull="true" />
+    </Type>
+  </Table>
+  <Table Name="dbo.ApiLogs" Member="ApiLogs">
+    <Type Name="ApiLog">
+      <Column Name="ID" Type="System.Int32" DbType="Int NOT NULL IDENTITY" IsPrimaryKey="true" IsDbGenerated="true" CanBeNull="false" />
+      <Column Name="Method" Type="System.String" DbType="VarChar(1000)" CanBeNull="true" />
+      <Column Name="Exception" Type="System.String" DbType="VarChar(MAX)" CanBeNull="true" />
+      <Column Name="Query" Type="System.String" DbType="VarChar(1000)" CanBeNull="true" />
+      <Column Name="UserID" Type="System.String" DbType="VarChar(5)" CanBeNull="true" />
+      <Column Name="UpdatedOn" Type="System.DateTime" DbType="DateTime" CanBeNull="true" />
+      <Column Name="Params" Type="System.String" DbType="VarChar(1000)" CanBeNull="true" />
+    </Type>
+  </Table>
+  <Function Name="DD.usp_AccountID" Method="usp_AccountID">
+    <Parameter Name="UserID" Parameter="userID" Type="System.Int32" DbType="Int" />
+    <Parameter Name="EntityIDs" Parameter="entityIDs" Type="System.String" DbType="VarChar(8000)" />
+    <ElementType Name="usp_AccountIDResult">
+      <Column Name="AcctId" Type="System.Int32" DbType="Int" CanBeNull="true" />
+      <Column Name="AcctName" Type="System.String" DbType="VarChar(95)" CanBeNull="true" />
+      <Column Name="BaseCashID" Type="System.Int32" DbType="Int" CanBeNull="true" />
+      <Column Name="RoleEntity" Type="System.Int32" DbType="Int" CanBeNull="true" />
+      <Column Name="AcctingCloseDate" Type="System.DateTime" DbType="Date" CanBeNull="true" />
+    </ElementType>
+  </Function>
+  <Function Name="DD.usp_LookUp_Values" Method="usp_LookUp_Values" IsComposable="true">
+    <Parameter Name="UserID" Parameter="userID" Type="System.Int32" DbType="Int" />
+    <Parameter Name="LookupID" Parameter="lookupID" Type="System.Int32" DbType="Int" />
+    <Return Type="object" />
+  </Function>
+  <Function Name="DD.usp_GridColumns" Method="usp_GridColumns">
+    <ElementType Name="usp_GridColumnsResult">
+      <Column Name="GridColumnsID" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="GridName" Type="System.String" DbType="VarChar(30)" CanBeNull="true" />
+      <Column Name="ColumnTitle" Type="System.String" DbType="VarChar(8000)" CanBeNull="true" />
+      <Column Name="MinLen" Type="System.String" DbType="NVarChar(4000)" CanBeNull="true" />
+      <Column Name="MaxLen" Type="System.String" DbType="NVarChar(4000)" CanBeNull="true" />
+      <Column Name="Datatype" Type="System.String" DbType="VarChar(8000)" CanBeNull="true" />
+      <Column Name="Decimals" Type="System.String" DbType="NVarChar(4000)" CanBeNull="true" />
+      <Column Name="Req" Type="System.String" DbType="NVarChar(4000)" CanBeNull="true" />
+      <Column Name="Formula" Type="System.String" DbType="VarChar(8000)" CanBeNull="true" />
+      <Column Name="LookUpID" Type="System.String" DbType="NVarChar(4000)" CanBeNull="true" />
+      <Column Name="LookUpIDDep" Type="System.String" DbType="VarChar(8000)" CanBeNull="true" />
+    </ElementType>
+  </Function>
+  <Function Name="adm.usp_New_Accounts_Insert" Method="usp_New_Accounts_Insert" IsComposable="true">
+    <Parameter Name="UserID" Parameter="userID" Type="System.Int32" DbType="Int" />
+    <Parameter Name="ValidateOnly" Parameter="validateOnly" Type="System.Int32" DbType="Int" />
+    <Return Type="object" />
+  </Function>
+  <Function Name="adm.usp_SpecLot_Assign_Insert" Method="usp_SpecLot_Assign_Insert">
+    <Parameter Name="UserID" Parameter="userID" Type="System.Int32" DbType="Int" />
+    <Parameter Name="SpecLot_Assign_EditID" Parameter="specLot_Assign_EditID" Type="System.Int32" DbType="Int" />
+    <Parameter Name="TransID" Parameter="transID" Type="System.Int32" DbType="Int" />
+    <Parameter Name="NewEditTransID" Parameter="newEditTransID" Type="System.Int32" DbType="Int" />
+    <Parameter Name="TaxlotmasterID" Parameter="taxlotmasterID" Type="System.Int32" DbType="Int" />
+    <Parameter Name="Ord" Parameter="ord" Type="System.Int32" DbType="Int" />
+    <Parameter Name="AdjShares" Parameter="adjShares" Type="System.Decimal" DbType="Decimal(32,8)" />
+    <Parameter Name="AdjLocalCost" Parameter="adjLocalCost" Type="System.Decimal" DbType="Decimal(32,8)" />
+    <Parameter Name="AdjBaseCost" Parameter="adjBaseCost" Type="System.Decimal" DbType="Decimal(32,8)" />
+    <Parameter Name="AdjMV" Parameter="adjMV" Type="System.Decimal" DbType="Decimal(32,8)" />
+    <Parameter Name="MVAssigned" Parameter="mVAssigned" Type="System.Decimal" DbType="Decimal(32,8)" />
+    <Parameter Name="CostAssigned" Parameter="costAssigned" Type="System.Decimal" DbType="Decimal(32,8)" />
+    <Parameter Name="BookAssigned" Parameter="bookAssigned" Type="System.Decimal" DbType="Decimal(32,8)" />
+    <Parameter Name="Stat" Parameter="stat" Type="System.String" DbType="VarChar(1)" />
+    <ElementType Name="usp_SpecLot_Assign_InsertResult">
+      <Column Name="NewEditTransID" Type="System.Int32" DbType="Int" CanBeNull="true" />
+      <Column Name="TransID" Type="System.Int32" DbType="Int" CanBeNull="true" />
+      <Column Name="TaxlotMasterID" Type="System.Int32" DbType="Int" CanBeNull="true" />
+      <Column Name="AdjOFShares" Type="System.Decimal" DbType="Decimal(32,8)" CanBeNull="true" />
+      <Column Name="AdjShares" Type="System.Decimal" DbType="Decimal(32,8)" CanBeNull="true" />
+      <Column Name="AdjLocalCost" Type="System.Decimal" DbType="Decimal(32,16)" CanBeNull="true" />
+      <Column Name="AdjBaseCost" Type="System.Decimal" DbType="Decimal(32,16)" CanBeNull="true" />
+      <Column Name="AdjLocalMV" Type="System.Decimal" DbType="Decimal(32,6)" CanBeNull="true" />
+      <Column Name="AdjBaseMV" Type="System.Decimal" DbType="Decimal(32,6)" CanBeNull="true" />
+      <Column Name="LocalCostAssigned" Type="System.Decimal" DbType="Decimal(32,4)" CanBeNull="true" />
+      <Column Name="BaseCostAssigned" Type="System.Decimal" DbType="Decimal(32,4)" CanBeNull="true" />
+      <Column Name="LocalBookAssigned" Type="System.Decimal" DbType="Decimal(32,4)" CanBeNull="true" />
+      <Column Name="BaseBookAssigned" Type="System.Decimal" DbType="Decimal(32,4)" CanBeNull="true" />
+      <Column Name="LocalMVAssigned" Type="System.Decimal" DbType="Decimal(32,4)" CanBeNull="true" />
+      <Column Name="BaseMVAssigned" Type="System.Decimal" DbType="Decimal(32,4)" CanBeNull="true" />
+      <Column Name="TotalSharesAdj" Type="System.Decimal" DbType="Decimal(32,8)" CanBeNull="true" />
+      <Column Name="TotalLocalCostAdj" Type="System.Decimal" DbType="Decimal(32,16)" CanBeNull="true" />
+      <Column Name="TotalBaseCostAdj" Type="System.Decimal" DbType="Decimal(32,16)" CanBeNull="true" />
+      <Column Name="TotalLocalMVAdj" Type="System.Decimal" DbType="Decimal(32,6)" CanBeNull="true" />
+      <Column Name="TotalBaseMVAdj" Type="System.Decimal" DbType="Decimal(32,6)" CanBeNull="true" />
+      <Column Name="RemainingShares" Type="System.Decimal" DbType="Decimal(32,8)" CanBeNull="true" />
+      <Column Name="RemainingNetLocal" Type="System.Decimal" DbType="Decimal(32,8)" CanBeNull="true" />
+      <Column Name="RemainingNetBase" Type="System.Decimal" DbType="Decimal(32,8)" CanBeNull="true" />
+      <Column Name="LoadDateTime" Type="System.DateTime" DbType="DateTime" CanBeNull="true" />
+      <Column Name="Stat" Type="System.String" DbType="VarChar(1)" CanBeNull="true" />
+      <Column Name="RetiredDateTime" Type="System.DateTime" DbType="DateTime" CanBeNull="true" />
+      <Column Name="EditUserID" Type="System.Int32" DbType="Int" CanBeNull="true" />
+    </ElementType>
+  </Function>
+  <Function Name="adm.usp_SpecLot_Assign_Save" Method="usp_SpecLot_Assign_Save">
+    <Parameter Name="UserID" Parameter="userID" Type="System.Int32" DbType="Int" />
+    <Parameter Name="TransID" Parameter="transID" Type="System.Int32" DbType="Int" />
+    <Parameter Name="NewEditTransID" Parameter="newEditTransID" Type="System.Int32" DbType="Int" />
+    <ElementType Name="usp_SpecLot_Assign_SaveResult">
+      <Column Name="NewEditTransID" Type="System.Int32" DbType="Int" CanBeNull="true" />
+      <Column Name="TransID" Type="System.Int32" DbType="Int" CanBeNull="true" />
+      <Column Name="TaxlotMasterID" Type="System.Int32" DbType="Int" CanBeNull="true" />
+      <Column Name="AdjOFShares" Type="System.Decimal" DbType="Decimal(32,8)" CanBeNull="true" />
+      <Column Name="AdjShares" Type="System.Decimal" DbType="Decimal(32,8)" CanBeNull="true" />
+      <Column Name="AdjLocalCost" Type="System.Decimal" DbType="Decimal(32,16)" CanBeNull="true" />
+      <Column Name="AdjBaseCost" Type="System.Decimal" DbType="Decimal(32,16)" CanBeNull="true" />
+      <Column Name="AdjLocalMV" Type="System.Decimal" DbType="Decimal(32,6)" CanBeNull="true" />
+      <Column Name="AdjBaseMV" Type="System.Decimal" DbType="Decimal(32,6)" CanBeNull="true" />
+      <Column Name="LocalCostAssigned" Type="System.Decimal" DbType="Decimal(32,4)" CanBeNull="true" />
+      <Column Name="BaseCostAssigned" Type="System.Decimal" DbType="Decimal(32,4)" CanBeNull="true" />
+      <Column Name="LocalBookAssigned" Type="System.Decimal" DbType="Decimal(32,4)" CanBeNull="true" />
+      <Column Name="BaseBookAssigned" Type="System.Decimal" DbType="Decimal(32,4)" CanBeNull="true" />
+      <Column Name="LocalMVAssigned" Type="System.Decimal" DbType="Decimal(32,4)" CanBeNull="true" />
+      <Column Name="BaseMVAssigned" Type="System.Decimal" DbType="Decimal(32,4)" CanBeNull="true" />
+      <Column Name="TotalSharesAdj" Type="System.Decimal" DbType="Decimal(32,8)" CanBeNull="true" />
+      <Column Name="TotalLocalCostAdj" Type="System.Decimal" DbType="Decimal(32,16)" CanBeNull="true" />
+      <Column Name="TotalBaseCostAdj" Type="System.Decimal" DbType="Decimal(32,16)" CanBeNull="true" />
+      <Column Name="TotalLocalMVAdj" Type="System.Decimal" DbType="Decimal(32,6)" CanBeNull="true" />
+      <Column Name="TotalBaseMVAdj" Type="System.Decimal" DbType="Decimal(32,6)" CanBeNull="true" />
+      <Column Name="RemainingShares" Type="System.Decimal" DbType="Decimal(32,8)" CanBeNull="true" />
+      <Column Name="RemainingNetLocal" Type="System.Decimal" DbType="Decimal(32,8)" CanBeNull="true" />
+      <Column Name="RemainingNetBase" Type="System.Decimal" DbType="Decimal(32,8)" CanBeNull="true" />
+      <Column Name="LoadDateTime" Type="System.DateTime" DbType="DateTime" CanBeNull="true" />
+      <Column Name="Stat" Type="System.String" DbType="VarChar(1)" CanBeNull="true" />
+      <Column Name="RetiredDateTime" Type="System.DateTime" DbType="DateTime" CanBeNull="true" />
+      <Column Name="EditUserID" Type="System.Int32" DbType="Int" CanBeNull="true" />
+    </ElementType>
+  </Function>
+  <Function Name="adm.usp_AttribAssign_Edit" Method="usp_AttribAssign_Edit" IsComposable="true">
+    <Parameter Name="UserID" Parameter="userID" Type="System.Int32" DbType="Int" />
+    <Parameter Name="AttribAssignID" Parameter="attribAssignID" Type="System.Int32" DbType="Int" />
+    <Parameter Name="AttribTypeID" Parameter="attribTypeID" Type="System.Int32" DbType="Int" />
+    <Parameter Name="AttribNameID" Parameter="attribNameID" Type="System.Int32" DbType="Int" />
+    <Parameter Name="UserGroupID" Parameter="userGroupID" Type="System.Int32" DbType="Int" />
+    <Parameter Name="PWSRefID" Parameter="pWSRefID" Type="System.Int32" DbType="Int" />
+    <Parameter Name="FnctTypeID" Parameter="fnctTypeID" Type="System.Int32" DbType="Int" />
+    <Parameter Name="DPID" Parameter="dPID" Type="System.Int32" DbType="Int" />
+    <Parameter Name="LoadSourceID" Parameter="loadSourceID" Type="System.Int32" DbType="Int" />
+    <Parameter Name="AttribTypeValue" Parameter="attribTypeValue" Type="System.Decimal" DbType="Decimal(32,8)" />
+    <Parameter Name="AttribMinValue" Parameter="attribMinValue" Type="System.Decimal" DbType="Decimal(32,8)" />
+    <Parameter Name="AttribMaxValue" Parameter="attribMaxValue" Type="System.Decimal" DbType="Decimal(32,8)" />
+    <Parameter Name="AttribStartDate" Parameter="attribStartDate" Type="System.DateTime" DbType="Date" />
+    <Parameter Name="AttribEndDate" Parameter="attribEndDate" Type="System.DateTime" DbType="Date" />
+    <Return Type="object" />
+  </Function>
+  <Function Name="adm.usp_ReconDailyOutages" Method="usp_ReconDailyOutages" IsComposable="true">
+    <Parameter Name="Userid" Parameter="userid" Type="System.Int32" DbType="Int" />
+    <Parameter Name="AcctID" Parameter="acctID" Type="System.String" DbType="VarChar(MAX)" />
+    <Parameter Name="StartDate" Parameter="startDate" Type="System.DateTime" DbType="Date" />
+    <Parameter Name="EndDate" Parameter="endDate" Type="System.DateTime" DbType="Date" />
+    <Parameter Name="Sec" Parameter="sec" Type="System.String" DbType="VarChar(MAX)" />
+    <Parameter Name="SecID" Parameter="secID" Type="System.String" DbType="VarChar(MAX)" />
+    <Return Type="object" />
+  </Function>
+  <Function Name="adm.usp_ReconTran_Norm" Method="usp_ReconTran_Norm">
+    <Parameter Name="Userid" Parameter="userid" Type="System.Int32" DbType="Int" />
+    <Parameter Name="AcctID" Parameter="acctID" Type="System.String" DbType="VarChar(MAX)" />
+    <Parameter Name="StartDate" Parameter="startDate" Type="System.DateTime" DbType="Date" />
+    <Parameter Name="EndDate" Parameter="endDate" Type="System.DateTime" DbType="Date" />
+    <Parameter Name="Sec" Parameter="sec" Type="System.String" DbType="VarChar(MAX)" />
+    <Parameter Name="SecID" Parameter="secID" Type="System.String" DbType="VarChar(MAX)" />
+    <Parameter Name="StartDateFile" Parameter="startDateFile" Type="System.DateTime" DbType="Date" />
+    <Parameter Name="EndDateFile" Parameter="endDateFile" Type="System.DateTime" DbType="Date" />
+    <ElementType Name="usp_ReconTran_NormResult">
+      <Column Name="" Member="Column1" Type="System.String" DbType="VarChar(MAX)" CanBeNull="true" />
+    </ElementType>
+  </Function>
+  <Function Name="adm.usp_ReconTrans_PWS" Method="usp_ReconTrans_PWS" IsComposable="true">
+    <Parameter Name="Userid" Parameter="userid" Type="System.Int32" DbType="Int" />
+    <Parameter Name="AcctID" Parameter="acctID" Type="System.String" DbType="VarChar(MAX)" />
+    <Parameter Name="StartDate" Parameter="startDate" Type="System.DateTime" DbType="Date" />
+    <Parameter Name="EndDate" Parameter="endDate" Type="System.DateTime" DbType="Date" />
+    <Parameter Name="Sec" Parameter="sec" Type="System.String" DbType="VarChar(MAX)" />
+    <Parameter Name="SecID" Parameter="secID" Type="System.String" DbType="VarChar(MAX)" />
+    <Parameter Name="StartDateFile" Parameter="startDateFile" Type="System.DateTime" DbType="Date" />
+    <Parameter Name="EndDateFile" Parameter="endDateFile" Type="System.DateTime" DbType="Date" />
+    <Return Type="object" />
+  </Function>
+  <Function Name="adm.usp_ReconPositions_Norm" Method="usp_ReconPositions_Norm" IsComposable="true">
+    <Parameter Name="Userid" Parameter="userid" Type="System.Int32" DbType="Int" />
+    <Parameter Name="AcctID" Parameter="acctID" Type="System.String" DbType="VarChar(MAX)" />
+    <Parameter Name="StartDate" Parameter="startDate" Type="System.DateTime" DbType="Date" />
+    <Parameter Name="EndDate" Parameter="endDate" Type="System.DateTime" DbType="Date" />
+    <Parameter Name="Sec" Parameter="sec" Type="System.String" DbType="VarChar(MAX)" />
+    <Parameter Name="SecID" Parameter="secID" Type="System.String" DbType="VarChar(MAX)" />
+    <Return Type="object" />
+  </Function>
+  <Function Name="adm.usp_ReconPositions_PWS" Method="usp_ReconPositions_PWS" IsComposable="true">
+    <Parameter Name="Userid" Parameter="userid" Type="System.Int32" DbType="Int" />
+    <Parameter Name="AcctID" Parameter="acctID" Type="System.String" DbType="VarChar(MAX)" />
+    <Parameter Name="StartDate" Parameter="startDate" Type="System.DateTime" DbType="Date" />
+    <Parameter Name="EndDate" Parameter="endDate" Type="System.DateTime" DbType="Date" />
+    <Parameter Name="Sec" Parameter="sec" Type="System.String" DbType="VarChar(MAX)" />
+    <Parameter Name="SecID" Parameter="secID" Type="System.String" DbType="VarChar(MAX)" />
+    <Return Type="object" />
+  </Function>
+  <Function Name="adm.usp_RptModel_Insert" Method="usp_RptModel_Insert">
+    <Parameter Name="UserID" Parameter="userID" Type="System.Int32" DbType="Int" />
+    <Parameter Name="ModelTitle" Parameter="modelTitle" Type="System.String" DbType="VarChar(60)" />
+    <Return Type="System.Int32" />
+  </Function>
+  <Function Name="dbo.usp_Monitor_Site" Method="usp_Monitor_Site">
+    <Parameter Name="UserID" Parameter="userID" Type="System.Int32" DbType="Int" />
+    <Parameter Name="HREF" Parameter="hREF" Type="System.String" DbType="VarChar(500)" />
+    <Parameter Name="Site" Parameter="site" Type="System.String" DbType="VarChar(10)" />
+    <Parameter Name="Scope" Parameter="scope" Type="System.String" DbType="VarChar(50)" />
+    <Parameter Name="LoadTimeStamp" Parameter="loadTimeStamp" Type="System.DateTime" DbType="DateTime" />
+    <Parameter Name="Misc" Parameter="misc" Type="System.String" DbType="VarChar(100)" />
+    <Parameter Name="AutomatedPing" Parameter="automatedPing" Type="System.Boolean" DbType="Bit" />
+    <Return Type="System.Int32" />
+  </Function>
+  <Function Name="dbo.usp_Invalidate_Session" Method="usp_Invalidate_Session">
+    <Parameter Name="UserID" Parameter="userID" Type="System.Int32" DbType="Int" />
+    <Parameter Name="CurrentSession" Parameter="currentSession" Type="System.String" DbType="VarChar(100)" />
+    <Parameter Name="NewSessionValue" Parameter="newSessionValue" Type="System.String" DbType="VarChar(100)" />
+    <Return Type="System.Int32" />
+  </Function>
+  <Function Name="dbo.usp_UserPreferences_2" Method="usp_UserPreferences_2" IsComposable="true">
+    <Parameter Name="UserID" Parameter="userID" Type="System.Int32" DbType="Int" />
+    <Parameter Name="UserPrefTypeName" Parameter="userPrefTypeName" Type="System.String" DbType="VarChar(60)" />
+    <Parameter Name="RptTemplateNameID" Parameter="rptTemplateNameID" Type="System.Int32" DbType="Int" />
+    <Return Type="object" />
+  </Function>
+</Database>

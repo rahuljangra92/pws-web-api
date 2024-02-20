@@ -1,0 +1,717 @@
+﻿<?xml version="1.0" encoding="utf-8"?><Database Name="PWS_Rec" Class="PWSRecDataContext" xmlns="http://schemas.microsoft.com/linqtosql/dbml/2007">
+  <Connection Mode="WebSettings" ConnectionString="Data Source=10.135.128.135;Initial Catalog=PWS_Rec;User ID=PWSAccess" SettingsObjectName="System.Configuration.ConfigurationManager.ConnectionStrings" SettingsPropertyName="PWS_RecConnectionString" Provider="System.Data.SqlClient" />
+  <Table Name="dbo.NewEditTrans_tmp" Member="NewEditTrans_tmps">
+    <Type Name="NewEditTrans_tmp">
+      <Column Name="NewEditTrans_tmpID" Type="System.Int32" DbType="Int NOT NULL IDENTITY" IsPrimaryKey="true" IsDbGenerated="true" CanBeNull="false" />
+      <Column Name="UIID" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="TransID" Type="System.Int32" DbType="Int" CanBeNull="true" />
+      <Column Name="TransProcessCodeID" Type="System.Int32" DbType="Int" CanBeNull="true" />
+      <Column Name="ProcessOrd" Type="System.Decimal" DbType="Decimal(32,8)" CanBeNull="true" />
+      <Column Name="StaticData" Type="System.Boolean" DbType="Bit" CanBeNull="true" />
+      <Column Name="DPTransID" Type="System.String" DbType="VarChar(255)" CanBeNull="true" />
+      <Column Name="DPLotID" Type="System.String" DbType="VarChar(255)" CanBeNull="true" />
+      <Column Name="AcctID" Type="System.Int32" DbType="Int" CanBeNull="true" />
+      <Column Name="SubAcctID" Type="System.Int32" DbType="Int" CanBeNull="true" />
+      <Column Name="ReliefMethod" Type="System.Int32" DbType="Int" CanBeNull="true" />
+      <Column Name="SecID" Type="System.Int32" DbType="Int" CanBeNull="true" />
+      <Column Name="TCodeID" Type="System.Int32" DbType="Int" CanBeNull="true" />
+      <Column Name="DPTransCodeName" Type="System.String" DbType="VarChar(255)" CanBeNull="true" />
+      <Column Name="EffectiveDate" Type="System.DateTime" DbType="Date" CanBeNull="true" />
+      <Column Name="TradeDate" Type="System.DateTime" DbType="Date" CanBeNull="true" />
+      <Column Name="SettleDate" Type="System.DateTime" DbType="Date" CanBeNull="true" />
+      <Column Name="AcquisitionTradeDate" Type="System.DateTime" DbType="Date" CanBeNull="true" />
+      <Column Name="AcquisitionSettleDate" Type="System.DateTime" DbType="Date" CanBeNull="true" />
+      <Column Name="Shrs" Type="System.Decimal" DbType="Decimal(32,8)" CanBeNull="true" />
+      <Column Name="OFShrs" Type="System.Decimal" DbType="Decimal(32,8)" CanBeNull="true" />
+      <Column Name="Price" Type="System.Decimal" DbType="Decimal(32,16)" CanBeNull="true" />
+      <Column Name="PriceMult" Type="System.Decimal" DbType="Decimal(32,8)" CanBeNull="true" />
+      <Column Name="TradeCCYID" Type="System.Int32" DbType="Int" CanBeNull="true" />
+      <Column Name="SettleCCYID" Type="System.Int32" DbType="Int" CanBeNull="true" />
+      <Column Name="BaseCCYID" Type="System.Int32" DbType="Int" CanBeNull="true" />
+      <Column Name="TradeFXRate" Type="System.Decimal" DbType="Decimal(32,16)" CanBeNull="true" />
+      <Column Name="SettleFXRate" Type="System.Decimal" DbType="Decimal(32,16)" CanBeNull="true" />
+      <Column Name="BaseFXRate" Type="System.Decimal" DbType="Decimal(32,16)" CanBeNull="true" />
+      <Column Name="GrossLocal" Type="System.Decimal" DbType="Decimal(32,2)" CanBeNull="true" />
+      <Column Name="GrossBase" Type="System.Decimal" DbType="Decimal(32,2)" CanBeNull="true" />
+      <Column Name="Fees" Type="System.Decimal" DbType="Decimal(32,2)" CanBeNull="true" />
+      <Column Name="ForeignWithhold" Type="System.Decimal" DbType="Decimal(32,2)" CanBeNull="true" />
+      <Column Name="NetLocal" Type="System.Decimal" DbType="Decimal(32,2)" CanBeNull="true" />
+      <Column Name="NetBase" Type="System.Decimal" DbType="Decimal(32,2)" CanBeNull="true" />
+      <Column Name="AILocal" Type="System.Decimal" DbType="Decimal(32,2)" CanBeNull="true" />
+      <Column Name="AIBase" Type="System.Decimal" DbType="Decimal(32,2)" CanBeNull="true" />
+      <Column Name="AALocal" Type="System.Decimal" DbType="Decimal(32,2)" CanBeNull="true" />
+      <Column Name="AABase" Type="System.Decimal" DbType="Decimal(32,2)" CanBeNull="true" />
+      <Column Name="OrigCostLocal" Type="System.Decimal" DbType="Decimal(32,2)" CanBeNull="true" />
+      <Column Name="OrigCostBase" Type="System.Decimal" DbType="Decimal(32,2)" CanBeNull="true" />
+      <Column Name="BookCostLocal" Type="System.Decimal" DbType="Decimal(32,2)" CanBeNull="true" />
+      <Column Name="BookCostBase" Type="System.Decimal" DbType="Decimal(32,2)" CanBeNull="true" />
+      <Column Name="RecordCostLocal" Type="System.Decimal" DbType="Decimal(32,2)" CanBeNull="true" />
+      <Column Name="RecordCostBase" Type="System.Decimal" DbType="Decimal(32,2)" CanBeNull="true" />
+      <Column Name="PurYld" Type="System.Decimal" DbType="Decimal(32,8)" CanBeNull="true" />
+      <Column Name="Comment" Type="System.String" DbType="VarChar(255)" CanBeNull="true" />
+      <Column Name="CreatedDate" Type="System.DateTime" DbType="DateTime" CanBeNull="true" />
+      <Column Name="Final" Type="System.Boolean" DbType="Bit" CanBeNull="true" />
+      <Column Name="DPID" Type="System.Int32" DbType="Int" CanBeNull="true" />
+      <Column Name="UserID" Type="System.Int32" DbType="Int" CanBeNull="true" />
+      <Column Name="LoadDateTime" Type="System.DateTime" DbType="DateTime" CanBeNull="true" />
+      <Column Name="Stat" Type="System.String" DbType="VarChar(1)" CanBeNull="true" />
+      <Column Name="RetiredDateTime" Type="System.DateTime" DbType="DateTime" CanBeNull="true" />
+      <Column Name="LoadSourceID" Type="System.Int32" DbType="Int" CanBeNull="true" />
+      <Column Name="OriginalTransID" Type="System.Int32" DbType="Int" CanBeNull="true" />
+      <Column Name="TransTypeID" Type="System.Int32" DbType="Int" CanBeNull="true" />
+      <Column Name="TransSubTypeID" Type="System.Int32" DbType="Int" CanBeNull="true" />
+      <Column Name="LinkAcctID" Type="System.Int32" DbType="Int" CanBeNull="true" />
+      <Column Name="LinkSubAcctID" Type="System.Int32" DbType="Int" CanBeNull="true" />
+      <Column Name="UserDefined1" Type="System.String" DbType="VarChar(255)" CanBeNull="true" />
+      <Column Name="UserDefined2" Type="System.String" DbType="VarChar(255)" CanBeNull="true" />
+    </Type>
+  </Table>
+  <Table Name="tr.Processes" Member="Processes">
+    <Type Name="Process">
+      <Column Name="Processes_ID" Type="System.Int32" DbType="Int NOT NULL IDENTITY" IsPrimaryKey="true" IsDbGenerated="true" CanBeNull="false" />
+      <Column Name="ProcessName" Type="System.String" DbType="VarChar(100) NOT NULL" CanBeNull="false" />
+    </Type>
+  </Table>
+  <Table Name="tr.ProcessHistory" Member="ProcessHistories">
+    <Type Name="ProcessHistory">
+      <Column Name="ProcessHistory_ID" Type="System.Int32" DbType="Int NOT NULL IDENTITY" IsPrimaryKey="true" IsDbGenerated="true" CanBeNull="false" />
+      <Column Name="RunDateTime" Type="System.DateTime" DbType="DateTime NOT NULL" CanBeNull="false" />
+      <Column Name="Error" Type="System.String" DbType="VarChar(MAX)" CanBeNull="true" />
+      <Column Name="Process_ID" Type="System.Int32" DbType="Int" CanBeNull="true" />
+      <Column Name="UpdateDateTime" Type="System.DateTime" DbType="DateTime" CanBeNull="true" />
+    </Type>
+  </Table>
+  <Table Name="tr.Intermediate_GetIdentifier" Member="Intermediate_GetIdentifiers">
+    <Type Name="Intermediate_GetIdentifier" Id="ID1">
+      <Column Name="Identifier" Type="System.String" DbType="VarChar(50)" CanBeNull="true" />
+      <Column Name="IDType" Type="System.String" DbType="VarChar(50)" CanBeNull="true" />
+      <Column Name="UserIdentifier" Type="System.Int32" DbType="Int" CanBeNull="true" />
+      <Column Name="Cusip" Type="System.String" DbType="VarChar(255)" CanBeNull="true" />
+    </Type>
+  </Table>
+  <Table Name="tr.Load_EOD" Member="Load_EODs">
+    <Type Name="Load_EOD">
+      <Column Name="Load_EOD_ID" Type="System.Int32" DbType="Int NOT NULL IDENTITY" IsPrimaryKey="true" IsDbGenerated="true" CanBeNull="false" />
+      <Column Name="Identifier" Type="System.String" DbType="VarChar(255)" CanBeNull="true" />
+      <Column Name="IdentifierType" Type="System.String" DbType="VarChar(255)" CanBeNull="true" />
+      <Column Name="Ticker" Type="System.String" DbType="VarChar(255)" CanBeNull="true" />
+      <Column Name="RIC" Type="System.String" DbType="VarChar(255)" CanBeNull="true" />
+      <Column Name="CurrencyCode" Type="System.String" DbType="VarChar(255)" CanBeNull="true" />
+      <Column Name="BidPrice" Type="System.String" DbType="VarChar(255)" CanBeNull="true" />
+      <Column Name="AskPrice" Type="System.String" DbType="VarChar(255)" CanBeNull="true" />
+      <Column Name="MidPrice" Type="System.String" DbType="VarChar(255)" CanBeNull="true" />
+      <Column Name="ClosePrice" Type="System.String" DbType="VarChar(255)" CanBeNull="true" />
+      <Column Name="UniversalClosePrice" Type="System.String" DbType="VarChar(255)" CanBeNull="true" />
+      <Column Name="TradeDate" Type="System.String" DbType="VarChar(255)" CanBeNull="true" />
+      <Column Name="MaturityDate" Type="System.String" DbType="VarChar(255)" CanBeNull="true" />
+      <Column Name="PutCallIndicator" Type="System.String" DbType="VarChar(255)" CanBeNull="true" />
+      <Column Name="UserDefinedIdentifier" Type="System.String" DbType="VarChar(255)" CanBeNull="true" />
+      <Column Name="RawCheckSum" Type="System.Data.Linq.Binary" DbType="VarBinary(20)" CanBeNull="true" UpdateCheck="Never" />
+    </Type>
+  </Table>
+  <Table Name="tr.Load_CorpActions" Member="Load_CorpActions">
+    <Type Name="Load_CorpAction">
+      <Column Name="Load_CorpActions_ID" Type="System.Int32" DbType="Int NOT NULL IDENTITY" IsPrimaryKey="true" IsDbGenerated="true" CanBeNull="false" />
+      <Column Name="Identifier" Type="System.String" DbType="VarChar(255)" CanBeNull="true" />
+      <Column Name="IdentifierType" Type="System.String" DbType="VarChar(255)" CanBeNull="true" />
+      <Column Name="CorporateActionsID" Type="System.String" DbType="VarChar(255)" CanBeNull="true" />
+      <Column Name="CorporateActionsType" Type="System.String" DbType="VarChar(255)" CanBeNull="true" />
+      <Column Name="CUSIP" Type="System.String" DbType="VarChar(255)" CanBeNull="true" />
+      <Column Name="ISIN" Type="System.String" DbType="VarChar(255)" CanBeNull="true" />
+      <Column Name="Ticker" Type="System.String" DbType="VarChar(255)" CanBeNull="true" />
+      <Column Name="RIC" Type="System.String" DbType="VarChar(255)" CanBeNull="true" />
+      <Column Name="CurrencyCode" Type="System.String" DbType="VarChar(255)" CanBeNull="true" />
+      <Column Name="DividendCurrency" Type="System.String" DbType="VarChar(255)" CanBeNull="true" />
+      <Column Name="DividendCurrencyDescription" Type="System.String" DbType="VarChar(255)" CanBeNull="true" />
+      <Column Name="DividendRate" Type="System.String" DbType="VarChar(255)" CanBeNull="true" />
+      <Column Name="DividendExDate" Type="System.String" DbType="VarChar(255)" CanBeNull="true" />
+      <Column Name="DividendPayDate" Type="System.String" DbType="VarChar(255)" CanBeNull="true" />
+      <Column Name="RecordDate" Type="System.String" DbType="VarChar(255)" CanBeNull="true" />
+      <Column Name="DividendTypeMarker" Type="System.String" DbType="VarChar(255)" CanBeNull="true" />
+      <Column Name="DividendTypeMarkerDescription" Type="System.String" DbType="VarChar(255)" CanBeNull="true" />
+      <Column Name="DividendTaxMarker" Type="System.String" DbType="VarChar(255)" CanBeNull="true" />
+      <Column Name="DividendTaxMarkerDescription" Type="System.String" DbType="VarChar(255)" CanBeNull="true" />
+      <Column Name="DividendFrequency" Type="System.String" DbType="VarChar(255)" CanBeNull="true" />
+      <Column Name="DividendFrequencyDescription" Type="System.String" DbType="VarChar(255)" CanBeNull="true" />
+      <Column Name="UserDefinedIdentifier" Type="System.String" DbType="VarChar(255)" CanBeNull="true" />
+      <Column Name="RawCheckSum" Type="System.Data.Linq.Binary" DbType="VarBinary(20)" CanBeNull="true" UpdateCheck="Never" />
+    </Type>
+  </Table>
+  <Table Name="tr.Index_Code" Member="Index_Codes">
+    <Type Name="Index_Code">
+      <Column Name="Index_Code_ID" Type="System.Int32" DbType="Int NOT NULL IDENTITY" IsPrimaryKey="true" IsDbGenerated="true" CanBeNull="false" />
+      <Column Name="Identifier" Type="System.String" DbType="VarChar(255)" CanBeNull="true" />
+      <Column Name="IDType" Type="System.String" DbType="VarChar(255)" CanBeNull="true" />
+      <Column Name="Name" Type="System.String" DbType="VarChar(255)" CanBeNull="true" />
+      <Column Name="DS_Index_Code" Type="System.String" DbType="VarChar(255)" CanBeNull="true" />
+      <Column Name="DS_List_Index_Code" Type="System.String" DbType="VarChar(255)" CanBeNull="true" />
+      <Column Name="Preferred_Datatype" Type="System.String" DbType="VarChar(255)" CanBeNull="true" />
+      <Column Name="LoadDateTime" Type="System.DateTime" DbType="DateTime" CanBeNull="true" />
+    </Type>
+  </Table>
+  <Table Name="tr.Load_Index" Member="Load_Indexes">
+    <Type Name="Load_Index">
+      <Column Name="Load_Index_ID" Type="System.Int32" DbType="Int NOT NULL IDENTITY" IsPrimaryKey="true" IsDbGenerated="true" CanBeNull="false" />
+      <Column Name="Symbol" Type="System.String" DbType="VarChar(255)" CanBeNull="true" />
+      <Column Name="SymbolName" Type="System.String" DbType="VarChar(255)" CanBeNull="true" />
+      <Column Name="DataType" Type="System.String" DbType="VarChar(255)" CanBeNull="true" />
+      <Column Name="DataTypeName" Type="System.String" DbType="VarChar(255)" CanBeNull="true" />
+      <Column Name="IndexDate" Type="System.String" DbType="VarChar(255)" CanBeNull="true" />
+      <Column Name="IndexValue" Type="System.String" DbType="VarChar(255)" CanBeNull="true" />
+      <Column Name="SecID" Type="System.Int32" DbType="Int" CanBeNull="true" />
+      <Column Name="RawCheckSum" Type="System.Data.Linq.Binary" DbType="VarBinary(20)" CanBeNull="true" UpdateCheck="Never" />
+    </Type>
+  </Table>
+  <Table Name="dbo.NewEditTrans" Member="NewEditTrans">
+    <Type Name="NewEditTran">
+      <Column Name="NewEditTransID" Type="System.Int32" DbType="Int NOT NULL IDENTITY" IsPrimaryKey="true" IsDbGenerated="true" CanBeNull="false" />
+      <Column Name="TransID" Type="System.Int32" DbType="Int" CanBeNull="true" />
+      <Column Name="TransProcessCodeID" Type="System.Int32" DbType="Int" CanBeNull="true" />
+      <Column Name="ProcessOrd" Type="System.Decimal" DbType="Decimal(32,8)" CanBeNull="true" />
+      <Column Name="StaticData" Type="System.Boolean" DbType="Bit" CanBeNull="true" />
+      <Column Name="DPTransID" Type="System.String" DbType="VarChar(255)" CanBeNull="true" />
+      <Column Name="DPLotID" Type="System.String" DbType="VarChar(255)" CanBeNull="true" />
+      <Column Name="AcctID" Type="System.Int32" DbType="Int" CanBeNull="true" />
+      <Column Name="SubAcctID" Type="System.Int32" DbType="Int" CanBeNull="true" />
+      <Column Name="ReliefMethod" Type="System.Int32" DbType="Int" CanBeNull="true" />
+      <Column Name="SecID" Type="System.Int32" DbType="Int" CanBeNull="true" />
+      <Column Name="TCodeID" Type="System.Int32" DbType="Int" CanBeNull="true" />
+      <Column Name="DPTransCodeName" Type="System.String" DbType="VarChar(255)" CanBeNull="true" />
+      <Column Name="EffectiveDate" Type="System.DateTime" DbType="Date" CanBeNull="true" />
+      <Column Name="TradeDate" Type="System.DateTime" DbType="Date" CanBeNull="true" />
+      <Column Name="SettleDate" Type="System.DateTime" DbType="Date" CanBeNull="true" />
+      <Column Name="AcquisitionTradeDate" Type="System.DateTime" DbType="Date" CanBeNull="true" />
+      <Column Name="AcquisitionSettleDate" Type="System.DateTime" DbType="Date" CanBeNull="true" />
+      <Column Name="Shrs" Type="System.Decimal" DbType="Decimal(32,8)" CanBeNull="true" />
+      <Column Name="OFShrs" Type="System.Decimal" DbType="Decimal(32,8)" CanBeNull="true" />
+      <Column Name="Price" Type="System.Decimal" DbType="Decimal(32,16)" CanBeNull="true" />
+      <Column Name="PriceMult" Type="System.Decimal" DbType="Decimal(32,8)" CanBeNull="true" />
+      <Column Name="TradeCCYID" Type="System.Int32" DbType="Int" CanBeNull="true" />
+      <Column Name="SettleCCYID" Type="System.Int32" DbType="Int" CanBeNull="true" />
+      <Column Name="BaseCCYID" Type="System.Int32" DbType="Int" CanBeNull="true" />
+      <Column Name="TradeFXRate" Type="System.Decimal" DbType="Decimal(32,16)" CanBeNull="true" />
+      <Column Name="SettleFXRate" Type="System.Decimal" DbType="Decimal(32,16)" CanBeNull="true" />
+      <Column Name="BaseFXRate" Type="System.Decimal" DbType="Decimal(32,16)" CanBeNull="true" />
+      <Column Name="GrossLocal" Type="System.Decimal" DbType="Decimal(32,2)" CanBeNull="true" />
+      <Column Name="GrossBase" Type="System.Decimal" DbType="Decimal(32,2)" CanBeNull="true" />
+      <Column Name="Fees" Type="System.Decimal" DbType="Decimal(32,2)" CanBeNull="true" />
+      <Column Name="ForeignWithhold" Type="System.Decimal" DbType="Decimal(32,2)" CanBeNull="true" />
+      <Column Name="NetLocal" Type="System.Decimal" DbType="Decimal(32,2)" CanBeNull="true" />
+      <Column Name="NetBase" Type="System.Decimal" DbType="Decimal(32,2)" CanBeNull="true" />
+      <Column Name="AILocal" Type="System.Decimal" DbType="Decimal(32,2)" CanBeNull="true" />
+      <Column Name="AIBase" Type="System.Decimal" DbType="Decimal(32,2)" CanBeNull="true" />
+      <Column Name="AALocal" Type="System.Decimal" DbType="Decimal(32,2)" CanBeNull="true" />
+      <Column Name="AABase" Type="System.Decimal" DbType="Decimal(32,2)" CanBeNull="true" />
+      <Column Name="OrigCostLocal" Type="System.Decimal" DbType="Decimal(32,2)" CanBeNull="true" />
+      <Column Name="OrigCostBase" Type="System.Decimal" DbType="Decimal(32,2)" CanBeNull="true" />
+      <Column Name="BookCostLocal" Type="System.Decimal" DbType="Decimal(32,2)" CanBeNull="true" />
+      <Column Name="BookCostBase" Type="System.Decimal" DbType="Decimal(32,2)" CanBeNull="true" />
+      <Column Name="RecordCostLocal" Type="System.Decimal" DbType="Decimal(32,2)" CanBeNull="true" />
+      <Column Name="RecordCostBase" Type="System.Decimal" DbType="Decimal(32,2)" CanBeNull="true" />
+      <Column Name="PurYld" Type="System.Decimal" DbType="Decimal(32,8)" CanBeNull="true" />
+      <Column Name="DPProcessDate" Type="System.DateTime" DbType="DateTime" CanBeNull="true" />
+      <Column Name="PerfTradeDate" Type="System.DateTime" DbType="Date" CanBeNull="true" />
+      <Column Name="PerfSettleDate" Type="System.DateTime" DbType="Date" CanBeNull="true" />
+      <Column Name="AcctingTradeDate" Type="System.DateTime" DbType="Date" CanBeNull="true" />
+      <Column Name="AcctingSettleDate" Type="System.DateTime" DbType="Date" CanBeNull="true" />
+      <Column Name="Comment" Type="System.String" DbType="VarChar(255)" CanBeNull="true" />
+      <Column Name="CreatedDate" Type="System.DateTime" DbType="DateTime" CanBeNull="true" />
+      <Column Name="CorpActsID" Type="System.Int32" DbType="Int" CanBeNull="true" />
+      <Column Name="CorpActsChildID" Type="System.Int32" DbType="Int" CanBeNull="true" />
+      <Column Name="UpdatedDate" Type="System.DateTime" DbType="DateTime" CanBeNull="true" />
+      <Column Name="ExDate" Type="System.DateTime" DbType="Date" CanBeNull="true" />
+      <Column Name="PayDate" Type="System.DateTime" DbType="Date" CanBeNull="true" />
+      <Column Name="DPGainLoss" Type="System.Decimal" DbType="Decimal(32,2)" CanBeNull="true" />
+      <Column Name="RecallableDistPct" Type="System.Decimal" DbType="Decimal(9,6)" CanBeNull="true" />
+      <Column Name="RecallableExpDate" Type="System.DateTime" DbType="Date" CanBeNull="true" />
+      <Column Name="Final" Type="System.Boolean" DbType="Bit" CanBeNull="true" />
+      <Column Name="DPID" Type="System.Int32" DbType="Int" CanBeNull="true" />
+      <Column Name="UserID" Type="System.Int32" DbType="Int" CanBeNull="true" />
+      <Column Name="LoadDateTime" Type="System.DateTime" DbType="DateTime" CanBeNull="true" />
+      <Column Name="Stat" Type="System.String" DbType="VarChar(1)" CanBeNull="true" />
+      <Column Name="RetiredDateTime" Type="System.DateTime" DbType="DateTime" CanBeNull="true" />
+      <Column Name="LoadSourceID" Type="System.Int32" DbType="Int" CanBeNull="true" />
+      <Column Name="TmpTransUniqueKeyID" Type="System.String" DbType="VarChar(50)" CanBeNull="true" />
+      <Column Name="OriginalTransID" Type="System.Int32" DbType="Int" CanBeNull="true" />
+      <Column Name="EditUserID" Type="System.Int32" DbType="Int" CanBeNull="true" />
+      <Column Name="TransTypeID" Type="System.Int32" DbType="Int" CanBeNull="true" />
+      <Column Name="TransSubTypeID" Type="System.Int32" DbType="Int" CanBeNull="true" />
+      <Column Name="LinkAcctID" Type="System.Int32" DbType="Int" CanBeNull="true" />
+      <Column Name="LinkSubAcctID" Type="System.Int32" DbType="Int" CanBeNull="true" />
+      <Column Name="SecEntAllocID" Type="System.Int32" DbType="Int" CanBeNull="true" />
+      <Column Name="UserDefined1" Type="System.String" DbType="VarChar(255)" CanBeNull="true" />
+      <Column Name="UserDefined2" Type="System.String" DbType="VarChar(255)" CanBeNull="true" />
+    </Type>
+  </Table>
+  <Table Name="cashpro.ErrorLog" Member="ErrorLogs">
+    <Type Name="ErrorLog">
+      <Column Name="ErrorLog_ID" Type="System.Int32" DbType="Int NOT NULL IDENTITY" IsPrimaryKey="true" IsDbGenerated="true" CanBeNull="false" />
+      <Column Name="inputJSON" Type="System.String" DbType="VarChar(MAX)" CanBeNull="true" />
+      <Column Name="errorJSON" Type="System.String" DbType="VarChar(MAX)" CanBeNull="true" />
+      <Column Name="Load_DateTime" Type="System.DateTime" DbType="DateTime NOT NULL" CanBeNull="false" />
+    </Type>
+  </Table>
+  <Table Name="cashpro.Processes" Member="CashProProcesses">
+    <Type Name="CashProProcess">
+      <Column Name="Processes_ID" Type="System.Int32" DbType="Int NOT NULL IDENTITY" IsPrimaryKey="true" IsDbGenerated="true" CanBeNull="false" />
+      <Column Name="ProcessName" Type="System.String" DbType="VarChar(100) NOT NULL" CanBeNull="false" />
+    </Type>
+  </Table>
+  <Table Name="cashpro.ProcessHistory" Member="CashProProcessHistories">
+    <Type Name="CashProProcessHistory">
+      <Column Name="ProcessHistory_ID" Type="System.Int32" DbType="Int NOT NULL IDENTITY" IsPrimaryKey="true" IsDbGenerated="true" CanBeNull="false" />
+      <Column Name="RunDateTime" Type="System.DateTime" DbType="DateTime NOT NULL" CanBeNull="false" />
+      <Column Name="Error" Type="System.String" DbType="VarChar(MAX)" CanBeNull="true" />
+      <Column Name="Process_ID" Type="System.Int32" DbType="Int" CanBeNull="true" />
+      <Column Name="UpdateDateTime" Type="System.DateTime" DbType="DateTime" CanBeNull="true" />
+    </Type>
+  </Table>
+  <Table Name="tr.Load_TermsAndConditions" Member="Load_TermsAndConditions">
+    <Type Name="Load_TermsAndCondition">
+      <Column Name="Load_TermsAndConditions_ID" Type="System.Int32" DbType="Int NOT NULL IDENTITY" IsPrimaryKey="true" IsDbGenerated="true" CanBeNull="false" />
+      <Column Name="Identifier" Type="System.String" DbType="VarChar(1000)" CanBeNull="true" />
+      <Column Name="IdentifierType" Type="System.String" DbType="VarChar(1000)" CanBeNull="true" />
+      <Column Name="LoadSourceID" Type="System.Int32" DbType="Int" CanBeNull="true" />
+      <Column Name="DPID" Type="System.Int32" DbType="Int" CanBeNull="true" />
+      <Column Name="UserID" Type="System.Int32" DbType="Int" CanBeNull="true" />
+      <Column Name="CUSIP" Type="System.String" DbType="VarChar(1000)" CanBeNull="true" />
+      <Column Name="ISIN" Type="System.String" DbType="VarChar(1000)" CanBeNull="true" />
+      <Column Name="Ticker" Type="System.String" DbType="VarChar(1000)" CanBeNull="true" />
+      <Column Name="RIC" Type="System.String" DbType="VarChar(1000)" CanBeNull="true" />
+      <Column Name="SEDOL" Type="System.String" DbType="VarChar(1000)" CanBeNull="true" />
+      <Column Name="Valoren" Type="System.String" DbType="VarChar(1000)" CanBeNull="true" />
+      <Column Name="PrincCCYID" Type="System.String" DbType="VarChar(1000)" CanBeNull="true" />
+      <Column Name="AssetType" Type="System.String" DbType="VarChar(1000)" CanBeNull="true" />
+      <Column Name="AssetTypeDescription" Type="System.String" DbType="VarChar(1000)" CanBeNull="true" />
+      <Column Name="AssetSubType" Type="System.String" DbType="VarChar(1000)" CanBeNull="true" />
+      <Column Name="AssetSubTypeDescription" Type="System.String" DbType="VarChar(1000)" CanBeNull="true" />
+      <Column Name="DayCountCode" Type="System.String" DbType="VarChar(1000)" CanBeNull="true" />
+      <Column Name="DayCountCodeDescription" Type="System.String" DbType="VarChar(1000)" CanBeNull="true" />
+      <Column Name="IssueDate" Type="System.String" DbType="VarChar(1000)" CanBeNull="true" />
+      <Column Name="IssuePrice" Type="System.String" DbType="VarChar(1000)" CanBeNull="true" />
+      <Column Name="AccrualDate" Type="System.String" DbType="VarChar(1000)" CanBeNull="true" />
+      <Column Name="MaturityDate" Type="System.String" DbType="VarChar(1000)" CanBeNull="true" />
+      <Column Name="LastCouponDate" Type="System.String" DbType="VarChar(1000)" CanBeNull="true" />
+      <Column Name="FirstCouponDate" Type="System.String" DbType="VarChar(1000)" CanBeNull="true" />
+      <Column Name="CouponRate" Type="System.String" DbType="VarChar(1000)" CanBeNull="true" />
+      <Column Name="CouponType" Type="System.String" DbType="VarChar(1000)" CanBeNull="true" />
+      <Column Name="CouponTypeDescription" Type="System.String" DbType="VarChar(1000)" CanBeNull="true" />
+      <Column Name="CouponFrequency" Type="System.String" DbType="VarChar(1000)" CanBeNull="true" />
+      <Column Name="CouponFrequencyDescription" Type="System.String" DbType="VarChar(1000)" CanBeNull="true" />
+      <Column Name="CouponCurrency" Type="System.String" DbType="VarChar(1000)" CanBeNull="true" />
+      <Column Name="OriginalIssueDiscountFlag" Type="System.String" DbType="VarChar(1000)" CanBeNull="true" />
+      <Column Name="DenominationIncrement" Type="System.String" DbType="VarChar(1000)" CanBeNull="true" />
+      <Column Name="NextCallDate" Type="System.String" DbType="VarChar(1000)" CanBeNull="true" />
+      <Column Name="NextCallPrice" Type="System.String" DbType="VarChar(1000)" CanBeNull="true" />
+      <Column Name="ISOCountryCode" Type="System.String" DbType="VarChar(1000)" CanBeNull="true" />
+      <Column Name="StateCode" Type="System.String" DbType="VarChar(1000)" CanBeNull="true" />
+      <Column Name="MoodysRating" Type="System.String" DbType="VarChar(1000)" CanBeNull="true" />
+      <Column Name="IndustryDescription" Type="System.String" DbType="VarChar(1000)" CanBeNull="true" />
+      <Column Name="IndustrySectorDescription" Type="System.String" DbType="VarChar(1000)" CanBeNull="true" />
+      <Column Name="TRBCEconomicSectorCode" Type="System.String" DbType="VarChar(1000)" CanBeNull="true" />
+      <Column Name="TRBCEconomicSectorCodeDescription" Type="System.String" DbType="VarChar(1000)" CanBeNull="true" />
+      <Column Name="TRBCIndustryCode" Type="System.String" DbType="VarChar(1000)" CanBeNull="true" />
+      <Column Name="TRBCIndustryCodeDescription" Type="System.String" DbType="VarChar(1000)" CanBeNull="true" />
+      <Column Name="HybridFlag" Type="System.String" DbType="VarChar(1000)" CanBeNull="true" />
+      <Column Name="ParValue" Type="System.String" DbType="VarChar(1000)" CanBeNull="true" />
+      <Column Name="SecurityDescription" Type="System.String" DbType="VarChar(1000)" CanBeNull="true" />
+      <Column Name="CurrencyCode" Type="System.String" DbType="VarChar(1000)" CanBeNull="true" />
+      <Column Name="CurrencyCodeDescription" Type="System.String" DbType="VarChar(1000)" CanBeNull="true" />
+      <Column Name="DividendCurrency" Type="System.String" DbType="VarChar(1000)" CanBeNull="true" />
+      <Column Name="DividendCurrencyDescription" Type="System.String" DbType="VarChar(1000)" CanBeNull="true" />
+      <Column Name="InvestmentType" Type="System.String" DbType="VarChar(1000)" CanBeNull="true" />
+      <Column Name="ExchangeCode" Type="System.String" DbType="VarChar(1000)" CanBeNull="true" />
+      <Column Name="ExchangeDescription" Type="System.String" DbType="VarChar(1000)" CanBeNull="true" />
+      <Column Name="Domicile" Type="System.String" DbType="VarChar(1000)" CanBeNull="true" />
+      <Column Name="IssuerName" Type="System.String" DbType="VarChar(1000)" CanBeNull="true" />
+      <Column Name="IssuerOrgID" Type="System.String" DbType="VarChar(1000)" CanBeNull="true" />
+      <Column Name="ETFType" Type="System.String" DbType="VarChar(1000)" CanBeNull="true" />
+      <Column Name="ConvertibleFlag" Type="System.String" DbType="VarChar(1000)" CanBeNull="true" />
+      <Column Name="FloatIndexType" Type="System.String" DbType="VarChar(1000)" CanBeNull="true" />
+      <Column Name="CouponResetFrequency" Type="System.String" DbType="VarChar(1000)" CanBeNull="true" />
+      <Column Name="CouponResetFrequencyDescription" Type="System.String" DbType="VarChar(1000)" CanBeNull="true" />
+      <Column Name="CouponResetRuleCode" Type="System.String" DbType="VarChar(1000)" CanBeNull="true" />
+      <Column Name="CouponResetRuleCodeDescription" Type="System.String" DbType="VarChar(1000)" CanBeNull="true" />
+      <Column Name="PreviousCouponDate" Type="System.String" DbType="VarChar(1000)" CanBeNull="true" />
+      <Column Name="SharesAmountType" Type="System.String" DbType="VarChar(1000)" CanBeNull="true" />
+      <Column Name="SharesAmount" Type="System.String" DbType="VarChar(1000)" CanBeNull="true" />
+      <Column Name="RefinitivClassificationScheme" Type="System.String" DbType="VarChar(1000)" CanBeNull="true" />
+      <Column Name="RefinitivClassificationSchemeDescription" Type="System.String" DbType="VarChar(1000)" CanBeNull="true" />
+      <Column Name="GeographicalFocus" Type="System.String" DbType="VarChar(1000)" CanBeNull="true" />
+      <Column Name="LipperGlobalClassification" Type="System.String" DbType="VarChar(1000)" CanBeNull="true" />
+      <Column Name="FundManagerBenchmark" Type="System.String" DbType="VarChar(1000)" CanBeNull="true" />
+      <Column Name="UserDefinedIdentifier" Type="System.String" DbType="VarChar(1000)" CanBeNull="true" />
+      <Column Name="Load_DateTime" Type="System.DateTime" DbType="DateTime" CanBeNull="true" />
+      <Column Name="RawCheckSum" Type="System.Data.Linq.Binary" DbType="VarBinary(20)" CanBeNull="true" UpdateCheck="Never" />
+    </Type>
+  </Table>
+  <Function Name="tr.usp_SecuritySetup_GetIdentifiers" Method="usp_SecuritySetup_GetIdentifiers">
+    <Parameter Name="IdType" Parameter="idType" Type="System.String" DbType="VarChar(10)" />
+    <Parameter Name="UserID" Parameter="userID" Type="System.Int32" DbType="Int" />
+    <Parameter Name="LoadSourceID" Parameter="loadSourceID" Type="System.Int32" DbType="Int" />
+    <Parameter Name="DPID" Parameter="dPID" Type="System.Int32" DbType="Int" />
+    <ElementType IdRef="ID1" />
+  </Function>
+  <Function Name="tr.usp_Price_GetIdentifiers" Method="usp_Price_GetIdentifiers">
+    <ElementType IdRef="ID1" />
+  </Function>
+  <Function Name="tr.usp_CorpAction_GetIdentifiers" Method="usp_CorpAction_GetIdentifiers">
+    <ElementType IdRef="ID1" />
+  </Function>
+  <Function Name="tr.usp_Index_Code_GetIdentifiers" Method="usp_Index_Code_GetIdentifiers">
+    <ElementType Name="usp_Index_Code_GetIdentifiersResult">
+      <Column Name="DS_Index_Code" Type="System.String" DbType="VarChar(50)" CanBeNull="true" />
+      <Column Name="Preferred_DataType" Type="System.String" DbType="VarChar(50)" CanBeNull="true" />
+      <Column Name="SecID" Type="System.Int32" DbType="Int" CanBeNull="true" />
+    </ElementType>
+  </Function>
+  <Function Name="import.usp_Load_Account_INS" Method="usp_Load_Account_INS">
+    <Parameter Name="ExcelRowNumber" Parameter="excelRowNumber" Type="System.Int32" DbType="Int" />
+    <Parameter Name="Account_ID" Parameter="account_ID" Type="System.String" DbType="VarChar(255)" />
+    <Parameter Name="PWS_Account_ID" Parameter="pWS_Account_ID" Type="System.String" DbType="VarChar(255)" />
+    <Parameter Name="Account_Name" Parameter="account_Name" Type="System.String" DbType="VarChar(255)" />
+    <Parameter Name="Account_Code" Parameter="account_Code" Type="System.String" DbType="VarChar(255)" />
+    <Parameter Name="Base_Currency" Parameter="base_Currency" Type="System.String" DbType="VarChar(255)" />
+    <Parameter Name="Account_Number" Parameter="account_Number" Type="System.String" DbType="VarChar(255)" />
+    <Parameter Name="Account_Nick_Name_Primary" Parameter="account_Nick_Name_Primary" Type="System.String" DbType="VarChar(255)" />
+    <Parameter Name="Data_Source" Parameter="data_Source" Type="System.String" DbType="VarChar(255)" />
+    <Parameter Name="Load_Source" Parameter="load_Source" Type="System.String" DbType="VarChar(255)" />
+    <Parameter Name="User_Group_Code" Parameter="user_Group_Code" Type="System.String" DbType="VarChar(255)" />
+    <Parameter Name="Tax_Lot_Relief_Method" Parameter="tax_Lot_Relief_Method" Type="System.String" DbType="VarChar(255)" />
+    <Parameter Name="Benchmark" Parameter="benchmark" Type="System.String" DbType="VarChar(255)" />
+    <Parameter Name="Performance_Start_Date" Parameter="performance_Start_Date" Type="System.String" DbType="VarChar(255)" />
+    <Parameter Name="Manager" Parameter="manager" Type="System.String" DbType="VarChar(255)" />
+    <Parameter Name="User_ID" Parameter="user_ID" Type="System.Int32" DbType="Int" />
+    <Parameter Name="FIle_Name" Parameter="fIle_Name" Type="System.String" DbType="VarChar(255)" />
+    <Return Type="System.Int32" />
+  </Function>
+  <Function Name="import.usp_Load_Entity_INS" Method="usp_Load_Entity_INS">
+    <Parameter Name="ExcelRowNumber" Parameter="excelRowNumber" Type="System.Int32" DbType="Int" />
+    <Parameter Name="Entity_ID" Parameter="entity_ID" Type="System.String" DbType="VarChar(255)" />
+    <Parameter Name="Entity_Name" Parameter="entity_Name" Type="System.String" DbType="VarChar(255)" />
+    <Parameter Name="Entity_Description" Parameter="entity_Description" Type="System.String" DbType="VarChar(255)" />
+    <Parameter Name="Entity_Code" Parameter="entity_Code" Type="System.String" DbType="VarChar(255)" />
+    <Parameter Name="User_Group_Code" Parameter="user_Group_Code" Type="System.String" DbType="VarChar(255)" />
+    <Parameter Name="Data_Source" Parameter="data_Source" Type="System.String" DbType="VarChar(255)" />
+    <Parameter Name="Load_Source" Parameter="load_Source" Type="System.String" DbType="VarChar(255)" />
+    <Parameter Name="User_ID" Parameter="user_ID" Type="System.Int32" DbType="Int" />
+    <Parameter Name="FIle_Name" Parameter="fIle_Name" Type="System.String" DbType="VarChar(255)" />
+    <Return Type="System.Int32" />
+  </Function>
+  <Function Name="import.usp_Load_Entity_Ownership_INS" Method="usp_Load_Entity_Ownership_INS">
+    <Parameter Name="ExcelRowNumber" Parameter="excelRowNumber" Type="System.Int32" DbType="Int" />
+    <Parameter Name="Ownership_ID" Parameter="ownership_ID" Type="System.String" DbType="VarChar(255)" />
+    <Parameter Name="Entity_Code" Parameter="entity_Code" Type="System.String" DbType="VarChar(255)" />
+    <Parameter Name="Pct_Ownership" Parameter="pct_Ownership" Type="System.String" DbType="VarChar(255)" />
+    <Parameter Name="Account_or_Entity" Parameter="account_or_Entity" Type="System.String" DbType="VarChar(255)" />
+    <Parameter Name="Account_or_EntityCode" Parameter="account_or_EntityCode" Type="System.String" DbType="VarChar(255)" />
+    <Parameter Name="Starting_Date" Parameter="starting_Date" Type="System.String" DbType="VarChar(255)" />
+    <Parameter Name="Ending_Date" Parameter="ending_Date" Type="System.String" DbType="VarChar(255)" />
+    <Parameter Name="Account_Or_Entity_Order" Parameter="account_Or_Entity_Order" Type="System.String" DbType="VarChar(255)" />
+    <Parameter Name="Data_Source" Parameter="data_Source" Type="System.String" DbType="VarChar(255)" />
+    <Parameter Name="Load_Source" Parameter="load_Source" Type="System.String" DbType="VarChar(255)" />
+    <Parameter Name="User_ID" Parameter="user_ID" Type="System.Int32" DbType="Int" />
+    <Parameter Name="FIle_Name" Parameter="fIle_Name" Type="System.String" DbType="VarChar(255)" />
+    <Return Type="System.Int32" />
+  </Function>
+  <Function Name="import.usp_Load_Portfolio_INS" Method="usp_Load_Portfolio_INS">
+    <Parameter Name="ExcelRowNumber" Parameter="excelRowNumber" Type="System.Int32" DbType="Int" />
+    <Parameter Name="Portfolio_ID" Parameter="portfolio_ID" Type="System.String" DbType="VarChar(255)" />
+    <Parameter Name="Portfolio_Name" Parameter="portfolio_Name" Type="System.String" DbType="VarChar(255)" />
+    <Parameter Name="Portfolio_Description" Parameter="portfolio_Description" Type="System.String" DbType="VarChar(255)" />
+    <Parameter Name="Portfolio_Code" Parameter="portfolio_Code" Type="System.String" DbType="VarChar(255)" />
+    <Parameter Name="User_Group_Code" Parameter="user_Group_Code" Type="System.String" DbType="VarChar(255)" />
+    <Parameter Name="Data_Source" Parameter="data_Source" Type="System.String" DbType="VarChar(255)" />
+    <Parameter Name="Load_Source" Parameter="load_Source" Type="System.String" DbType="VarChar(255)" />
+    <Parameter Name="User_ID" Parameter="user_ID" Type="System.Int32" DbType="Int" />
+    <Parameter Name="FIle_Name" Parameter="fIle_Name" Type="System.String" DbType="VarChar(255)" />
+    <Return Type="System.Int32" />
+  </Function>
+  <Function Name="import.usp_Load_Portfolio_Ownership_INS" Method="usp_Load_Portfolio_Ownership_INS">
+    <Parameter Name="ExcelRowNumber" Parameter="excelRowNumber" Type="System.Int32" DbType="Int" />
+    <Parameter Name="Portfolio_Owner_ID" Parameter="portfolio_Owner_ID" Type="System.String" DbType="VarChar(255)" />
+    <Parameter Name="Portfolio_Name" Parameter="portfolio_Name" Type="System.String" DbType="VarChar(255)" />
+    <Parameter Name="Portfolio_Code" Parameter="portfolio_Code" Type="System.String" DbType="VarChar(255)" />
+    <Parameter Name="Account_or_Entity" Parameter="account_or_Entity" Type="System.String" DbType="VarChar(255)" />
+    <Parameter Name="Acct_or_EntityCode" Parameter="acct_or_EntityCode" Type="System.String" DbType="VarChar(255)" />
+    <Parameter Name="Account_Or_Entity_Order" Parameter="account_Or_Entity_Order" Type="System.String" DbType="VarChar(255)" />
+    <Parameter Name="Data_Source" Parameter="data_Source" Type="System.String" DbType="VarChar(255)" />
+    <Parameter Name="Load_Source" Parameter="load_Source" Type="System.String" DbType="VarChar(255)" />
+    <Parameter Name="User_ID" Parameter="user_ID" Type="System.Int32" DbType="Int" />
+    <Parameter Name="FIle_Name" Parameter="fIle_Name" Type="System.String" DbType="VarChar(255)" />
+    <Return Type="System.Int32" />
+  </Function>
+  <Function Name="import.usp_Load_Position_INS" Method="usp_Load_Position_INS">
+    <Parameter Name="ExcelRowNumber" Parameter="excelRowNumber" Type="System.Int32" DbType="Int" />
+    <Parameter Name="Position_ID" Parameter="position_ID" Type="System.String" DbType="VarChar(255)" />
+    <Parameter Name="PWS_Account_ID" Parameter="pWS_Account_ID" Type="System.String" DbType="VarChar(255)" />
+    <Parameter Name="Account_Code" Parameter="account_Code" Type="System.String" DbType="VarChar(255)" />
+    <Parameter Name="Security_Name" Parameter="security_Name" Type="System.String" DbType="VarChar(255)" />
+    <Parameter Name="Security_Code" Parameter="security_Code" Type="System.String" DbType="VarChar(255)" />
+    <Parameter Name="Security_Type" Parameter="security_Type" Type="System.String" DbType="VarChar(255)" />
+    <Parameter Name="Date" Parameter="date" Type="System.String" DbType="VarChar(255)" />
+    <Parameter Name="Quantity" Parameter="quantity" Type="System.String" DbType="VarChar(255)" />
+    <Parameter Name="Price" Parameter="price" Type="System.String" DbType="VarChar(255)" />
+    <Parameter Name="Local_Currency" Parameter="local_Currency" Type="System.String" DbType="VarChar(255)" />
+    <Parameter Name="Base_Currency" Parameter="base_Currency" Type="System.String" DbType="VarChar(255)" />
+    <Parameter Name="Trade_to_Base_FX_Rate" Parameter="trade_to_Base_FX_Rate" Type="System.String" DbType="VarChar(255)" />
+    <Parameter Name="Local" Parameter="local" Type="System.String" DbType="VarChar(255)" />
+    <Parameter Name="Base" Parameter="base" Type="System.String" DbType="VarChar(255)" />
+    <Parameter Name="Accrued_Interest_Local" Parameter="accrued_Interest_Local" Type="System.String" DbType="VarChar(255)" />
+    <Parameter Name="Accrued_Interest_Base" Parameter="accrued_Interest_Base" Type="System.String" DbType="VarChar(255)" />
+    <Parameter Name="Original_Cost_Local" Parameter="original_Cost_Local" Type="System.String" DbType="VarChar(255)" />
+    <Parameter Name="Original_Cost_Base" Parameter="original_Cost_Base" Type="System.String" DbType="VarChar(255)" />
+    <Parameter Name="Data_Source" Parameter="data_Source" Type="System.String" DbType="VarChar(255)" />
+    <Parameter Name="Load_Source" Parameter="load_Source" Type="System.String" DbType="VarChar(255)" />
+    <Parameter Name="User_ID" Parameter="user_ID" Type="System.Int32" DbType="Int" />
+    <Parameter Name="FIle_Name" Parameter="fIle_Name" Type="System.String" DbType="VarChar(255)" />
+    <Return Type="System.Int32" />
+  </Function>
+  <Function Name="import.usp_Load_Positions_INS" Method="usp_Load_Positions_INS" IsComposable="true">
+    <Parameter Name="Position_ID" Parameter="position_ID" Type="System.String" DbType="VarChar(255)" />
+    <Parameter Name="AcctCode" Parameter="acctCode" Type="System.String" DbType="VarChar(255)" />
+    <Parameter Name="Security_Name" Parameter="security_Name" Type="System.String" DbType="VarChar(255)" />
+    <Parameter Name="SecCode" Parameter="secCode" Type="System.String" DbType="VarChar(255)" />
+    <Parameter Name="SecType" Parameter="secType" Type="System.String" DbType="VarChar(255)" />
+    <Parameter Name="Date" Parameter="date" Type="System.String" DbType="VarChar(255)" />
+    <Parameter Name="Shares_Quantity" Parameter="shares_Quantity" Type="System.String" DbType="VarChar(255)" />
+    <Parameter Name="Price" Parameter="price" Type="System.String" DbType="VarChar(255)" />
+    <Parameter Name="Local_Currency" Parameter="local_Currency" Type="System.String" DbType="VarChar(255)" />
+    <Parameter Name="Base_Currency" Parameter="base_Currency" Type="System.String" DbType="VarChar(255)" />
+    <Parameter Name="Trade_Currency_to_Base_Currency_FX_Rate" Parameter="trade_Currency_to_Base_Currency_FX_Rate" Type="System.String" DbType="VarChar(255)" />
+    <Parameter Name="Local" Parameter="local" Type="System.String" DbType="VarChar(255)" />
+    <Parameter Name="Base" Parameter="base" Type="System.String" DbType="VarChar(255)" />
+    <Parameter Name="Accrued_Interest_Local" Parameter="accrued_Interest_Local" Type="System.String" DbType="VarChar(255)" />
+    <Parameter Name="Accrued_Interest_Base" Parameter="accrued_Interest_Base" Type="System.String" DbType="VarChar(255)" />
+    <Parameter Name="Original_Cost_local" Parameter="original_Cost_local" Type="System.String" DbType="VarChar(255)" />
+    <Parameter Name="Original_Cost_base" Parameter="original_Cost_base" Type="System.String" DbType="VarChar(255)" />
+    <Parameter Name="Data_Source" Parameter="data_Source" Type="System.String" DbType="VarChar(255)" />
+    <Parameter Name="Load_Source" Parameter="load_Source" Type="System.String" DbType="VarChar(255)" />
+    <Return Type="object" />
+  </Function>
+  <Function Name="import.usp_Load_Price_INS" Method="usp_Load_Price_INS">
+    <Parameter Name="ExcelRowNumber" Parameter="excelRowNumber" Type="System.Int32" DbType="Int" />
+    <Parameter Name="Security_Code" Parameter="security_Code" Type="System.String" DbType="VarChar(255)" />
+    <Parameter Name="Date" Parameter="date" Type="System.String" DbType="VarChar(255)" />
+    <Parameter Name="Price" Parameter="price" Type="System.String" DbType="VarChar(255)" />
+    <Parameter Name="Final_or_Estimate" Parameter="final_or_Estimate" Type="System.String" DbType="VarChar(255)" />
+    <Parameter Name="Principal_Currency" Parameter="principal_Currency" Type="System.String" DbType="VarChar(255)" />
+    <Parameter Name="Data_Source" Parameter="data_Source" Type="System.String" DbType="VarChar(255)" />
+    <Parameter Name="Load_Source" Parameter="load_Source" Type="System.String" DbType="VarChar(255)" />
+    <Parameter Name="User_ID" Parameter="user_ID" Type="System.Int32" DbType="Int" />
+    <Parameter Name="FIle_Name" Parameter="fIle_Name" Type="System.String" DbType="VarChar(255)" />
+    <Return Type="System.Int32" />
+  </Function>
+  <Function Name="import.usp_Load_Securities_INS" Method="usp_Load_Securities_INS" IsComposable="true">
+    <Parameter Name="Securities_ID" Parameter="securities_ID" Type="System.String" DbType="VarChar(255)" />
+    <Parameter Name="SecID" Parameter="secID" Type="System.String" DbType="VarChar(255)" />
+    <Parameter Name="SecName" Parameter="secName" Type="System.String" DbType="VarChar(255)" />
+    <Parameter Name="SecCode" Parameter="secCode" Type="System.String" DbType="VarChar(255)" />
+    <Parameter Name="SecType" Parameter="secType" Type="System.String" DbType="VarChar(255)" />
+    <Parameter Name="Unitized" Parameter="unitized" Type="System.String" DbType="VarChar(255)" />
+    <Parameter Name="PrincipalCurrency" Parameter="principalCurrency" Type="System.String" DbType="VarChar(255)" />
+    <Parameter Name="IncomeCurrency" Parameter="incomeCurrency" Type="System.String" DbType="VarChar(255)" />
+    <Parameter Name="PriceMultiplier" Parameter="priceMultiplier" Type="System.String" DbType="VarChar(255)" />
+    <Parameter Name="PublicallyViewable" Parameter="publicallyViewable" Type="System.String" DbType="VarChar(255)" />
+    <Parameter Name="UserGroupCode" Parameter="userGroupCode" Type="System.String" DbType="VarChar(255)" />
+    <Parameter Name="DataSource" Parameter="dataSource" Type="System.String" DbType="VarChar(255)" />
+    <Parameter Name="LoadSource" Parameter="loadSource" Type="System.String" DbType="VarChar(255)" />
+    <Parameter Name="SecCode2" Parameter="secCode2" Type="System.String" DbType="VarChar(255)" />
+    <Parameter Name="InterestRate" Parameter="interestRate" Type="System.String" DbType="VarChar(255)" />
+    <Parameter Name="DatedDate" Parameter="datedDate" Type="System.String" DbType="VarChar(255)" />
+    <Parameter Name="FirstPayDate" Parameter="firstPayDate" Type="System.String" DbType="VarChar(255)" />
+    <Parameter Name="LastPayDate" Parameter="lastPayDate" Type="System.String" DbType="VarChar(255)" />
+    <Parameter Name="MaturityDate" Parameter="maturityDate" Type="System.String" DbType="VarChar(255)" />
+    <Parameter Name="DayCountBasis" Parameter="dayCountBasis" Type="System.String" DbType="VarChar(255)" />
+    <Parameter Name="Frequency" Parameter="frequency" Type="System.String" DbType="VarChar(255)" />
+    <Parameter Name="FloatingInterestRate" Parameter="floatingInterestRate" Type="System.String" DbType="VarChar(255)" />
+    <Parameter Name="ResetDateStart" Parameter="resetDateStart" Type="System.String" DbType="VarChar(255)" />
+    <Return Type="object" />
+  </Function>
+  <Function Name="import.usp_Load_Security_INS" Method="usp_Load_Security_INS">
+    <Parameter Name="ExcelRowNumber" Parameter="excelRowNumber" Type="System.Int32" DbType="Int" />
+    <Parameter Name="Security_ID" Parameter="security_ID" Type="System.String" DbType="VarChar(255)" />
+    <Parameter Name="Security_Name" Parameter="security_Name" Type="System.String" DbType="VarChar(255)" />
+    <Parameter Name="Security_Code" Parameter="security_Code" Type="System.String" DbType="VarChar(255)" />
+    <Parameter Name="Security_Type" Parameter="security_Type" Type="System.String" DbType="VarChar(255)" />
+    <Parameter Name="Unitized" Parameter="unitized" Type="System.String" DbType="VarChar(255)" />
+    <Parameter Name="Principal_Currency" Parameter="principal_Currency" Type="System.String" DbType="VarChar(255)" />
+    <Parameter Name="Income_Currency" Parameter="income_Currency" Type="System.String" DbType="VarChar(255)" />
+    <Parameter Name="Publically_Viewable" Parameter="publically_Viewable" Type="System.String" DbType="VarChar(255)" />
+    <Parameter Name="Price_Multiplier" Parameter="price_Multiplier" Type="System.String" DbType="VarChar(255)" />
+    <Parameter Name="User_Group_Code" Parameter="user_Group_Code" Type="System.String" DbType="VarChar(255)" />
+    <Parameter Name="Data_Source" Parameter="data_Source" Type="System.String" DbType="VarChar(255)" />
+    <Parameter Name="Load_Source" Parameter="load_Source" Type="System.String" DbType="VarChar(255)" />
+    <Parameter Name="Interest_Rate" Parameter="interest_Rate" Type="System.String" DbType="VarChar(255)" />
+    <Parameter Name="Dated_Date" Parameter="dated_Date" Type="System.String" DbType="VarChar(255)" />
+    <Parameter Name="First_Pay_Date" Parameter="first_Pay_Date" Type="System.String" DbType="VarChar(255)" />
+    <Parameter Name="Last_Pay_Date" Parameter="last_Pay_Date" Type="System.String" DbType="VarChar(255)" />
+    <Parameter Name="Maturity_Date" Parameter="maturity_Date" Type="System.String" DbType="VarChar(255)" />
+    <Parameter Name="Day_Count_Basis" Parameter="day_Count_Basis" Type="System.String" DbType="VarChar(255)" />
+    <Parameter Name="Frequency" Parameter="frequency" Type="System.String" DbType="VarChar(255)" />
+    <Parameter Name="Floating_Interest_Rate" Parameter="floating_Interest_Rate" Type="System.String" DbType="VarChar(255)" />
+    <Parameter Name="Reset_Date_Start" Parameter="reset_Date_Start" Type="System.String" DbType="VarChar(255)" />
+    <Parameter Name="User_ID" Parameter="user_ID" Type="System.Int32" DbType="Int" />
+    <Parameter Name="FIle_Name" Parameter="fIle_Name" Type="System.String" DbType="VarChar(255)" />
+    <Return Type="System.Int32" />
+  </Function>
+  <Function Name="import.usp_Load_Transaction_INS" Method="usp_Load_Transaction_INS">
+    <Parameter Name="ExcelRowNumber" Parameter="excelRowNumber" Type="System.Int32" DbType="Int" />
+    <Parameter Name="Transaction_ID" Parameter="transaction_ID" Type="System.String" DbType="VarChar(255)" />
+    <Parameter Name="PWS_Account_ID" Parameter="pWS_Account_ID" Type="System.String" DbType="VarChar(255)" />
+    <Parameter Name="Account_Code" Parameter="account_Code" Type="System.String" DbType="VarChar(255)" />
+    <Parameter Name="Security_Name" Parameter="security_Name" Type="System.String" DbType="VarChar(255)" />
+    <Parameter Name="Security_Code" Parameter="security_Code" Type="System.String" DbType="VarChar(255)" />
+    <Parameter Name="Security_Type" Parameter="security_Type" Type="System.String" DbType="VarChar(255)" />
+    <Parameter Name="Transaction_Type" Parameter="transaction_Type" Type="System.String" DbType="VarChar(255)" />
+    <Parameter Name="Client_Description_of_Transaction_Type" Parameter="client_Description_of_Transaction_Type" Type="System.String" DbType="VarChar(255)" />
+    <Parameter Name="Trade_Date" Parameter="trade_Date" Type="System.String" DbType="VarChar(255)" />
+    <Parameter Name="Acquisition_Trade_Date" Parameter="acquisition_Trade_Date" Type="System.String" DbType="VarChar(255)" />
+    <Parameter Name="Settlement_Date" Parameter="settlement_Date" Type="System.String" DbType="VarChar(255)" />
+    <Parameter Name="Acquisition_Settle_Date" Parameter="acquisition_Settle_Date" Type="System.String" DbType="VarChar(255)" />
+    <Parameter Name="Quantity" Parameter="quantity" Type="System.String" DbType="VarChar(255)" />
+    <Parameter Name="Price" Parameter="price" Type="System.String" DbType="VarChar(255)" />
+    <Parameter Name="Relief_Method" Parameter="relief_Method" Type="System.String" DbType="VarChar(255)" />
+    <Parameter Name="Trade_Currency" Parameter="trade_Currency" Type="System.String" DbType="VarChar(255)" />
+    <Parameter Name="Settlement_Currency" Parameter="settlement_Currency" Type="System.String" DbType="VarChar(255)" />
+    <Parameter Name="Base_Currency" Parameter="base_Currency" Type="System.String" DbType="VarChar(255)" />
+    <Parameter Name="Trade_FX_Rate" Parameter="trade_FX_Rate" Type="System.String" DbType="VarChar(255)" />
+    <Parameter Name="Settlement_FX_Rate" Parameter="settlement_FX_Rate" Type="System.String" DbType="VarChar(255)" />
+    <Parameter Name="Trade_to_Base_FX_Rate" Parameter="trade_to_Base_FX_Rate" Type="System.String" DbType="VarChar(255)" />
+    <Parameter Name="Gross_Local" Parameter="gross_Local" Type="System.String" DbType="VarChar(255)" />
+    <Parameter Name="Gross_Base" Parameter="gross_Base" Type="System.String" DbType="VarChar(255)" />
+    <Parameter Name="Net_Local" Parameter="net_Local" Type="System.String" DbType="VarChar(255)" />
+    <Parameter Name="Net_Base" Parameter="net_Base" Type="System.String" DbType="VarChar(255)" />
+    <Parameter Name="Accrued_Interest_Local" Parameter="accrued_Interest_Local" Type="System.String" DbType="VarChar(255)" />
+    <Parameter Name="Accrued_Interest_Base" Parameter="accrued_Interest_Base" Type="System.String" DbType="VarChar(255)" />
+    <Parameter Name="Original_Cost_Base" Parameter="original_Cost_Base" Type="System.String" DbType="VarChar(255)" />
+    <Parameter Name="Original_Cost_Local" Parameter="original_Cost_Local" Type="System.String" DbType="VarChar(255)" />
+    <Parameter Name="Adjusted_Cost_Base" Parameter="adjusted_Cost_Base" Type="System.String" DbType="VarChar(255)" />
+    <Parameter Name="Adjusted_Cost_Local" Parameter="adjusted_Cost_Local" Type="System.String" DbType="VarChar(255)" />
+    <Parameter Name="Data_Source" Parameter="data_Source" Type="System.String" DbType="VarChar(255)" />
+    <Parameter Name="Load_Source" Parameter="load_Source" Type="System.String" DbType="VarChar(255)" />
+    <Parameter Name="User_ID" Parameter="user_ID" Type="System.Int32" DbType="Int" />
+    <Parameter Name="FIle_Name" Parameter="fIle_Name" Type="System.String" DbType="VarChar(255)" />
+    <Return Type="System.Int32" />
+  </Function>
+  <Function Name="import.usp_Load_Transactions_INS" Method="usp_Load_Transactions_INS" IsComposable="true">
+    <Parameter Name="Transaction_ID" Parameter="transaction_ID" Type="System.String" DbType="VarChar(255)" />
+    <Parameter Name="AcctCode" Parameter="acctCode" Type="System.String" DbType="VarChar(255)" />
+    <Parameter Name="Security_Name" Parameter="security_Name" Type="System.String" DbType="VarChar(255)" />
+    <Parameter Name="SecCode" Parameter="secCode" Type="System.String" DbType="VarChar(255)" />
+    <Parameter Name="SecType" Parameter="secType" Type="System.String" DbType="VarChar(255)" />
+    <Parameter Name="Transaction_Type" Parameter="transaction_Type" Type="System.String" DbType="VarChar(255)" />
+    <Parameter Name="Client_Description_of_Transaction_Type" Parameter="client_Description_of_Transaction_Type" Type="System.String" DbType="VarChar(255)" />
+    <Parameter Name="Trade_Date" Parameter="trade_Date" Type="System.String" DbType="VarChar(255)" />
+    <Parameter Name="Acquisition_Trade_Date" Parameter="acquisition_Trade_Date" Type="System.String" DbType="VarChar(255)" />
+    <Parameter Name="Settlement_Date" Parameter="settlement_Date" Type="System.String" DbType="VarChar(255)" />
+    <Parameter Name="Acquisition_Settle_Date" Parameter="acquisition_Settle_Date" Type="System.String" DbType="VarChar(255)" />
+    <Parameter Name="Shares_Quantity" Parameter="shares_Quantity" Type="System.String" DbType="VarChar(255)" />
+    <Parameter Name="Price" Parameter="price" Type="System.String" DbType="VarChar(255)" />
+    <Parameter Name="Relief_Method" Parameter="relief_Method" Type="System.String" DbType="VarChar(255)" />
+    <Parameter Name="Trade_Currency" Parameter="trade_Currency" Type="System.String" DbType="VarChar(255)" />
+    <Parameter Name="Settlement_Currency" Parameter="settlement_Currency" Type="System.String" DbType="VarChar(255)" />
+    <Parameter Name="Base_Currency" Parameter="base_Currency" Type="System.String" DbType="VarChar(255)" />
+    <Parameter Name="Trade_FX_Rate" Parameter="trade_FX_Rate" Type="System.String" DbType="VarChar(255)" />
+    <Parameter Name="Settlement_FX_Rate" Parameter="settlement_FX_Rate" Type="System.String" DbType="VarChar(255)" />
+    <Parameter Name="Trade_Currency_to_Base_Currency_FX_Rate" Parameter="trade_Currency_to_Base_Currency_FX_Rate" Type="System.String" DbType="VarChar(255)" />
+    <Parameter Name="Gross_Local" Parameter="gross_Local" Type="System.String" DbType="VarChar(255)" />
+    <Parameter Name="Gross_Base" Parameter="gross_Base" Type="System.String" DbType="VarChar(255)" />
+    <Parameter Name="Net_Local" Parameter="net_Local" Type="System.String" DbType="VarChar(255)" />
+    <Parameter Name="Net_Base" Parameter="net_Base" Type="System.String" DbType="VarChar(255)" />
+    <Parameter Name="Accrued_Interest_Local" Parameter="accrued_Interest_Local" Type="System.String" DbType="VarChar(255)" />
+    <Parameter Name="Accrued_Interest_Base" Parameter="accrued_Interest_Base" Type="System.String" DbType="VarChar(255)" />
+    <Parameter Name="Original_Cost_base" Parameter="original_Cost_base" Type="System.String" DbType="VarChar(255)" />
+    <Parameter Name="Original_Cost_local" Parameter="original_Cost_local" Type="System.String" DbType="VarChar(255)" />
+    <Parameter Name="Adjusted_Cost_base" Parameter="adjusted_Cost_base" Type="System.String" DbType="VarChar(255)" />
+    <Parameter Name="Adjusted_Cost_local" Parameter="adjusted_Cost_local" Type="System.String" DbType="VarChar(255)" />
+    <Parameter Name="Data_Source" Parameter="data_Source" Type="System.String" DbType="VarChar(255)" />
+    <Parameter Name="Load_Source" Parameter="load_Source" Type="System.String" DbType="VarChar(255)" />
+    <Return Type="object" />
+  </Function>
+  <Function Name="import.usp_Load_User_Group_INS" Method="usp_Load_User_Group_INS">
+    <Parameter Name="ExcelRowNumber" Parameter="excelRowNumber" Type="System.Int32" DbType="Int" />
+    <Parameter Name="User_Group_ID" Parameter="user_Group_ID" Type="System.String" DbType="VarChar(255)" />
+    <Parameter Name="User_Group_Name" Parameter="user_Group_Name" Type="System.String" DbType="VarChar(255)" />
+    <Parameter Name="User_Group_Code" Parameter="user_Group_Code" Type="System.String" DbType="VarChar(255)" />
+    <Parameter Name="PWS_User_Group_ID" Parameter="pWS_User_Group_ID" Type="System.String" DbType="VarChar(255)" />
+    <Parameter Name="User_ID" Parameter="user_ID" Type="System.Int32" DbType="Int" />
+    <Parameter Name="FIle_Name" Parameter="fIle_Name" Type="System.String" DbType="VarChar(255)" />
+    <Return Type="System.Int32" />
+  </Function>
+  <Function Name="tr.usp_Load_TermsAndConditions_INS" Method="usp_Load_TermsAndConditions_INS">
+    <Parameter Name="Identifier" Parameter="identifier" Type="System.String" DbType="VarChar(255)" />
+    <Parameter Name="IdentifierType" Parameter="identifierType" Type="System.String" DbType="VarChar(255)" />
+    <Parameter Name="LoadSourceID" Parameter="loadSourceID" Type="System.String" DbType="VarChar(255)" />
+    <Parameter Name="DPID" Parameter="dPID" Type="System.String" DbType="VarChar(255)" />
+    <Parameter Name="UserID" Parameter="userID" Type="System.String" DbType="VarChar(255)" />
+    <Parameter Name="CUSIP" Parameter="cUSIP" Type="System.String" DbType="VarChar(255)" />
+    <Parameter Name="ISIN" Parameter="iSIN" Type="System.String" DbType="VarChar(255)" />
+    <Parameter Name="Ticker" Parameter="ticker" Type="System.String" DbType="VarChar(255)" />
+    <Parameter Name="RIC" Parameter="rIC" Type="System.String" DbType="VarChar(255)" />
+    <Parameter Name="SEDOL" Parameter="sEDOL" Type="System.String" DbType="VarChar(255)" />
+    <Parameter Name="Valoren" Parameter="valoren" Type="System.String" DbType="VarChar(255)" />
+    <Parameter Name="PrincCCYID" Parameter="princCCYID" Type="System.String" DbType="VarChar(255)" />
+    <Parameter Name="AssetType" Parameter="assetType" Type="System.String" DbType="VarChar(1000)" />
+    <Parameter Name="AssetTypeDescription" Parameter="assetTypeDescription" Type="System.String" DbType="VarChar(1000)" />
+    <Parameter Name="AssetSubType" Parameter="assetSubType" Type="System.String" DbType="VarChar(1000)" />
+    <Parameter Name="AssetSubTypeDescription" Parameter="assetSubTypeDescription" Type="System.String" DbType="VarChar(1000)" />
+    <Parameter Name="DayCountCode" Parameter="dayCountCode" Type="System.String" DbType="VarChar(1000)" />
+    <Parameter Name="DayCountCodeDescription" Parameter="dayCountCodeDescription" Type="System.String" DbType="VarChar(1000)" />
+    <Parameter Name="IssueDate" Parameter="issueDate" Type="System.String" DbType="VarChar(1000)" />
+    <Parameter Name="IssuePrice" Parameter="issuePrice" Type="System.String" DbType="VarChar(1000)" />
+    <Parameter Name="AccrualDate" Parameter="accrualDate" Type="System.String" DbType="VarChar(1000)" />
+    <Parameter Name="MaturityDate" Parameter="maturityDate" Type="System.String" DbType="VarChar(1000)" />
+    <Parameter Name="LastCouponDate" Parameter="lastCouponDate" Type="System.String" DbType="VarChar(1000)" />
+    <Parameter Name="FirstCouponDate" Parameter="firstCouponDate" Type="System.String" DbType="VarChar(1000)" />
+    <Parameter Name="CouponRate" Parameter="couponRate" Type="System.String" DbType="VarChar(1000)" />
+    <Parameter Name="CouponType" Parameter="couponType" Type="System.String" DbType="VarChar(1000)" />
+    <Parameter Name="CouponTypeDescription" Parameter="couponTypeDescription" Type="System.String" DbType="VarChar(1000)" />
+    <Parameter Name="CouponFrequency" Parameter="couponFrequency" Type="System.String" DbType="VarChar(1000)" />
+    <Parameter Name="CouponFrequencyDescription" Parameter="couponFrequencyDescription" Type="System.String" DbType="VarChar(1000)" />
+    <Parameter Name="CouponCurrency" Parameter="couponCurrency" Type="System.String" DbType="VarChar(1000)" />
+    <Parameter Name="OriginalIssueDiscountFlag" Parameter="originalIssueDiscountFlag" Type="System.String" DbType="VarChar(1000)" />
+    <Parameter Name="DenominationIncrement" Parameter="denominationIncrement" Type="System.String" DbType="VarChar(1000)" />
+    <Parameter Name="NextCallDate" Parameter="nextCallDate" Type="System.String" DbType="VarChar(1000)" />
+    <Parameter Name="NextCallPrice" Parameter="nextCallPrice" Type="System.String" DbType="VarChar(1000)" />
+    <Parameter Name="ISOCountryCode" Parameter="iSOCountryCode" Type="System.String" DbType="VarChar(1000)" />
+    <Parameter Name="StateCode" Parameter="stateCode" Type="System.String" DbType="VarChar(1000)" />
+    <Parameter Name="MoodysRating" Parameter="moodysRating" Type="System.String" DbType="VarChar(1000)" />
+    <Parameter Name="IndustryDescription" Parameter="industryDescription" Type="System.String" DbType="VarChar(1000)" />
+    <Parameter Name="IndustrySectorDescription" Parameter="industrySectorDescription" Type="System.String" DbType="VarChar(1000)" />
+    <Parameter Name="TRBCEconomicSectorCode" Parameter="tRBCEconomicSectorCode" Type="System.String" DbType="VarChar(1000)" />
+    <Parameter Name="TRBCEconomicSectorCodeDescription" Parameter="tRBCEconomicSectorCodeDescription" Type="System.String" DbType="VarChar(1000)" />
+    <Parameter Name="TRBCIndustryCode" Parameter="tRBCIndustryCode" Type="System.String" DbType="VarChar(1000)" />
+    <Parameter Name="TRBCIndustryCodeDescription" Parameter="tRBCIndustryCodeDescription" Type="System.String" DbType="VarChar(1000)" />
+    <Parameter Name="HybridFlag" Parameter="hybridFlag" Type="System.String" DbType="VarChar(1000)" />
+    <Parameter Name="ParValue" Parameter="parValue" Type="System.String" DbType="VarChar(1000)" />
+    <Parameter Name="SecurityDescription" Parameter="securityDescription" Type="System.String" DbType="VarChar(1000)" />
+    <Parameter Name="CurrencyCode" Parameter="currencyCode" Type="System.String" DbType="VarChar(1000)" />
+    <Parameter Name="CurrencyCodeDescription" Parameter="currencyCodeDescription" Type="System.String" DbType="VarChar(1000)" />
+    <Parameter Name="DividendCurrency" Parameter="dividendCurrency" Type="System.String" DbType="VarChar(1000)" />
+    <Parameter Name="DividendCurrencyDescription" Parameter="dividendCurrencyDescription" Type="System.String" DbType="VarChar(1000)" />
+    <Parameter Name="InvestmentType" Parameter="investmentType" Type="System.String" DbType="VarChar(1000)" />
+    <Parameter Name="ExchangeCode" Parameter="exchangeCode" Type="System.String" DbType="VarChar(1000)" />
+    <Parameter Name="ExchangeDescription" Parameter="exchangeDescription" Type="System.String" DbType="VarChar(1000)" />
+    <Parameter Name="Domicile" Parameter="domicile" Type="System.String" DbType="VarChar(1000)" />
+    <Parameter Name="IssuerName" Parameter="issuerName" Type="System.String" DbType="VarChar(1000)" />
+    <Parameter Name="IssuerOrgID" Parameter="issuerOrgID" Type="System.String" DbType="VarChar(1000)" />
+    <Parameter Name="ETFType" Parameter="eTFType" Type="System.String" DbType="VarChar(1000)" />
+    <Parameter Name="ConvertibleFlag" Parameter="convertibleFlag" Type="System.String" DbType="VarChar(1000)" />
+    <Parameter Name="FloatIndexType" Parameter="floatIndexType" Type="System.String" DbType="VarChar(1000)" />
+    <Parameter Name="CouponResetFrequency" Parameter="couponResetFrequency" Type="System.String" DbType="VarChar(1000)" />
+    <Parameter Name="CouponResetFrequencyDescription" Parameter="couponResetFrequencyDescription" Type="System.String" DbType="VarChar(1000)" />
+    <Parameter Name="CouponResetRuleCode" Parameter="couponResetRuleCode" Type="System.String" DbType="VarChar(1000)" />
+    <Parameter Name="CouponResetRuleCodeDescription" Parameter="couponResetRuleCodeDescription" Type="System.String" DbType="VarChar(1000)" />
+    <Parameter Name="PreviousCouponDate" Parameter="previousCouponDate" Type="System.String" DbType="VarChar(1000)" />
+    <Parameter Name="SharesAmountType" Parameter="sharesAmountType" Type="System.String" DbType="VarChar(1000)" />
+    <Parameter Name="SharesAmount" Parameter="sharesAmount" Type="System.String" DbType="VarChar(1000)" />
+    <Parameter Name="RefinitivClassificationScheme" Parameter="refinitivClassificationScheme" Type="System.String" DbType="VarChar(1000)" />
+    <Parameter Name="RefinitivClassificationSchemeDescription" Parameter="refinitivClassificationSchemeDescription" Type="System.String" DbType="VarChar(1000)" />
+    <Parameter Name="GeographicalFocus" Parameter="geographicalFocus" Type="System.String" DbType="VarChar(1000)" />
+    <Parameter Name="LipperGlobalClassification" Parameter="lipperGlobalClassification" Type="System.String" DbType="VarChar(1000)" />
+    <Parameter Name="FundManagerBenchmark" Parameter="fundManagerBenchmark" Type="System.String" DbType="VarChar(1000)" />
+    <Parameter Name="UserDefinedIdentifier" Parameter="userDefinedIdentifier" Type="System.String" DbType="VarChar(1000)" />
+    <Return Type="System.Int32" />
+  </Function>
+</Database>

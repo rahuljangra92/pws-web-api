@@ -1,0 +1,17 @@
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using Microsoft.AspNetCore.Owin;
+using Microsoft.AspNetCore.Builder;
+
+[assembly: OwinStartup(typeof(PWSWebApi.Startup))]
+namespace PWSWebApi
+{
+    public partial class Startup
+    {
+        public void Configuration(IApplicationBuilder app)
+        {
+            ConfigureAuth(app);
+        }
+    }
+}
