@@ -29,7 +29,17 @@ namespace PWSWebApi
             //services.AddDbContext<ApplicationDbContext>(options => options.UseSqlServer(Configuration.GetConnectionString("DefaultConnection")));
             services.AddDbContext<DataClasses1DataContext>(options => options.UseSqlServer(Configuration.GetConnectionString("PWSProd")));
             services.AddDbContext<PWSRecDataContext>(options => options.UseSqlServer(Configuration.GetConnectionString("PWSRec")));
-            
+
+            //Enable CORS
+            var origins = Configuration.GetSection("Origins").Get<string[]>();
+            services.AddCors(options =>
+            {
+                options.AddPolicy(name: "CorsPolicy",
+                    builder =>
+                    {
+                        builder.WithOrigins(origins).AllowAnyHeader().AllowAnyMethod().AllowCredentials();
+                    });
+            });
             services.AddAuthentication(options =>
             {
                 options.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
@@ -44,6 +54,8 @@ namespace PWSWebApi
                     // This example assumes JWT tokens are used for authentication
                 };
             });
+
+           
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -61,6 +73,8 @@ namespace PWSWebApi
                 app.UseHsts();
             }
             app.UseHttpsRedirection();
+
+            app.UseCors("CorsPolicy");
             app.UseStaticFiles();
             
             //Added Middleware
