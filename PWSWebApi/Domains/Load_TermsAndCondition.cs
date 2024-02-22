@@ -1,0 +1,75 @@
+﻿namespace PWSWebApi.Domains
+{
+    public class Load_TermsAndCondition
+    {
+        public string Identifier { get; internal set; }
+        public string IdentifierType { get; internal set; }
+        public string Valoren { get; internal set; }
+        public int UserID { get; internal set; }
+        public string CUSIP { get; internal set; }
+        public string ISIN { get; internal set; }
+        public string RIC { get; internal set; }
+        public string Ticker { get; internal set; }
+        public string AssetType { get; internal set; }
+        public string AssetTypeDescription { get; internal set; }
+        public string AssetSubType { get; internal set; }
+        public string AssetSubTypeDescription { get; internal set; }
+        public string DayCountCodeDescription { get; internal set; }
+        public string LastCouponDate { get; internal set; }
+        public string FirstCouponDate { get; internal set; }
+        public string CouponRate { get; internal set; }
+        public string CouponType { get; internal set; }
+        public string CouponTypeDescription { get; internal set; }
+        public string CouponFrequency { get; internal set; }
+        public string CouponFrequencyDescription { get; internal set; }
+        public string CouponCurrency { get; internal set; }
+        public string NextCallDate { get; internal set; }
+        public string NextCallPrice { get; internal set; }
+        public string ISOCountryCode { get; internal set; }
+        public string StateCode { get; internal set; }
+        public string MoodysRating { get; internal set; }
+        public string IndustryDescription { get; internal set; }
+        public string IndustrySectorDescription { get; internal set; }
+        public string HybridFlag { get; internal set; }
+        public string RefinitivClassificationScheme { get; internal set; }
+        public string RefinitivClassificationSchemeDescription { get; internal set; }
+        public string ParValue { get; internal set; }
+        public string SecurityDescription { get; internal set; }
+        public string CurrencyCode { get; internal set; }
+        public string CurrencyCodeDescription { get; internal set; }
+        public string DividendCurrency { get; internal set; }
+        public string DividendCurrencyDescription { get; internal set; }
+        public string InvestmentType { get; internal set; }
+        public string ExchangeCode { get; internal set; }
+        public string ExchangeDescription { get; internal set; }
+        public string AccrualDate { get; internal set; }
+        public string MaturityDate { get; internal set; }
+        public string DayCountCode { get; internal set; }
+        public string IssueDate { get; internal set; }
+        public string TRBCIndustryCode { get; internal set; }
+        public string TRBCIndustryCodeDescription { get; internal set; }
+        public string TRBCEconomicSectorCode { get; internal set; }
+        public string TRBCEconomicSectorCodeDescription { get; internal set; }
+        public string OriginalIssueDiscountFlag { get; internal set; }
+        public string DenominationIncrement { get; internal set; }
+        public string IssuePrice { get; internal set; }
+        public string Domicile { get; internal set; }
+        public string SEDOL { get; internal set; }
+        public string UserDefinedIdentifier { get; internal set; }
+        public string IssuerName { get; internal set; }
+        public string IssuerOrgID { get; internal set; }
+        public string ConvertibleFlag { get; internal set; }
+        public string ETFType { get; internal set; }
+        public string FloatIndexType { get; internal set; }
+        public string CouponResetFrequency { get; internal set; }
+        public string CouponResetFrequencyDescription { get; internal set; }
+        public string CouponResetRuleCode { get; internal set; }
+        public string CouponResetRuleCodeDescription { get; internal set; }
+        public string SharesAmount { get; internal set; }
+        public string SharesAmountType { get; internal set; }
+        public string PreviousCouponDate { get; internal set; }
+        public string GeographicalFocus { get; internal set; }
+        public string LipperGlobalClassification { get; internal set; }
+        public string FundManagerBenchmark { get; internal set; }
+    }
+}

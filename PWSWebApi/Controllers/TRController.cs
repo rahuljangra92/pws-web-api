@@ -1,24 +1,24 @@
+using DataScope.Select.Api.Content;
+using DataScope.Select.Api.Extractions;
+using DataScope.Select.Api.Extractions.ExtractionRequests;
+using DataScope.Select.Api.Extractions.ReportTemplates;
+using DataScope.Select.Core.RestApi;
 using Datastream.DswsApi;
+using Microsoft.AspNetCore.Mvc;
+using Microsoft.Data.SqlClient;
+using Microsoft.Extensions.Configuration;
 using Newtonsoft.Json;
+using PWSWebApi.Domains;
+using PWSWebApi.Domains.DBContext;
+using PWSWebApi.handlers;
 using PWSWebApi.ThompsonReuters;
 using System;
 using System.Collections.Generic;
 using System.Data;
 using System.Linq;
 using System.Net;
-using System.Net.Http;
-using System.Text;
-using System.Web.Http.Cors;
-using DataScope.Select.Api.Content;
-using DataScope.Select.Api.Extractions;
-using DataScope.Select.Api.Extractions.ExtractionRequests;
-using DataScope.Select.Api.Extractions.ReportTemplates;
-using DataScope.Select.Api.Extractions.SubjectLists;
-using DataScope.Select.Core.RestApi;
-using PWSWebApi.handlers;
 using System.Reflection;
-using Microsoft.Data.SqlClient;
-using Microsoft.AspNetCore.Mvc;
+using System.Text;
 
 namespace PWSWebApi.Controllers
 {
@@ -54,25 +54,38 @@ namespace PWSWebApi.Controllers
         public string SecID { get; set; }
     }
 
-    //[EnableCors(origins: "http://localhost/", headers: "*", methods: "*")]
-    /* Added by CTA: RoutePrefix attribute is no longer supported */
-    [RoutePrefix("TR")]
+    [Route("TR")]
     [ApiController]
     public class TRController : ControllerBase
     {
-        static string connectionString = ConfigurationManager.Configuration.GetSection("ConnectionStrings")["PWSProd"].ToString();
-        static string pwsRectConnectionString = ConfigurationManager.Configuration.GetSection("ConnectionStrings")["PWSRec"].ToString();
-        PWSRecDataContext pwsrec = new PWSRecDataContext(pwsRectConnectionString);
-        DataClasses1DataContext pws = new DataClasses1DataContext(connectionString);
-        Helper handlerHelper = new Helper();
-        bool devMode = Convert.ToBoolean(Convert.ToString(ConfigurationManager.Configuration.GetSection("appSettings")["devMode"]));
-        public TRController() : base()
+
+        private readonly string connectionString;
+        private readonly string pwsRecConnectionString;
+        private readonly Helper handlerHelper;
+        private readonly PWSRecDataContext pwsrec;
+        private readonly DataClasses1DataContext pws;
+        private readonly IConfiguration Configuration;
+        private readonly CommonSPs commonSPs;        
+
+        public TRController(IConfiguration configuration, PWSRecDataContext pWSRecDataContext, DataClasses1DataContext dataClasses1DataContext) : base()
         {
-            pwsrec = new PWSRecDataContext(pwsRectConnectionString);
-            pwsrec.CommandTimeout = 60000;
-            pws = new DataClasses1DataContext(connectionString);
-            pws.CommandTimeout = 60000;
+            connectionString = configuration.GetConnectionString("PWSProd");
+            pwsRecConnectionString = configuration.GetConnectionString("PWSRec");
+            handlerHelper = new Helper(configuration);
+            pwsrec = pWSRecDataContext;
+            pws = dataClasses1DataContext;
+            Configuration = configuration;
+            commonSPs = new CommonSPs(pWSRecDataContext);
         }
+
+
+        //public TRController() : base()
+        //{
+        //    pwsrec = new PWSRecDataContext(pwsRectConnectionString);
+        //    pwsrec.CommandTimeout = 60000;
+        //    pws = new DataClasses1DataContext(connectionString);
+        //    pws.CommandTimeout = 60000;
+        //}
 
         protected ExtractionsContext ExtractionsContext { get; set; }
 
@@ -91,24 +104,26 @@ namespace PWSWebApi.Controllers
             newRow.UpdateDateTime = DateTime.Now;
             if (ex != null)
                 newRow.Error = ex.Message;
-            pwsrec.ProcessHistories.InsertOnSubmit(newRow);
-            pwsrec.SubmitChanges();
+            pwsrec.ProcessHistories.Add(newRow);
+            pwsrec.SaveChanges();
         }
 
         [HttpPost]
         [Route("Index")]
-        public HttpResponseMessage GetSampleDSSWS(string DSIndexCode, string PreferredDataType, string SecID, DateTime? startDate = null, DateTime? endDate = null, string RepChar = null, string IndexChar = null)
+        public IActionResult GetSampleDSSWS(string DSIndexCode, string PreferredDataType, string SecID, DateTime? startDate = null, DateTime? endDate = null, string RepChar = null, string IndexChar = null)
         {
             try
             {
-                //if (handlerHelper.ValidateSource(Request) is HttpResponseMessage)
-                //{
-                //    return (HttpResponseMessage)handlerHelper.ValidateSource(Request);
-                //}
-                //if (handlerHelper.ValidateToken(Request) != string.Empty)
-                //{
-                //    return Request.CreateErrorResponse(HttpStatusCode.Unauthorized, handlerHelper.ValidateToken(Request));
-                //}
+                if (handlerHelper.ValidateSource(Request) is IActionResult result)
+                {
+                    return result;
+                }
+
+                if (handlerHelper.ValidateToken(Request) != string.Empty)
+                {
+                    return StatusCode((int)HttpStatusCode.Unauthorized, handlerHelper.ValidateToken(Request));
+                }
+
                 InitDssWs();
                 if (!string.IsNullOrEmpty(IndexChar) && !string.IsNullOrEmpty(RepChar))
                 {
@@ -123,11 +138,8 @@ namespace PWSWebApi.Controllers
                     DSIndexCode = sb.ToString();
                 }
 
-                pwsrec = new PWSRecDataContext();
-                pwsrec.CommandTimeout = 0;
                 Dictionary<string, dynamic> pars = new Dictionary<string, dynamic>();
-                //var prodDataString = callProcedure("[tr].usp_Index_Code_GetIdentifiers", pars);
-                var identifierData = new List<IndexCodeGetIdentifierObject>(); //JsonConvert.DeserializeObject<List<IndexCodeGetIdentifierObject>>(prodDataString);
+                var identifierData = new List<IndexCodeGetIdentifierObject>();
                 identifierData.Add(new IndexCodeGetIdentifierObject { DS_Index_Code = DSIndexCode, Preferred_DataType = PreferredDataType, SecID = SecID });
                 endDate = endDate == null ? DateTime.Now : endDate;
                 startDate = startDate == null ? endDate : startDate;
@@ -139,11 +151,10 @@ namespace PWSWebApi.Controllers
                         dataTypeConstructions = "DPL#(X(IN)+100,8)";
                     }
 
-                    var request = //d.DS_List_Index_Code.ToLower() == "none" || d.DS_List_Index_Code.ToLower() == "n/a" ?
- new DSDataRequest()
+                    var request = new DSDataRequest()
                     {
                         Instrument = new DSInstrument(d.DS_Index_Code),
-                        DataTypes = new DSDataTypes(dataTypeConstructions), //new DSDataTypes("DPL#(X(" + d.Preferred_DataType + "),8)"), //"DY", "MV", "PH", "PL", "PO"),
+                        DataTypes = new DSDataTypes(dataTypeConstructions),
                         Date = new DSTimeSeriesDate(DSDateType.Absolute(Convert.ToDateTime(startDate)), DSDateType.Absolute(Convert.ToDateTime(endDate)), DSDateFrequency.Daily),
                         Properties = new DSDataRequestProperties(DSDataRequestPropertyTypes.ReturnDataTypeExpandedName | DSDataRequestPropertyTypes.ReturnInstrumentExpandedName)
                     };
@@ -152,8 +163,6 @@ namespace PWSWebApi.Controllers
                         // Execute the request 
                         var response = DSClient.DataService.GetData(request);
                         // Get the response value 
-                        //double[] dt1Values = response["MSRI"]["MSWRLD$"].GetValue<double[]>();
-                        //double[] dt2Values = response["MSNR"]["MSWRLD$"].GetValue<double[]>();
                         if (response.Dates == null)
                         {
                             continue;
@@ -162,7 +171,7 @@ namespace PWSWebApi.Controllers
                         var recordCount = response.Dates.Length;
                         for (int i = 0; i < recordCount; i++)
                         {
-                            var newRow = new Load_Index();
+                            Load_Index newRow = new Load_Index();
                             if (response.SymbolNames.Length > 0)
                             {
                                 newRow.Symbol = response.SymbolNames[0].Key;
@@ -174,8 +183,11 @@ namespace PWSWebApi.Controllers
                             newRow.DataTypeName = response.DataTypeNames[0].Value;
                             newRow.IndexValue = Convert.ToString(response.DataTypeValues[0].SymbolValues[0].GetValue<double[]>()[i]);
                             newRow.SecID = Convert.ToInt32(d.SecID);
-                            pwsrec.Load_Indexes.InsertOnSubmit(newRow);
-                            pwsrec.SubmitChanges();
+
+                            pwsrec.Load_Indexes.Add(newRow);
+                            pwsrec.SaveChanges();
+                            //pwsrec.Load_Indexes.InsertOnSubmit(newRow);
+                            //pwsrec.SubmitChanges();
                         }
                     }
                     catch (Exception ex)
@@ -185,13 +197,12 @@ namespace PWSWebApi.Controllers
                     }
                 }
 
-                // pwsrec.SubmitChanges();
                 DSClient.ShutDown();
-                return Request.CreateResponse(HttpStatusCode.OK, new { success = true, data = "ok" });
+                return Ok(new { success = true, data = "ok" });
             }
             catch (Exception ex)
             {
-                return Request.CreateResponse(HttpStatusCode.OK, new { success = false });
+                return Ok(new { success = false });
             }
         }
 
@@ -294,18 +305,18 @@ namespace PWSWebApi.Controllers
 
         [HttpPost]
         [Route("SearchTermsAndCond")]
-        public HttpResponseMessage SearchTermsAndCond(string identifier, string identifierType, string PrincCCYID, string UserID = "1", string LoadSourceID = "0", string DPID = "0", string UserIdentifier = null)
+        public IActionResult SearchTermsAndCond(string identifier, string identifierType, string PrincCCYID, string UserID = "1", string LoadSourceID = "0", string DPID = "0", string UserIdentifier = null)
         {
             try
             {
                 var results = SearchTermsAndConditions(identifier, identifierType, PrincCCYID, UserID, LoadSourceID, DPID, UserIdentifier);
-                return Request.CreateResponse(HttpStatusCode.OK, new { success = true, data = results });
+                return Ok(new { success = true, data = results });
             }
             catch (Exception ex)
             {
                 Helper.AddApiLogs(connectionString, new ApiLogObject { Method = MethodInfo.GetCurrentMethod().Name, Exception = ex.Message, Params = "web api", UserID = UserID });
                 var exception = "Unknown Error Occurred";
-                return Request.CreateResponse(HttpStatusCode.InternalServerError, new { error = true, exception = exception });
+                return StatusCode((int)HttpStatusCode.InternalServerError, new { error = true, exception = exception });
             }
         }
 
@@ -337,11 +348,10 @@ namespace PWSWebApi.Controllers
                     IdentType = IdentifierType.Sedol;
                 }
 
-                var results = extractionsContext.InstrumentSearch(IdentType, identifier, //"74726M505"
- new[] { InstrumentTypeGroup.CollatetizedMortgageObligations, InstrumentTypeGroup.Commodities, InstrumentTypeGroup.Equities, InstrumentTypeGroup.FuturesAndOptions, InstrumentTypeGroup.GovCorp, InstrumentTypeGroup.MortgageBackedSecurities, InstrumentTypeGroup.Money, InstrumentTypeGroup.Municipals, InstrumentTypeGroup.Funds }, IdentifierType.Ric, //Preferred identifier
- 100).ToList(); //Max results
+                var results = extractionsContext.InstrumentSearch(IdentType, identifier, new[] { InstrumentTypeGroup.CollatetizedMortgageObligations, InstrumentTypeGroup.Commodities, InstrumentTypeGroup.Equities, InstrumentTypeGroup.FuturesAndOptions, InstrumentTypeGroup.GovCorp, InstrumentTypeGroup.MortgageBackedSecurities, InstrumentTypeGroup.Money, InstrumentTypeGroup.Municipals, InstrumentTypeGroup.Funds }, IdentifierType.Ric, 100).ToList(); //Max results
                 if (UserID != "1")
-                    pwsrec.ExecuteCommand("delete from tr.SecuritySearchResults where UserID = " + UserID);
+                    //pwsrec.ExecuteCommand("delete from tr.SecuritySearchResults where UserID = " + UserID);
+                    pwsrec.SecuritySearchResults.RemoveRange(pwsrec.SecuritySearchResults.Where(x => x.UserID == UserID));
                 foreach (var r in results)
                 {
                     Dictionary<string, dynamic> pars = new Dictionary<string, dynamic>();
@@ -374,7 +384,6 @@ namespace PWSWebApi.Controllers
                     pars.Add("@PrincCCYID", PrincCCYID);
                     pars.Add("@RIC", r.Identifier);
                     pars.Add("@SecuritySearchResultsIdentifierType", Convert.ToString(r.IdentifierType));
-                    //pars.Add("@UserIdentifier", identifier);
                     var data = callProcedure("[tr].usp_SecuritySearchResults_INS", pars);
                 }
 
@@ -397,18 +406,18 @@ namespace PWSWebApi.Controllers
 
         [HttpPost]
         [Route("AutoSetup")]
-        public HttpResponseMessage AutoSetup(string UserID = null,string CUSIP = null, string ISIN = null, string Sedol = null, string Symbol = null, string PrincCCYID = null, string SecTypeID = null, string SSISIdentifierType = null, int? loadSourceID = 0,int? DPID = 0,string ric = null, string source = null, string identifier = null,string identifierType = null, string userIdentifier = null, bool termsAndConditionsOnly = false, string valoren = null)
+        public IActionResult AutoSetup(string UserID = null, string CUSIP = null, string ISIN = null, string Sedol = null, string Symbol = null, string PrincCCYID = null, string SecTypeID = null, string SSISIdentifierType = null, int? loadSourceID = 0, int? DPID = 0, string ric = null, string source = null, string identifier = null, string identifierType = null, string userIdentifier = null, bool termsAndConditionsOnly = false, string valoren = null)
         {
             try
             {
-                if (handlerHelper.ValidateSource(Request) is HttpResponseMessage)
+                if (handlerHelper.ValidateSource(Request) is IActionResult result)
                 {
-                    return (HttpResponseMessage)handlerHelper.ValidateSource(Request);
+                    return result;
                 }
 
                 if (handlerHelper.ValidateToken(Request, UserID) != string.Empty)
                 {
-                    return Request.CreateErrorResponse(HttpStatusCode.Unauthorized, handlerHelper.ValidateToken(Request, UserID));
+                    return StatusCode((int)HttpStatusCode.Unauthorized, handlerHelper.ValidateToken(Request, UserID));
                 }
 
                 bool ssisProcess = false;
@@ -425,13 +434,13 @@ namespace PWSWebApi.Controllers
                 }
 
                 var data = TermsAndConditions(Sedol, UserID, loadSourceID, DPID, CUSIP, ISIN, Symbol, SSISIdentifierType, Convert.ToInt32(PrincCCYID), Convert.ToInt32(SecTypeID), ric, source, ssisProcess, userIdentifier, termsAndConditionsOnly, valoren);
-                return Request.CreateResponse(HttpStatusCode.OK, new { success = data });
+                return Ok(new { success = data });
             }
             catch (Exception ex)
             {
                 Helper.AddApiLogs(connectionString, new ApiLogObject { Method = MethodInfo.GetCurrentMethod().Name, Exception = ex.Message, Params = "web api", UserID = UserID });
                 var exception = "Unknown Error Occurred";
-                return Request.CreateResponse(HttpStatusCode.OK, new { success = false, ex = exception });
+                return Ok(new { success = false, ex = exception });
             }
         }
 
@@ -474,7 +483,7 @@ namespace PWSWebApi.Controllers
                 {
                     insIdentifer.Identifier = RIC;
                     insIdentifer.IdentifierType = IdentifierType.Ric;
-                //insIdentifer.Source = "*";
+                    //insIdentifer.Source = "*";
                 }
                 else if (!string.IsNullOrEmpty(cusip))
                 {
@@ -524,68 +533,68 @@ namespace PWSWebApi.Controllers
 
                         tupleResults = SearchTermsAndConditions(insIdentifer.Identifier, insIdentifer.IdentifierType.ToString(), Convert.ToString(PrincCCYID), UserID, Convert.ToString(loadSourceID), Convert.ToString(DPID));
                         return tupleResults;
-                        if (tupleResults.Item2.Count > 0)
-                        {
-                            instrumentIdentifiers.Clear();
-                            tupleResults.Item2.ForEach(trItem =>
-                            {
-                                var identTypeFromTupleResult = tupleResults.Item2.FirstOrDefault().IdentifierType;
-                                var insIdentiferNew = new InstrumentIdentifier();
-                                if (identTypeFromTupleResult.ToLower().Trim() == "ric")
-                                {
-                                    insIdentiferNew.IdentifierType = IdentifierType.Ric;
-                                    insIdentiferNew.Identifier = trItem.Identifier;
-                                    insIdentiferNew.Source = trItem.Source;
-                                }
-                                else if (identTypeFromTupleResult.ToLower().Trim() == "cusip")
-                                {
-                                    insIdentiferNew.IdentifierType = IdentifierType.Cusip;
-                                    insIdentiferNew.Identifier = insIdentifer.Identifier;
-                                    insIdentiferNew.Source = tupleResults.Item2.FirstOrDefault().Source;
-                                }
-                                else if (identTypeFromTupleResult.ToLower().Trim() == "isin")
-                                {
-                                    insIdentiferNew.IdentifierType = IdentifierType.Isin;
-                                    insIdentiferNew.Identifier = insIdentifer.Identifier;
-                                    insIdentiferNew.Source = tupleResults.Item2.FirstOrDefault().Source;
-                                }
-                                else if (identTypeFromTupleResult.ToLower().Trim() == "symbol")
-                                {
-                                    insIdentiferNew.IdentifierType = IdentifierType.Sym;
-                                    insIdentiferNew.Identifier = insIdentifer.Identifier;
-                                    insIdentiferNew.Source = tupleResults.Item2.FirstOrDefault().Source;
-                                }
-                                else if (identTypeFromTupleResult.ToLower().Trim() == "sedol")
-                                {
-                                    insIdentiferNew.IdentifierType = IdentifierType.Sedol;
-                                    insIdentiferNew.Identifier = insIdentifer.Identifier;
-                                    insIdentiferNew.Source = tupleResults.Item2.FirstOrDefault().Source;
-                                }
-                                else if (identTypeFromTupleResult.ToLower().Trim() == "valoren")
-                                {
-                                    insIdentiferNew.IdentifierType = IdentifierType.Valoren;
-                                    insIdentiferNew.Identifier = insIdentifer.Identifier;
-                                    insIdentiferNew.Source = tupleResults.Item2.FirstOrDefault().Source;
-                                }
+                        //if (tupleResults.Item2.Count > 0)
+                        //{
+                        //    instrumentIdentifiers.Clear();
+                        //    tupleResults.Item2.ForEach(trItem =>
+                        //    {
+                        //        var identTypeFromTupleResult = tupleResults.Item2.FirstOrDefault().IdentifierType;
+                        //        var insIdentiferNew = new InstrumentIdentifier();
+                        //        if (identTypeFromTupleResult.ToLower().Trim() == "ric")
+                        //        {
+                        //            insIdentiferNew.IdentifierType = IdentifierType.Ric;
+                        //            insIdentiferNew.Identifier = trItem.Identifier;
+                        //            insIdentiferNew.Source = trItem.Source;
+                        //        }
+                        //        else if (identTypeFromTupleResult.ToLower().Trim() == "cusip")
+                        //        {
+                        //            insIdentiferNew.IdentifierType = IdentifierType.Cusip;
+                        //            insIdentiferNew.Identifier = insIdentifer.Identifier;
+                        //            insIdentiferNew.Source = tupleResults.Item2.FirstOrDefault().Source;
+                        //        }
+                        //        else if (identTypeFromTupleResult.ToLower().Trim() == "isin")
+                        //        {
+                        //            insIdentiferNew.IdentifierType = IdentifierType.Isin;
+                        //            insIdentiferNew.Identifier = insIdentifer.Identifier;
+                        //            insIdentiferNew.Source = tupleResults.Item2.FirstOrDefault().Source;
+                        //        }
+                        //        else if (identTypeFromTupleResult.ToLower().Trim() == "symbol")
+                        //        {
+                        //            insIdentiferNew.IdentifierType = IdentifierType.Sym;
+                        //            insIdentiferNew.Identifier = insIdentifer.Identifier;
+                        //            insIdentiferNew.Source = tupleResults.Item2.FirstOrDefault().Source;
+                        //        }
+                        //        else if (identTypeFromTupleResult.ToLower().Trim() == "sedol")
+                        //        {
+                        //            insIdentiferNew.IdentifierType = IdentifierType.Sedol;
+                        //            insIdentiferNew.Identifier = insIdentifer.Identifier;
+                        //            insIdentiferNew.Source = tupleResults.Item2.FirstOrDefault().Source;
+                        //        }
+                        //        else if (identTypeFromTupleResult.ToLower().Trim() == "valoren")
+                        //        {
+                        //            insIdentiferNew.IdentifierType = IdentifierType.Valoren;
+                        //            insIdentiferNew.Identifier = insIdentifer.Identifier;
+                        //            insIdentiferNew.Source = tupleResults.Item2.FirstOrDefault().Source;
+                        //        }
 
-                                instrumentIdentifiers.Add(insIdentiferNew);
-                            });
-                        }
+                        //        instrumentIdentifiers.Add(insIdentiferNew);
+                        //    });
+                        //}
 
-                        if (instrumentIdentifiers.Count == 0)
-                        {
-                            instrumentIdentifiers.Add(insIdentifer);
-                        }
+                        //if (instrumentIdentifiers.Count == 0)
+                        //{
+                        //    instrumentIdentifiers.Add(insIdentifer);
+                        //}
                     }
 
-                    TermsAndConditionsExtraction:
-                        //"037833100"
-                        var extractionRequest = new TermsAndConditionsExtractionRequest
+                TermsAndConditionsExtraction:
+                    //"037833100"
+                    var extractionRequest = new TermsAndConditionsExtractionRequest
+                    {
+                        IdentifierList = InstrumentIdentifierList.Create(// string.IsNullOrEmpty(SSISIdentifierType) ? new[] { insIdentifer } : instrumentIdentifiers
+                        instrumentIdentifiers, null, false),
+                        ContentFieldNames = new[]
                         {
-                            IdentifierList = InstrumentIdentifierList.Create(// string.IsNullOrEmpty(SSISIdentifierType) ? new[] { insIdentifer } : instrumentIdentifiers
-                            instrumentIdentifiers, null, false),
-                            ContentFieldNames = new[]
-                            {
                                 "Asset Type",
                                 "Asset Type Description",
                                 "Asset SubType",
@@ -702,15 +711,15 @@ namespace PWSWebApi.Controllers
                                 "Lipper Global Classification",
                                 "Fund Manager Benchmark"
                             },
-                            Condition = new TermsAndConditionsCondition
-                            {
-                                IssuerAssetClassType = IssuerAssetClassType.AllSupportedAssets,
-                                ExcludeWarrants = false,
+                        Condition = new TermsAndConditionsCondition
+                        {
+                            IssuerAssetClassType = IssuerAssetClassType.AllSupportedAssets,
+                            ExcludeWarrants = false,
                             //DaysAgo = 3, //Use either DaysAgo or StartDate
                             //StartDate = new DateTimeOffset(DateTime.Now.Date.AddDays(-5000)),
                             //FixedIncomeRatingSources = FixedIncomeRatingSource.,
-                            }
-                        };
+                        }
+                    };
                     //Extract - NOTE: If the extraction request takes more than 30 seconds the async mechansim will be used.  See Key Mechanisms 
                     var extractionResult = ExtractionsContext.ExtractWithNotes(extractionRequest);
                     var extractedRows = extractionResult.Contents;
@@ -728,112 +737,112 @@ namespace PWSWebApi.Controllers
                         if (!string.IsNullOrEmpty(cusip))
                         {
                             newRow.CUSIP = Convert.ToString(cusip);
-                        ////testrow.CUSIP = Convert.ToString(cusip);
+                            ////testrow.CUSIP = Convert.ToString(cusip);
                         }
 
                         isin = string.IsNullOrEmpty(isin) ? Convert.ToString(row.DynamicProperties.Where(f => f.Key == "ISIN").FirstOrDefault().Value) : isin;
                         if (!string.IsNullOrEmpty(isin))
                         {
                             newRow.ISIN = Convert.ToString(isin);
-                        ////testrow.ISIN = Convert.ToString(isin);
+                            ////testrow.ISIN = Convert.ToString(isin);
                         }
 
                         var ric = row.DynamicProperties.Where(f => f.Key == "RIC").FirstOrDefault().Value;
                         if (ric != null)
                         {
                             newRow.RIC = Convert.ToString(ric);
-                        ////testrow.RIC = Convert.ToString(ric);
+                            ////testrow.RIC = Convert.ToString(ric);
                         }
 
                         var ticker = row.DynamicProperties.Where(f => f.Key == "Ticker").FirstOrDefault().Value;
                         if (ticker != null)
                         {
                             newRow.Ticker = Convert.ToString(ticker);
-                        ////testrow.Ticker = Convert.ToString(ticker);
+                            ////testrow.Ticker = Convert.ToString(ticker);
                         }
 
                         var assetType = row.DynamicProperties.Where(f => f.Key == "Asset Type").FirstOrDefault().Value;
                         if (assetType != null)
                         {
                             newRow.AssetType = assetType.ToString();
-                        ////testrow.AssetType = assetType.ToString();
+                            ////testrow.AssetType = assetType.ToString();
                         }
 
                         var assetTypeDesc = row.DynamicProperties.Where(f => f.Key == "Asset Type Description").FirstOrDefault().Value;
                         if (assetTypeDesc != null)
                         {
                             newRow.AssetTypeDescription = assetTypeDesc.ToString();
-                        ////testrow.AssetTypeDescription = assetTypeDesc.ToString();
+                            ////testrow.AssetTypeDescription = assetTypeDesc.ToString();
                         }
 
                         var assetSubType = row.DynamicProperties.Where(f => f.Key == "Asset SubType").FirstOrDefault().Value;
                         if (assetSubType != null)
                         {
                             newRow.AssetSubType = assetSubType.ToString();
-                        ////testrow.AssetSubType = assetSubType.ToString();
+                            ////testrow.AssetSubType = assetSubType.ToString();
                         }
 
                         var assetTypeDescription = row.DynamicProperties.Where(f => f.Key == "Asset SubType Description").FirstOrDefault().Value;
                         if (assetTypeDescription != null)
                         {
                             newRow.AssetSubTypeDescription = assetTypeDescription.ToString();
-                        //testrow.AssetSubTypeDescription = assetTypeDescription.ToString();
+                            //testrow.AssetSubTypeDescription = assetTypeDescription.ToString();
                         }
 
                         var dayCountCodeDescription = row.DynamicProperties.Where(f => f.Key == "Day Count Code Description").FirstOrDefault().Value;
                         if (dayCountCodeDescription != null)
                         {
                             newRow.DayCountCodeDescription = dayCountCodeDescription.ToString();
-                        //testrow.DayCountCodeDescription = dayCountCodeDescription.ToString();
+                            //testrow.DayCountCodeDescription = dayCountCodeDescription.ToString();
                         }
 
                         var lastCouponDate = row.DynamicProperties.Where(f => f.Key == "Last Coupon Date").FirstOrDefault().Value;
                         if (lastCouponDate != null)
                         {
                             newRow.LastCouponDate = Convert.ToString(lastCouponDate);
-                        //testrow.LastCouponDate = Convert.ToString(lastCouponDate);
+                            //testrow.LastCouponDate = Convert.ToString(lastCouponDate);
                         }
 
                         var firstCouponDate = row.DynamicProperties.Where(f => f.Key == "First Coupon Date").FirstOrDefault().Value;
                         if (firstCouponDate != null)
                         {
                             newRow.FirstCouponDate = Convert.ToString(firstCouponDate);
-                        //testrow.FirstCouponDate = Convert.ToString(firstCouponDate);
+                            //testrow.FirstCouponDate = Convert.ToString(firstCouponDate);
                         }
 
                         var couponRate = row.DynamicProperties.Where(f => f.Key == "Coupon Rate").FirstOrDefault().Value;
                         if (couponRate != null)
                         {
                             newRow.CouponRate = Convert.ToString(couponRate);
-                        //testrow.CouponRate = Convert.ToString(couponRate);
+                            //testrow.CouponRate = Convert.ToString(couponRate);
                         }
 
                         var couponType = row.DynamicProperties.Where(f => f.Key == "Coupon Type").FirstOrDefault().Value;
                         if (couponType != null)
                         {
                             newRow.CouponType = couponType.ToString();
-                        //testrow.CouponType = couponType.ToString();
+                            //testrow.CouponType = couponType.ToString();
                         }
 
                         var couponTypeDescription = row.DynamicProperties.Where(f => f.Key == "Coupon Type Description").FirstOrDefault().Value;
                         if (couponTypeDescription != null)
                         {
                             newRow.CouponTypeDescription = couponTypeDescription.ToString();
-                        //testrow.CouponTypeDescription = couponTypeDescription.ToString();
+                            //testrow.CouponTypeDescription = couponTypeDescription.ToString();
                         }
 
                         var couponFrequency = row.DynamicProperties.Where(f => f.Key == "Coupon Frequency").FirstOrDefault().Value;
                         if (couponFrequency != null)
                         {
                             newRow.CouponFrequency = couponFrequency.ToString();
-                        //testrow.CouponFrequency = couponFrequency.ToString();
+                            //testrow.CouponFrequency = couponFrequency.ToString();
                         }
 
                         var couponFrequencyDescription = row.DynamicProperties.Where(f => f.Key == "Coupon Frequency Description").FirstOrDefault().Value;
                         if (couponFrequencyDescription != null)
                         {
                             newRow.CouponFrequencyDescription = couponFrequencyDescription.ToString();
-                        //testrow.CouponFrequencyDescription = couponFrequencyDescription.ToString();
+                            //testrow.CouponFrequencyDescription = couponFrequencyDescription.ToString();
                         }
 
                         //var currentCouponClassCode = row.DynamicProperties.Where(f => f.Key == "Current Coupon Class Code").FirstOrDefault().Value;
@@ -852,7 +861,7 @@ namespace PWSWebApi.Controllers
                         if (couponCurrency != null)
                         {
                             newRow.CouponCurrency = couponCurrency.ToString();
-                        //testrow.CouponCurrency = couponCurrency.ToString();
+                            //testrow.CouponCurrency = couponCurrency.ToString();
                         }
 
                         //var lastRateResetDate = row.DynamicProperties.Where(f => f.Key == "Next Rate Reset Date").FirstOrDefault().Value;
@@ -865,35 +874,35 @@ namespace PWSWebApi.Controllers
                         if (nextCallDate != null)
                         {
                             newRow.NextCallDate = Convert.ToString(nextCallDate);
-                        //testrow.NextCallDate = Convert.ToString(nextCallDate);
+                            //testrow.NextCallDate = Convert.ToString(nextCallDate);
                         }
 
                         var nextCallPrice = row.DynamicProperties.Where(f => f.Key == "Next Call Price").FirstOrDefault().Value;
                         if (nextCallPrice != null)
                         {
                             newRow.NextCallPrice = Convert.ToString(nextCallPrice);
-                        //testrow.NextCallPrice = Convert.ToString(nextCallPrice);
+                            //testrow.NextCallPrice = Convert.ToString(nextCallPrice);
                         }
 
                         var iSOCountryCode = row.DynamicProperties.Where(f => f.Key == "ISO Country Code").FirstOrDefault().Value;
                         if (iSOCountryCode != null)
                         {
                             newRow.ISOCountryCode = iSOCountryCode.ToString();
-                        //testrow.ISOCountryCode = Convert.ToString(iSOCountryCode);
+                            //testrow.ISOCountryCode = Convert.ToString(iSOCountryCode);
                         }
 
                         var stateCode = row.DynamicProperties.Where(f => f.Key == "State Code").FirstOrDefault().Value;
                         if (stateCode != null)
                         {
                             newRow.StateCode = stateCode.ToString();
-                        //testrow.StateCode = stateCode.ToString();
+                            //testrow.StateCode = stateCode.ToString();
                         }
 
                         var moodysRating = row.DynamicProperties.Where(f => f.Key == "Moodys Rating").FirstOrDefault().Value;
                         if (moodysRating != null)
                         {
                             newRow.MoodysRating = moodysRating.ToString();
-                        //testrow.MoodysRating = moodysRating.ToString();
+                            //testrow.MoodysRating = moodysRating.ToString();
                         }
 
                         //var fitchRating = row.DynamicProperties.Where(f => f.Key == "Fitch Rating").FirstOrDefault().Value;
@@ -912,14 +921,14 @@ namespace PWSWebApi.Controllers
                         if (industryDescription != null)
                         {
                             newRow.IndustryDescription = industryDescription.ToString();
-                        //testrow.IndustryDescription = industryDescription.ToString();
+                            //testrow.IndustryDescription = industryDescription.ToString();
                         }
 
                         var industrySectorDescription = row.DynamicProperties.Where(f => f.Key == "Industry Sector Description").FirstOrDefault().Value;
                         if (industrySectorDescription != null)
                         {
                             newRow.IndustrySectorDescription = industrySectorDescription.ToString();
-                        //testrow.IndustrySectorDescription = industrySectorDescription.ToString();
+                            //testrow.IndustrySectorDescription = industrySectorDescription.ToString();
                         }
 
                         //var tRBCEconomicSectorCode = row.DynamicProperties.Where(f => f.Key == "TRBC Economic Sector Code").FirstOrDefault().Value;
@@ -976,28 +985,28 @@ namespace PWSWebApi.Controllers
                         if (hybridFlag != null)
                         {
                             newRow.HybridFlag = hybridFlag.ToString();
-                        //testrow.HybridFlag = hybridFlag.ToString();
+                            //testrow.HybridFlag = hybridFlag.ToString();
                         }
 
                         var thomsonReutersClassificationScheme = row.DynamicProperties.Where(f => f.Key == "Refinitiv Classification Scheme").FirstOrDefault().Value;
                         if (thomsonReutersClassificationScheme != null)
                         {
                             newRow.RefinitivClassificationScheme = thomsonReutersClassificationScheme.ToString();
-                        //testrow.RefinitivClassificationScheme = thomsonReutersClassificationScheme.ToString();
+                            //testrow.RefinitivClassificationScheme = thomsonReutersClassificationScheme.ToString();
                         }
 
                         var thomsonReutersClassificationSchemeDescription = row.DynamicProperties.Where(f => f.Key == "Refinitiv Classification Scheme Description").FirstOrDefault().Value;
                         if (thomsonReutersClassificationSchemeDescription != null)
                         {
                             newRow.RefinitivClassificationSchemeDescription = thomsonReutersClassificationScheme.ToString();
-                        //testrow.RefinitivClassificationSchemeDescription = thomsonReutersClassificationScheme.ToString();
+                            //testrow.RefinitivClassificationSchemeDescription = thomsonReutersClassificationScheme.ToString();
                         }
 
                         var parValue = row.DynamicProperties.Where(f => f.Key == "Par Value").FirstOrDefault().Value;
                         if (parValue != null)
                         {
                             newRow.ParValue = parValue.ToString();
-                        //testrow.ParValue = parValue.ToString();
+                            //testrow.ParValue = parValue.ToString();
                         }
 
                         //var countryofIssuance = row.DynamicProperties.Where(f => f.Key == "Country of Issuance").FirstOrDefault().Value;
@@ -1016,70 +1025,70 @@ namespace PWSWebApi.Controllers
                         if (securityDescription != null)
                         {
                             newRow.SecurityDescription = securityDescription.ToString();
-                        //testrow.SecurityDescription = securityDescription.ToString();
+                            //testrow.SecurityDescription = securityDescription.ToString();
                         }
 
                         var currencyCode = row.DynamicProperties.Where(f => f.Key == "Currency Code").FirstOrDefault().Value;
                         if (currencyCode != null)
                         {
                             newRow.CurrencyCode = currencyCode.ToString();
-                        //testrow.CurrencyCode = currencyCode.ToString();
+                            //testrow.CurrencyCode = currencyCode.ToString();
                         }
 
                         var currencyCodeDescription = row.DynamicProperties.Where(f => f.Key == "Currency Code Description").FirstOrDefault().Value;
                         if (currencyCodeDescription != null)
                         {
                             newRow.CurrencyCodeDescription = currencyCodeDescription.ToString();
-                        //testrow.CurrencyCodeDescription = currencyCodeDescription.ToString();
+                            //testrow.CurrencyCodeDescription = currencyCodeDescription.ToString();
                         }
 
                         var dividendCurrency = row.DynamicProperties.Where(f => f.Key == "Dividend Currency").FirstOrDefault().Value;
                         if (dividendCurrency != null)
                         {
                             newRow.DividendCurrency = dividendCurrency.ToString();
-                        //testrow.DividendCurrency = dividendCurrency.ToString();
+                            //testrow.DividendCurrency = dividendCurrency.ToString();
                         }
 
                         var dividendCurrencyDescription = row.DynamicProperties.Where(f => f.Key == "Dividend Currency Description").FirstOrDefault().Value;
                         if (dividendCurrencyDescription != null)
                         {
                             newRow.DividendCurrencyDescription = dividendCurrencyDescription.ToString();
-                        //testrow.DividendCurrencyDescription = dividendCurrencyDescription.ToString();
+                            //testrow.DividendCurrencyDescription = dividendCurrencyDescription.ToString();
                         }
 
                         var investmentType = row.DynamicProperties.Where(f => f.Key == "Investment Type").FirstOrDefault().Value;
                         if (investmentType != null)
                         {
                             newRow.InvestmentType = investmentType.ToString();
-                        //testrow.InvestmentType = investmentType.ToString();
+                            //testrow.InvestmentType = investmentType.ToString();
                         }
 
                         var exchangeCode = row.DynamicProperties.Where(f => f.Key == "Exchange Code").FirstOrDefault().Value;
                         if (exchangeCode != null)
                         {
                             newRow.ExchangeCode = exchangeCode.ToString();
-                        //testrow.ExchangeCode = exchangeCode.ToString();
+                            //testrow.ExchangeCode = exchangeCode.ToString();
                         }
 
                         var exchangeDescription = row.DynamicProperties.Where(f => f.Key == "Exchange Description").FirstOrDefault().Value;
                         if (exchangeDescription != null)
                         {
                             newRow.ExchangeDescription = exchangeDescription.ToString();
-                        //testrow.ExchangeDescription = exchangeDescription.ToString();
+                            //testrow.ExchangeDescription = exchangeDescription.ToString();
                         }
 
                         var accrualDate = row.DynamicProperties.Where(f => f.Key == "Accrual Date").FirstOrDefault().Value;
                         if (accrualDate != null)
                         {
                             newRow.AccrualDate = accrualDate.ToString();
-                        //testrow.AccrualDate = accrualDate.ToString();
+                            //testrow.AccrualDate = accrualDate.ToString();
                         }
 
                         var maturityDate = row.DynamicProperties.Where(f => f.Key == "Maturity Date").FirstOrDefault().Value;
                         if (maturityDate != null)
                         {
                             newRow.MaturityDate = maturityDate.ToString();
-                        //testrow.MaturityDate = maturityDate.ToString();
+                            //testrow.MaturityDate = maturityDate.ToString();
                         }
 
                         //var latestPaymentDate = row.DynamicProperties.Where(f => f.Key == "Latest Payment Date").FirstOrDefault().Value;
@@ -1098,28 +1107,28 @@ namespace PWSWebApi.Controllers
                         if (dayCountCode != null)
                         {
                             newRow.DayCountCode = dayCountCode.ToString();
-                        //testrow.DayCountCode = dayCountCode.ToString();
+                            //testrow.DayCountCode = dayCountCode.ToString();
                         }
 
                         var issueDate = row.DynamicProperties.Where(f => f.Key == "Issue Date").FirstOrDefault().Value;
                         if (issueDate != null)
                         {
                             newRow.IssueDate = issueDate.ToString();
-                        //testrow.IssueDate = issueDate.ToString();
+                            //testrow.IssueDate = issueDate.ToString();
                         }
 
                         var TRBCIndustryCode = row.DynamicProperties.Where(f => f.Key == "TRBC Industry Code").FirstOrDefault().Value;
                         if (TRBCIndustryCode != null)
                         {
                             newRow.TRBCIndustryCode = TRBCIndustryCode.ToString();
-                        //testrow.TRBCIndustryCode = TRBCIndustryCode.ToString();
+                            //testrow.TRBCIndustryCode = TRBCIndustryCode.ToString();
                         }
 
                         var TRBCIndustryCodeDescription = row.DynamicProperties.Where(f => f.Key == "TRBC Industry Code Description").FirstOrDefault().Value;
                         if (TRBCIndustryCodeDescription != null)
                         {
                             newRow.TRBCIndustryCodeDescription = TRBCIndustryCodeDescription.ToString();
-                        //testrow.TRBCIndustryCodeDescription = TRBCIndustryCodeDescription.ToString();
+                            //testrow.TRBCIndustryCodeDescription = TRBCIndustryCodeDescription.ToString();
                         }
 
                         //var TRBCIndustryGroupCode = row.DynamicProperties.Where(f => f.Key == "TRBC Industry Group Code").FirstOrDefault().Value;
@@ -1150,14 +1159,14 @@ namespace PWSWebApi.Controllers
                         if (TRBCEconomicSectorCode != null)
                         {
                             newRow.TRBCEconomicSectorCode = TRBCEconomicSectorCode.ToString();
-                        //testrow.TRBCEconomicSectorCode = TRBCEconomicSectorCode.ToString();
+                            //testrow.TRBCEconomicSectorCode = TRBCEconomicSectorCode.ToString();
                         }
 
                         var TRBCEconomicSectorCodeDescription = row.DynamicProperties.Where(f => f.Key == "TRBC Economic Sector Code Description").FirstOrDefault().Value;
                         if (TRBCEconomicSectorCodeDescription != null)
                         {
                             newRow.TRBCEconomicSectorCodeDescription = TRBCEconomicSectorCodeDescription.ToString();
-                        //testrow.TRBCEconomicSectorCodeDescription = TRBCEconomicSectorCodeDescription.ToString();
+                            //testrow.TRBCEconomicSectorCodeDescription = TRBCEconomicSectorCodeDescription.ToString();
                         }
 
                         //var TRBCActivityCode = row.DynamicProperties.Where(f => f.Key == "TRBC Activity Code").FirstOrDefault().Value;
@@ -1176,35 +1185,35 @@ namespace PWSWebApi.Controllers
                         if (OriginalIssueDiscountFlag != null)
                         {
                             newRow.OriginalIssueDiscountFlag = OriginalIssueDiscountFlag.ToString();
-                        //testrow.OriginalIssueDiscountFlag = OriginalIssueDiscountFlag.ToString();
+                            //testrow.OriginalIssueDiscountFlag = OriginalIssueDiscountFlag.ToString();
                         }
 
                         var DenominationIncrement = row.DynamicProperties.Where(f => f.Key == "Denomination Increment").FirstOrDefault().Value;
                         if (DenominationIncrement != null)
                         {
                             newRow.DenominationIncrement = DenominationIncrement.ToString();
-                        //testrow.DenominationIncrement = DenominationIncrement.ToString();
+                            //testrow.DenominationIncrement = DenominationIncrement.ToString();
                         }
 
                         var IssuePrice = row.DynamicProperties.Where(f => f.Key == "Issue Price").FirstOrDefault().Value;
                         if (IssuePrice != null)
                         {
                             newRow.IssuePrice = IssuePrice.ToString();
-                        // testrow.IssuePrice = IssuePrice.ToString();
+                            // testrow.IssuePrice = IssuePrice.ToString();
                         }
 
                         var domicile = row.DynamicProperties.Where(f => f.Key == "Domicile").FirstOrDefault().Value;
                         if (domicile != null)
                         {
                             newRow.Domicile = domicile.ToString();
-                        //testrow.Domicile = domicile.ToString();
+                            //testrow.Domicile = domicile.ToString();
                         }
 
                         var sedolInfo = row.DynamicProperties.Where(f => f.Key == "SEDOL").FirstOrDefault().Value;
                         if (sedol != null)
                         {
                             newRow.SEDOL = sedol.ToString();
-                        //testrow.SEDOL = sedol.ToString();
+                            //testrow.SEDOL = sedol.ToString();
                         }
 
                         newRow.UserDefinedIdentifier = userIdentifider;
@@ -1219,14 +1228,14 @@ namespace PWSWebApi.Controllers
                         if (IssuerName != null)
                         {
                             newRow.IssuerName = IssuerName.ToString();
-                        //testrow.IssuerName = IssuerName.ToString();
+                            //testrow.IssuerName = IssuerName.ToString();
                         }
 
                         var IssuerOrgID = row.DynamicProperties.Where(f => f.Key == "Issuer OrgID").FirstOrDefault().Value;
                         if (IssuerOrgID != null)
                         {
                             newRow.IssuerOrgID = IssuerOrgID.ToString();
-                        //testrow.IssuerOrgID = IssuerOrgID.ToString();
+                            //testrow.IssuerOrgID = IssuerOrgID.ToString();
                         }
 
                         //testrow.Identifier = newRow.Identifier;
@@ -1303,38 +1312,22 @@ namespace PWSWebApi.Controllers
                         var FundManagerBenchmark = Convert.ToString(row.DynamicProperties.Where(f => f.Key == "Fund Manager Benchmark").FirstOrDefault().Value);
                         newRow.FundManagerBenchmark = FundManagerBenchmark;
                         // pwsrec.Load_TermsAndConditions.InsertOnSubmit(newRow);
-                        pwsrec.usp_Load_TermsAndConditions_INS(identifier: newRow.Identifier, identifierType: newRow.IdentifierType, loadSourceID: Convert.ToString(loadSourceID), dPID: Convert.ToString(DPID), cUSIP: cusip, iSIN: isin == "" ? null : isin, princCCYID: Convert.ToString(PrincCCYID), userID: UserID, ticker: newRow.Ticker, rIC: newRow.RIC, assetType: newRow.AssetType, assetTypeDescription: newRow.AssetTypeDescription, assetSubTypeDescription: newRow.AssetSubTypeDescription, assetSubType: newRow.AssetSubType, lastCouponDate: newRow.LastCouponDate, firstCouponDate: newRow.FirstCouponDate, couponRate: newRow.CouponRate, couponType: newRow.CouponType, couponTypeDescription: newRow.CouponTypeDescription, couponFrequency: newRow.CouponFrequency, couponFrequencyDescription: newRow.CouponFrequencyDescription// , currentCouponClassCode: newRow.CurrentCouponClassCode
-                        //  , currentCouponClassDescription: newRow.CurrentCouponClassDescription
-                        , couponCurrency: newRow.CouponCurrency//  , nextRateResetDate: newRow.NextRateResetDate
-                        //  , lastRateResetDate: newRow.LastRateResetDate
-                        , nextCallDate: newRow.NextCallDate, nextCallPrice: newRow.NextCallPrice, iSOCountryCode: newRow.ISOCountryCode, stateCode: newRow.StateCode, moodysRating: newRow.MoodysRating//, fitchRating: newRow.FitchRating
-                        //, sAndPRating: newRow.SAndPRating
-                        , industryDescription: newRow.IndustryDescription, industrySectorDescription: newRow.IndustrySectorDescription//, tRBCEconomicSectorCode: newRow.TRBCEconomicSectorCode
-                        //, tRBCEconomicSectorCodeDescription: newRow.TRBCEconomicSectorCodeDescription
-                        //, tRBCBusinessSectorCode: newRow.TRBCBusinessSectorCode
-                        //, tRBCBusinessSectorCodeDescription: newRow.TRBCBusinessSectorCodeDescription
-                        //, gICSIndustryCode: newRow.GICSIndustryCode
-                        // , gICSIndustryCodeDescription: newRow.GICSIndustryCodeDescription
-                        , hybridFlag: newRow.HybridFlag// , gICSSectorCodeDescription: newRow.GICSSectorCodeDescription
-                        , dayCountCodeDescription: newRow.DayCountCodeDescription//  , gICSSectorCode: newRow.GICSSectorCode
-                        , refinitivClassificationScheme: newRow.RefinitivClassificationScheme, refinitivClassificationSchemeDescription: newRow.RefinitivClassificationSchemeDescription, parValue: newRow.ParValue//, countryofIssuance: newRow.CountryofIssuance
-                        //, countryofIssuanceDescription: newRow.CountryofIssuanceDescription
-                        , securityDescription: newRow.SecurityDescription, currencyCode: newRow.CurrencyCode, currencyCodeDescription: newRow.CurrencyCodeDescription, dividendCurrency: newRow.DividendCurrency, dividendCurrencyDescription: newRow.DividendCurrencyDescription, investmentType: newRow.InvestmentType//  , gICSIndustryGroupCode: newRow.GICSIndustryGroupCode
-                        //   , gICSIndustryGroupCodeDescription: newRow.GICSIndustryCodeDescription
-                        , exchangeCode: newRow.ExchangeCode, exchangeDescription: newRow.ExchangeDescription, userDefinedIdentifier: newRow.UserDefinedIdentifier, accrualDate: newRow.AccrualDate, maturityDate: newRow.MaturityDate//, lastPaymentDate: newRow.LastPaymentDate
-                        , dayCountCode: newRow.DayCountCode//, periodicity: newRow.Periodicity
-                        , issueDate: newRow.IssueDate, issuePrice: newRow.IssuePrice, tRBCIndustryCode: newRow.TRBCIndustryCode, tRBCIndustryCodeDescription: newRow.TRBCIndustryCodeDescription//, tRBCIndustryGroupCode: newRow.TRBCIndustryGroupCode
-                        //, tRBCIndustryGroupCodeDescription: newRow.TRBCIndustryGroupCodeDescription
-                        //, tRBCBusinessSectorCode: newRow.TRBCBusinessSectorCode
-                        //, tRBCBusinessSectorCodeDescription: newRow.TRBCBusinessSectorCodeDescription
-                        , tRBCEconomicSectorCode: newRow.TRBCEconomicSectorCode, tRBCEconomicSectorCodeDescription: newRow.TRBCEconomicSectorCodeDescription//, tRBCActivityCode: newRow.TRBCActivityCode
-                        //   , tRBCActivityCodeDescription: newRow.TRBCActivityCodeDescription
-                        , denominationIncrement: newRow.DenominationIncrement, originalIssueDiscountFlag: newRow.OriginalIssueDiscountFlag, domicile: newRow.Domicile, sEDOL: newRow.SEDOL// , issuerID: newRow.IssuerID
-                        , issuerName: newRow.IssuerName, issuerOrgID: newRow.IssuerOrgID, eTFType: newRow.ETFType, convertibleFlag: newRow.ConvertibleFlag, floatIndexType: newRow.FloatIndexType, couponResetFrequency: newRow.CouponResetFrequency, couponResetFrequencyDescription: newRow.CouponResetFrequencyDescription, couponResetRuleCode: newRow.CouponResetRuleCode, couponResetRuleCodeDescription: newRow.CouponResetRuleCodeDescription, previousCouponDate: newRow.PreviousCouponDate, sharesAmount: newRow.SharesAmount, sharesAmountType: newRow.SharesAmountType, valoren: newRow.Valoren, geographicalFocus: newRow.GeographicalFocus, lipperGlobalClassification: newRow.LipperGlobalClassification, fundManagerBenchmark: newRow.FundManagerBenchmark);
+                        //pwsrec.usp_Load_TermsAndConditions_INS(identifier: newRow.Identifier, identifierType: newRow.IdentifierType, loadSourceID: Convert.ToString(loadSourceID), dPID: Convert.ToString(DPID), cUSIP: cusip, iSIN: isin == "" ? null : isin, princCCYID: Convert.ToString(PrincCCYID), userID: UserID, ticker: newRow.Ticker, rIC: newRow.RIC, assetType: newRow.AssetType, assetTypeDescription: newRow.AssetTypeDescription, assetSubTypeDescription: newRow.AssetSubTypeDescription, assetSubType: newRow.AssetSubType, lastCouponDate: newRow.LastCouponDate, firstCouponDate: newRow.FirstCouponDate, couponRate: newRow.CouponRate, couponType: newRow.CouponType, couponTypeDescription: newRow.CouponTypeDescription, couponFrequency: newRow.CouponFrequency, couponFrequencyDescription: newRow.CouponFrequencyDescription// , currentCouponClassCode: newRow.CurrentCouponClassCode
+                        commonSPs.CallUspLoadTermsAndConditionsInsAsync(identifier: newRow.Identifier, identifierType: newRow.IdentifierType, loadSourceID: Convert.ToString(loadSourceID), dPID: Convert.ToString(DPID), cUSIP: cusip, iSIN: isin == "" ? null : isin, princCCYID: Convert.ToString(PrincCCYID), userID: UserID, ticker: newRow.Ticker, rIC: newRow.RIC, assetType: newRow.AssetType, assetTypeDescription: newRow.AssetTypeDescription, assetSubTypeDescription: newRow.AssetSubTypeDescription, assetSubType: newRow.AssetSubType, lastCouponDate: newRow.LastCouponDate, firstCouponDate: newRow.FirstCouponDate, couponRate: newRow.CouponRate, couponType: newRow.CouponType, couponTypeDescription: newRow.CouponTypeDescription, couponFrequency: newRow.CouponFrequency, couponFrequencyDescription: newRow.CouponFrequencyDescription// , currentCouponClassCode: newRow.CurrentCouponClassCode
+                        , couponCurrency: newRow.CouponCurrency
+                        , nextCallDate: newRow.NextCallDate, nextCallPrice: newRow.NextCallPrice, iSOCountryCode: newRow.ISOCountryCode, stateCode: newRow.StateCode, moodysRating: newRow.MoodysRating
+                        , industryDescription: newRow.IndustryDescription, industrySectorDescription: newRow.IndustrySectorDescription
+                        , hybridFlag: newRow.HybridFlag
+                        , dayCountCodeDescription: newRow.DayCountCodeDescription
+                        , refinitivClassificationScheme: newRow.RefinitivClassificationScheme, refinitivClassificationSchemeDescription: newRow.RefinitivClassificationSchemeDescription, parValue: newRow.ParValue
+                        , securityDescription: newRow.SecurityDescription, currencyCode: newRow.CurrencyCode, currencyCodeDescription: newRow.CurrencyCodeDescription, dividendCurrency: newRow.DividendCurrency, dividendCurrencyDescription: newRow.DividendCurrencyDescription, investmentType: newRow.InvestmentType
+                        , exchangeCode: newRow.ExchangeCode, exchangeDescription: newRow.ExchangeDescription, userDefinedIdentifier: newRow.UserDefinedIdentifier, accrualDate: newRow.AccrualDate, maturityDate: newRow.MaturityDate
+                        , dayCountCode: newRow.DayCountCode
+                        , issueDate: newRow.IssueDate, issuePrice: newRow.IssuePrice, tRBCIndustryCode: newRow.TRBCIndustryCode, tRBCIndustryCodeDescription: newRow.TRBCIndustryCodeDescription
+                        , tRBCEconomicSectorCode: newRow.TRBCEconomicSectorCode, tRBCEconomicSectorCodeDescription: newRow.TRBCEconomicSectorCodeDescription
+                        , denominationIncrement: newRow.DenominationIncrement, originalIssueDiscountFlag: newRow.OriginalIssueDiscountFlag, domicile: newRow.Domicile, sEDOL: newRow.SEDOL
+                        , issuerName: newRow.IssuerName, issuerOrgID: newRow.IssuerOrgID, eTFType: newRow.ETFType, convertibleFlag: newRow.ConvertibleFlag, floatIndexType: newRow.FloatIndexType, couponResetFrequency: newRow.CouponResetFrequency, couponResetFrequencyDescription: newRow.CouponResetFrequencyDescription, couponResetRuleCode: newRow.CouponResetRuleCode, couponResetRuleCodeDescription: newRow.CouponResetRuleCodeDescription, previousCouponDate: newRow.PreviousCouponDate, sharesAmount: newRow.SharesAmount, sharesAmountType: newRow.SharesAmountType, valoren: newRow.Valoren, geographicalFocus: newRow.GeographicalFocus, lipperGlobalClassification: newRow.LipperGlobalClassification, fundManagerBenchmark: newRow.FundManagerBenchmark).GetAwaiter();
                     }
-
-                    //pwsrec.ExecuteCommand("truncate table tr.Load_TermsAndConditions");
-                    //pwsrec.SubmitChanges();
                     WritePtocessHistory(3, DateTime.Now);
                 }
 
@@ -1350,28 +1343,28 @@ namespace PWSWebApi.Controllers
 
         [HttpPost]
         [Route("EODPricing")]
-        public HttpResponseMessage EODPricing(DateTime? runDateTime = null, bool SSISIdentifierType = false)
+        public IActionResult EODPricing(DateTime? runDateTime = null, bool SSISIdentifierType = false)
         {
             try
             {
-                if (handlerHelper.ValidateSource(Request) is HttpResponseMessage)
+                if (handlerHelper.ValidateSource(Request) is IActionResult result)
                 {
-                    return (HttpResponseMessage)handlerHelper.ValidateSource(Request);
+                    return result;
                 }
 
                 if (handlerHelper.ValidateToken(Request) != string.Empty)
                 {
-                    return Request.CreateErrorResponse(HttpStatusCode.Unauthorized, handlerHelper.ValidateToken(Request));
+                    return StatusCode((int)HttpStatusCode.Unauthorized, handlerHelper.ValidateToken(Request));
                 }
 
                 var success = EndOfDay(runDateTime);
-                return Request.CreateResponse(HttpStatusCode.OK, new { success = success });
+                return Ok(new { success = success });
             }
             catch (Exception ex)
             {
                 Helper.AddApiLogs(connectionString, new ApiLogObject { Method = MethodInfo.GetCurrentMethod().Name, Exception = ex.Message, Params = "web api" });
                 var exception = "Unknown Error Occurred";
-                return Request.CreateResponse(HttpStatusCode.InternalServerError, new { error = true, exception = exception });
+                return StatusCode((int)HttpStatusCode.InternalServerError, new { error = true, exception = exception });
             }
         }
 
@@ -1386,7 +1379,8 @@ namespace PWSWebApi.Controllers
             {
                 ExtractionsContext ExtractionsContext = ContextHelper.CreateExtractionsContext();
                 //var availableFields = ExtractionsContext.GetValidContentFieldTypes(ReportTemplateTypes.EndOfDayPricing);
-                var data = pwsrec.usp_Price_GetIdentifiers().ToList();
+                //var data = pwsrec.usp_Price_GetIdentifiers().ToList();
+                var data = commonSPs.CallUspPriceGetIdentifiersAsync().GetAwaiter().GetResult().ToList();
                 //DssCollection<InstrumentIdentifier> instrumentIdentifiers = new DssCollection<InstrumentIdentifier>();
                 //data.ForEach(item =>
                 //{
@@ -1414,11 +1408,6 @@ namespace PWSWebApi.Controllers
                         var extractionRequest = new EndOfDayPricingExtractionRequest
                         {
                             IdentifierList = InstrumentIdentifierList.Create(//new[]
-                            //{
-                            //new InstrumentIdentifier { Identifier = "191216100", IdentifierType = IdentifierType.Cusip },
-                            //new InstrumentIdentifier { Identifier = "2005973", IdentifierType = IdentifierType.Sedol },
-                            //new InstrumentIdentifier { Identifier = "AAPL.OQ", IdentifierType = IdentifierType.Ric }
-                            //}
                             instrumentIdentifiers, null, false),
                             ContentFieldNames = new[]
                             {
@@ -1459,9 +1448,6 @@ namespace PWSWebApi.Controllers
                         //Extract - NOTE: If the extraction request takes more than 30 seconds the async mechansim will be used.  See Key Mechanisms 
                         var extractionResult = ExtractionsContext.ExtractWithNotes(extractionRequest);
                         var extractedRows = extractionResult.Contents;
-                        // var loadForDay = pwsrec.Load_EODs.Where(g => g.LoadDateTime == DateTime.Today.Date);
-                        //pwsrec.Load_EODs.DeleteAllOnSubmit(loadForDay);
-                        //pwsrec.CommandTimeout = 10000000;
                         var count = 0;
                         extractedRows.ToList().ForEach(item =>
                         {
@@ -1469,10 +1455,7 @@ namespace PWSWebApi.Controllers
                             var newRow = new Load_EOD();
                             newRow.Identifier = item.Identifier;
                             newRow.IdentifierType = item.IdentifierType.ToString();
-                            //newRow.ISIN = Convert.ToString(item.DynamicProperties.Where(f => f.Key == "ISIN").FirstOrDefault().Value);
-                            //newRow.SEDOL = Convert.ToString(item.DynamicProperties.Where(f => f.Key == "SEDOL").FirstOrDefault().Value);
                             newRow.Ticker = Convert.ToString(item.DynamicProperties.Where(f => f.Key == "Ticker").FirstOrDefault().Value);
-                            //newRow.CUSIP = Convert.ToString(item.DynamicProperties.Where(f => f.Key == "CUSIP").FirstOrDefault().Value);
                             newRow.RIC = Convert.ToString(item.DynamicProperties.Where(f => f.Key == "RIC").FirstOrDefault().Value);
                             newRow.CurrencyCode = Convert.ToString(item.DynamicProperties.Where(f => f.Key == "Currency Code").FirstOrDefault().Value);
                             newRow.BidPrice = Convert.ToString(item.DynamicProperties.Where(f => f.Key == "Bid Price").FirstOrDefault().Value);
@@ -1494,16 +1477,15 @@ namespace PWSWebApi.Controllers
 
                             newRow.PutCallIndicator = Convert.ToString(item.DynamicProperties.Where(f => f.Key == "Put Call Indicator").FirstOrDefault().Value);
                             newRow.UserDefinedIdentifier = Convert.ToString(item.UserDefinedIdentifier);
-                            pwsrec.Load_EODs.InsertOnSubmit(newRow);
+                            pwsrec.Load_EODs.Add(newRow);
                         });
-                        pwsrec.SubmitChanges();
+                        pwsrec.SaveChanges();
                     }
                     catch (Exception ex2)
                     {
                         Helper.AddApiLogs(connectionString, new ApiLogObject { Method = MethodInfo.GetCurrentMethod().Name, Exception = ex2.Message, Params = "web api" });
                         WritePtocessHistory(1, Convert.ToDateTime(runDateTime), ex2);
                     }
-                //pwsrec.ExecuteCommand("truncate table tr.Load_EOD");
                 }
 
                 WritePtocessHistory(1, Convert.ToDateTime(runDateTime));
@@ -1519,28 +1501,28 @@ namespace PWSWebApi.Controllers
 
         [HttpPost]
         [Route("CorpActionStandard")]
-        public HttpResponseMessage CorpActionStandard(DateTime? runDateTime = null)
+        public IActionResult CorpActionStandard(DateTime? runDateTime = null)
         {
             try
             {
-                if (handlerHelper.ValidateSource(Request) is HttpResponseMessage)
+                if (handlerHelper.ValidateSource(Request) is IActionResult result)
                 {
-                    return (HttpResponseMessage)handlerHelper.ValidateSource(Request);
+                    return result;
                 }
 
                 if (handlerHelper.ValidateToken(Request) != string.Empty)
                 {
-                    return Request.CreateErrorResponse(HttpStatusCode.Unauthorized, handlerHelper.ValidateToken(Request));
+                    return StatusCode((int)HttpStatusCode.Unauthorized, handlerHelper.ValidateToken(Request));
                 }
 
                 var success = CorporateActionsStandard(runDateTime);
-                return Request.CreateResponse(HttpStatusCode.OK, new { success = success });
+                return Ok(new { success = success });
             }
             catch (Exception ex)
             {
                 Helper.AddApiLogs(connectionString, new ApiLogObject { Method = MethodInfo.GetCurrentMethod().Name, Exception = ex.Message, Params = "web api" });
                 var exception = "Unknown Error Occurred";
-                return Request.CreateResponse(HttpStatusCode.InternalServerError, new { error = true, exception = exception });
+                return StatusCode((int)HttpStatusCode.InternalServerError, new { error = true, exception = exception });
             }
         }
 
@@ -1567,7 +1549,7 @@ namespace PWSWebApi.Controllers
                 var fieldNames = ExtractionsContext.GetValidExtractionFieldNames(ReportTemplateTypes.CorporateActions);
                 foreach (var field in fieldNames)
                 {
-                // Status.WriteLine("{0})", field);
+                    // Status.WriteLine("{0})", field);
                 }
 
                 // Status.EndNotify(ExtractionsContext);
@@ -1578,12 +1560,14 @@ namespace PWSWebApi.Controllers
                 var fieldNmTemplCode = ExtractionsContext.GetValidExtractionFieldNamesForTemplateCode("COR");
                 foreach (var field in fieldNmTemplCode)
                 {
-                //Status.WriteLine("{0})", field);
+                    //Status.WriteLine("{0})", field);
                 }
 
                 // Status.EndNotify(ExtractionsContext);
                 DssCollection<InstrumentIdentifier> instrumentIdentifiers = new DssCollection<InstrumentIdentifier>();
-                var data = pwsrec.usp_CorpAction_GetIdentifiers().ToList();
+                //var data = pwsrec.usp_CorpAction_GetIdentifiers().ToList();
+                var data = commonSPs.GetIdentifiersFromStoredProcedure().GetAwaiter().GetResult();
+
                 data.ForEach(item =>
                 {
                     instrumentIdentifiers.Add(getIdentifierTypeEnum(item));
@@ -1717,18 +1701,13 @@ namespace PWSWebApi.Controllers
                     var dividendTypeMarkerDescription = row.DynamicProperties.Where(f => f.Key == "Dividend Type Marker Description").FirstOrDefault().Value;
                     newRow.DividendTypeMarkerDescription = Convert.ToString(dividendTypeMarkerDescription);
                     newRow.UserDefinedIdentifier = row.UserDefinedIdentifier;
-                    pwsrec.Load_CorpActions.InsertOnSubmit(newRow);
+                    pwsrec.Load_CorpActions.Add(newRow);
                 }
 
                 if (extractedRows.Count > 0)
                 {
-                    //pwsrec.ExecuteCommand("truncate table tr.Load_CorpActions");
-                    pwsrec.SubmitChanges();
+                    pwsrec.SaveChanges();
                 }
-
-                //foreach (var note in extractionResult.Notes)
-                //{
-                //}
                 WritePtocessHistory(2, Convert.ToDateTime(runDateTime));
                 return true;
             }
@@ -1744,12 +1723,12 @@ namespace PWSWebApi.Controllers
         {
             try
             {
-                GlobalConfiguration.Configuration.Formatters.JsonFormatter.SerializerSettings = new JsonSerializerSettings
-                {
-                    DateFormatHandling = DateFormatHandling.IsoDateFormat,
-                    DateTimeZoneHandling = DateTimeZoneHandling.Unspecified,
-                };
-                using (SqlConnection conn = new SqlConnection(ConfigurationManager.Configuration.GetSection("ConnectionStrings")[db]))
+                //GlobalConfiguration.Configuration.Formatters.JsonFormatter.SerializerSettings = new JsonSerializerSettings
+                //{
+                //    DateFormatHandling = DateFormatHandling.IsoDateFormat,
+                //    DateTimeZoneHandling = DateTimeZoneHandling.Unspecified,
+                //};
+                using (SqlConnection conn = new SqlConnection(Configuration.GetSection("ConnectionStrings")[db]))
                 {
                     using (SqlCommand cmd = new SqlCommand(procedureName, conn))
                     {
@@ -1770,13 +1749,6 @@ namespace PWSWebApi.Controllers
                         {
                             da.Fill(ds);
                         }
-
-                        //SqlDataReader reader = cmd.ExecuteReader();
-                        //while (reader.Read())
-                        //{
-                        //}
-                        System.Web.Script.Serialization.JavaScriptSerializer serializer = new System.Web.Script.Serialization.JavaScriptSerializer();
-                        serializer.MaxJsonLength = Int32.MaxValue;
                         List<Dictionary<string, object>> rows = new List<Dictionary<string, object>>();
                         Dictionary<string, object> row;
                         foreach (DataTable table in ds.Tables)
@@ -1787,18 +1759,12 @@ namespace PWSWebApi.Controllers
                                 foreach (DataColumn col in table.Columns)
                                 {
                                     row.Add(col.ColumnName, dr[col]);
-                                //if(col.DataType == typeof(DateTime))
-                                //row.Add(col.ColumnName, ((DateTime)dr[col]).ToLocalTime());
-                                //else
-                                // row.Add(col.ColumnName, (dr[col]));
                                 }
 
                                 rows.Add(row);
                             }
                         }
-
                         conn.Close();
-                        // return serializer.Serialize(rows);
                         string procResultAsString = JsonConvert.SerializeObject(rows, Formatting.Indented, new JsonSerializerSettings { DateTimeZoneHandling = DateTimeZoneHandling.Unspecified });
                         return procResultAsString;
                     }
@@ -1809,6 +1775,6 @@ namespace PWSWebApi.Controllers
                 Helper.AddApiLogs(connectionString, new ApiLogObject { Method = MethodInfo.GetCurrentMethod().Name, Exception = ex.Message, Query = procedureName, Params = "web api" });
                 return string.Empty;
             }
-        }
+        }        
     }
 }

@@ -1,5 +1,4 @@
 ﻿using Microsoft.EntityFrameworkCore;
-using PWSWebApi.Domains;
 
 namespace PWSWebApi.Domains.DBContext
 {
@@ -30,12 +29,16 @@ namespace PWSWebApi.Domains.DBContext
                 }
             }
         }
-
         public DbSet<CashProProcessHistory> CashProProcessHistory { get; set; }
         public DbSet<ErrorLog> ErrorLogs { get; set; }
         public virtual DbSet<NewEditTrans> NewEditTrans { get; set; }
         public virtual DbSet<NewEditTrans_tmp> NewEditTrans_tmps { get; set; }
-
+        public virtual DbSet<Load_Index> Load_Indexes { get; set; }
+        public virtual DbSet<SecuritySearchResult> SecuritySearchResults { get; set; }
+        public virtual DbSet<Load_EOD> Load_EODs { get; set; }
+        public virtual DbSet<Load_CorpAction> Load_CorpActions { get; set; }
+        public virtual DbSet<ProcessHistory> ProcessHistories { get; set; }
+        public virtual DbSet<Intermediate_GetIdentifier> Intermediate_GetIdentifiers { get; set; }
     }
 }
 

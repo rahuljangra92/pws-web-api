@@ -1,66 +1,81 @@
-/* Added by CTA: OAuth is now handled by using the public void ConfigureServices(IServiceCollection services) method in the Startup.cs class. The basic process is to use services.AddAuthentication(options => and then set a series of options. We can chain unto that the actual OAuth settings call services.AddOAuth("Auth_Service_here_such_as_GitHub_Canvas...", options =>. Also remember to add a call to IApplicationBuilder.UseAuthentication() in your public void Configure(IApplicationBuilder app, IHostingEnvironment env) method. Please ensure this call comes before setting up your routes. */
-using Microsoft.AspNetCore.Authentication;
-using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Http;
-using Microsoft.AspNetCore.Identity;
-using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.WebUtilities;
-using Microsoft.Extensions.DependencyInjection;
-//using Microsoft.AspNet.Identity;
-//using Microsoft.AspNet.Identity.EntityFramework;
-//using Microsoft.Owin.Security.Cookies;
-using PWSWebApi.Models;
-//using PWSWebApi.Providers;
-//using PWSWebApi.Results;
 using System;
 using System.Collections.Generic;
 using System.Security.Claims;
 using System.Security.Cryptography;
 using System.Threading.Tasks;
+using System.Web;
+using Microsoft.AspNetCore.Authentication;
+using Microsoft.AspNetCore.Authentication.Cookies;
+using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Configuration;
+using PWSWebApi.Models;
+using HttpGetAttribute = Microsoft.AspNetCore.Mvc.HttpGetAttribute;
+using System.Linq;
+using Microsoft.Extensions.Options;
+using Microsoft.AspNetCore.Http.Extensions;
+using Microsoft.Extensions.DependencyInjection;
+using UserLoginInfo = Microsoft.AspNetCore.Identity.UserLoginInfo;
+using IdentityResult = Microsoft.AspNetCore.Identity.IdentityResult;
 
 
 namespace PWSWebApi.Controllers
 {
-    [Authorize]
-    [Route("api/Account")]
-    [ApiController]
-    public class AccountController : ControllerBase
+    #region Actual Code
+    //[Authorize]
+    [Route("api/[controller]")]
+    public class AccountController : Controller
     {
+
+        private readonly IHttpContextAccessor httpContextAccessor;
+        private readonly IConfiguration configuration;
+        private readonly UserManager<IdentityUser> userManager;
+        private readonly SignInManager<IdentityUser> signInManager;
+        private readonly IOptions<IdentityOptions> identityOptions;
+        private readonly int loginAttemptCount;
+        private readonly int passwordExpiryDays;
         private const string LocalLoginProvider = "Local";
-        private ApplicationUserManager _userManager;
-        public AccountController()
+
+
+        public AccountController(
+           IHttpContextAccessor httpContextAccessor,
+            IConfiguration configuration,
+            Microsoft.AspNetCore.Identity.UserManager<IdentityUser> userManager,
+            SignInManager<IdentityUser> signInManager,
+            IOptions<IdentityOptions> identityOptions)
+
         {
+            this.httpContextAccessor = httpContextAccessor;
+            this.configuration = configuration;
+            this.userManager = userManager;
+            this.signInManager = signInManager;
+            this.identityOptions = identityOptions;
         }
 
-        public AccountController(ApplicationUserManager userManager, ISecureDataFormat<AuthenticationTicket> accessTokenFormat)
-        {
-            UserManager = userManager;
-            AccessTokenFormat = accessTokenFormat;
-        }
 
-        public ApplicationUserManager UserManager
-        {
-            get
-            {
-                //return _userManager ?? Request.GetOwinContext().GetUserManager<ApplicationUserManager>();
-                return _userManager ?? HttpContext.RequestServices.GetService<ApplicationUserManager>();
-            }
-
-            private set
-            {
-                _userManager = value;
-            }
-        }
+        //public ApplicationUserManager UserManager
+        //{
+        //    get
+        //    {
+        //        return _userManager ?? Request.GetOwinContext().GetUserManager<ApplicationUserManager>();
+        //    }
+        //    private set
+        //    {
+        //        _userManager = value;
+        //    }
+        //}
 
         public ISecureDataFormat<AuthenticationTicket> AccessTokenFormat { get; private set; }
 
-        // GET api/Account/UserInfo
-        //[HostAuthentication(DefaultAuthenticationTypes.ExternalBearer)]
-        [Authorize(AuthenticationSchemes = "Bearer")]
-        [Route("UserInfo")]
+        //GET api/Account/UserInfo
+
+        [HttpGet]
         public UserInfoViewModel GetUserInfo()
         {
-            ExternalLoginData externalLogin = ExternalLoginData.FromIdentity(User.Identity as ClaimsIdentity);
+            var externalLogin = ExternalLoginData.FromIdentity(User as ClaimsPrincipal);
+
             return new UserInfoViewModel
             {
                 Email = User.Identity.Name,
@@ -68,45 +83,40 @@ namespace PWSWebApi.Controllers
                 LoginProvider = externalLogin != null ? externalLogin.LoginProvider : null
             };
         }
-
         // POST api/Account/Logout
-        [Route("Logout")]
-        public async Task<IActionResult> Logout()
+
+        [HttpGet("Logout")]
+        public IActionResult Logout()
         {
-            /* Added by CTA: You can only pass in a single scheme as a parameter and you can also include an AuthenticationProperties object as well. */
-            await HttpContext.SignOutAsync();
+            HttpContext.SignOutAsync(CookieAuthenticationDefaults.AuthenticationScheme);
             return Ok();
         }
 
-        // GET api/Account/ManageInfo?returnUrl=%2F&generateState=true
-        [Route("ManageInfo")]
+        [HttpGet("ManageInfo")]
         public async Task<ManageInfoViewModel> GetManageInfo(string returnUrl, bool generateState = false)
         {
-            // IdentityUser user = await UserManager.FindByIdAsync(User.Identity.GetUserId());
-            string userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
-            ApplicationUser user = await UserManager.FindByIdAsync(userId);
+            var user = await userManager.GetUserAsync(User);
+
             if (user == null)
             {
                 return null;
             }
 
-            List<UserLoginInfoViewModel> logins = new List<UserLoginInfoViewModel>();
-            //foreach (IdentityUserLogin linkedAccount in user.Logins)
-            //{
-            //    logins.Add(new UserLoginInfoViewModel { LoginProvider = linkedAccount.LoginProvider, ProviderKey = linkedAccount.ProviderKey });
-            //}
-            foreach (var linkedAccount in await UserManager.GetLoginsAsync(user))
-            {
-                logins.Add(new UserLoginInfoViewModel
+            var logins = (await userManager.GetLoginsAsync(user))
+                .Select(linkedAccount => new UserLoginInfoViewModel
                 {
                     LoginProvider = linkedAccount.LoginProvider,
                     ProviderKey = linkedAccount.ProviderKey
-                });
-            }
+                })
+                .ToList();
 
             if (user.PasswordHash != null)
             {
-                logins.Add(new UserLoginInfoViewModel { LoginProvider = LocalLoginProvider, ProviderKey = user.UserName, });
+                logins.Add(new UserLoginInfoViewModel
+                {
+                    LoginProvider = LocalLoginProvider,
+                    ProviderKey = user.UserName,
+                });
             }
 
             return new ManageInfoViewModel
@@ -114,21 +124,26 @@ namespace PWSWebApi.Controllers
                 LocalLoginProvider = LocalLoginProvider,
                 Email = user.UserName,
                 Logins = logins,
-                //ExternalLoginProviders = GetExternalLogins(returnUrl, generateState)
+                ExternalLoginProviders = await GetExternalLogins(returnUrl, generateState)
             };
         }
 
-        // POST api/Account/ChangePassword
-        [Route("ChangePassword")]
+        [HttpPost("ChangePassword")]
         public async Task<IActionResult> ChangePassword(ChangePasswordBindingModel model)
         {
             if (!ModelState.IsValid)
             {
                 return BadRequest(ModelState);
             }
-            string userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
-            ApplicationUser user = await UserManager.FindByIdAsync(userId);
-            IdentityResult result = await UserManager.ChangePasswordAsync(user, model.OldPassword, model.NewPassword);
+
+            var user = await userManager.GetUserAsync(User);
+            if (user == null)
+            {
+                return NotFound();
+            }
+
+            IdentityResult result = await userManager.ChangePasswordAsync(user, model.OldPassword, model.NewPassword);
+
             if (!result.Succeeded)
             {
                 return GetErrorResult(result);
@@ -137,79 +152,56 @@ namespace PWSWebApi.Controllers
             return Ok();
         }
 
-        // POST api/Account/SetPassword
-        [Route("SetPassword")]
+        [HttpPost("SetPassword")]
         public async Task<IActionResult> SetPassword(SetPasswordBindingModel model)
         {
             if (!ModelState.IsValid)
             {
                 return BadRequest(ModelState);
             }
-            string userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
-            ApplicationUser user = await UserManager.FindByIdAsync(userId);
-            IdentityResult result = await UserManager.AddPasswordAsync(user, model.NewPassword);
+
+            var user = await userManager.GetUserAsync(User);
+            if (user == null)
+            {
+                return NotFound("User not found");
+            }
+
+            IdentityResult result = await userManager.AddPasswordAsync(user, model.NewPassword);
+
             if (!result.Succeeded)
             {
                 return GetErrorResult(result);
             }
 
             return Ok();
-        }
+        }       
 
-        // POST api/Account/AddExternalLogin
-        [Route("AddExternalLogin")]
-        public async Task<IActionResult> AddExternalLogin(AddExternalLoginBindingModel model)
+        
+
+        [HttpPost]
+        public async Task<IActionResult> RemoveLogin([FromBody] RemoveLoginBindingModel model)
         {
             if (!ModelState.IsValid)
             {
                 return BadRequest(ModelState);
             }
 
-            /* Added by CTA: You can only pass in a single scheme as a parameter and you can also include an AuthenticationProperties object as well. */
-            //await Authentication.SignOutAsync();
-            await HttpContext.SignOutAsync();
-
-            //AuthenticationTicket ticket = AccessTokenFormat.Unprotect(model.ExternalAccessToken);
-            //if (ticket == null || (ticket.Properties != null && ticket.Properties.ExpiresUtc.HasValue && ticket.Properties.ExpiresUtc.Value < DateTimeOffset.UtcNow))
-            //{
-            //    return BadRequest("External login failure.");
-            //}
-
-            //ExternalLoginData externalData = ExternalLoginData.FromIdentity(ticket.Identity);
-
-            //if (externalData == null)
-            //{
-            //    return BadRequest("The external login is already associated with an account.");
-            //}
-            //string userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
-            //ApplicationUser user = await UserManager.FindByIdAsync(userId);
-            //IdentityResult result = await UserManager.AddLoginAsync(user, new UserLoginInfo(externalData.LoginProvider, externalData.ProviderKey, externalData.UserName));
-            //if (!result.Succeeded)
-            //{
-            //    return GetErrorResult(result);
-            //}
-
-            return Ok();
-        }
-
-        // POST api/Account/RemoveLogin
-        [Route("RemoveLogin")]
-        public async Task<IActionResult> RemoveLogin(RemoveLoginBindingModel model)
-        {
-            if (!ModelState.IsValid)
-            {
-                return BadRequest(ModelState);
-            }
-            string userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
-            ApplicationUser user = await UserManager.FindByIdAsync(userId);
             IdentityResult result;
+
+            var user = await userManager.GetUserAsync(User);
+            if (user == null)
+            {
+                return NotFound("User not found");
+            }
+
             if (model.LoginProvider == LocalLoginProvider)
             {
-                result = await UserManager.RemovePasswordAsync(user);
+                result = await userManager.RemovePasswordAsync(user);
             }
             else
             {
-                result = await UserManager.RemoveLoginAsync(user, model.LoginProvider, model.ProviderKey);
+                result = await userManager.RemoveLoginAsync(user,
+                    model.LoginProvider, model.ProviderKey);
             }
 
             if (!result.Succeeded)
@@ -220,111 +212,153 @@ namespace PWSWebApi.Controllers
             return Ok();
         }
 
-        //// GET api/Account/ExternalLogin
-        //[OverrideAuthentication]
-        ////[HostAuthentication(DefaultAuthenticationTypes.ExternalCookie)]
-        //[Authorize(AuthenticationSchemes = "Cookie")]
-        //[AllowAnonymous]
-        //[Route("ExternalLogin", Name = "ExternalLogin")]
-        //public async Task<IActionResult> GetExternalLogin(string provider, string error = null)
-        //{
-        //    if (error != null)
-        //    {
-        //        return Redirect(Url.Content("~/") + "#error=" + Uri.EscapeDataString(error));
-        //    }
 
-        //    if (!User.Identity.IsAuthenticated)
-        //    {
-        //        return new ChallengeResult(provider, this);
-        //    }
+        public Task<IEnumerable<ExternalLoginViewModel>> GetExternalLogins(string returnUrl, bool generateState = false)
+        {
+            var descriptions = new List<AuthenticationScheme>();
 
-        //    ExternalLoginData externalLogin = ExternalLoginData.FromIdentity(User.Identity as ClaimsIdentity);
-        //    if (externalLogin == null)
-        //    {
-        //        return StatusCode(500);
-        //    }
+            foreach (var provider in HttpContext.RequestServices.GetRequiredService<IAuthenticationSchemeProvider>().GetAllSchemesAsync().Result)
+            {
+                descriptions.Add(new AuthenticationScheme(provider.Name, provider.DisplayName, provider.HandlerType));
+            }
 
-        //    if (externalLogin.LoginProvider != provider)
-        //    {
-        //        /* Added by CTA: You can only pass in a single scheme as a parameter and you can also include an AuthenticationProperties object as well. */
-        //        await Authentication.SignOutAsync();
-        //        return new ChallengeResult(provider, this);
-        //    }
+            var logins = new List<ExternalLoginViewModel>();
+            string state = generateState ? RandomOAuthStateGenerator.Generate(256) : null;
 
-        //    ApplicationUser user = await UserManager.FindByLoginAsync(externalLogin.LoginProvider, externalLogin.ProviderKey);
-        //    bool hasRegistered = user != null;
-        //    if (hasRegistered)
-        //    {
-        //        /* Added by CTA: You can only pass in a single scheme as a parameter and you can also include an AuthenticationProperties object as well. */
-        //        await Authentication.SignOutAsync();
-        //        ClaimsIdentity oAuthIdentity = await user.GenerateUserIdentityAsync(UserManager, OAuthDefaults.AuthenticationType);
-        //        ClaimsIdentity cookieIdentity = await user.GenerateUserIdentityAsync(UserManager, CookieAuthenticationDefaults.AuthenticationType);
-        //        AuthenticationProperties properties = ApplicationOAuthProvider.CreateProperties(user.UserName);
-        //        /* Added by CTA: Please use a ClaimsPrincipal object to wrap your list of ClaimsIdentity to pass it to this method as a parameter, you can also include a scheme and an AuthenticationProperties object as well. */
-        //        await Authentication.SignInAsync(properties, oAuthIdentity, cookieIdentity);
-        //    }
-        //    else
-        //    {
-        //        IEnumerable<Claim> claims = externalLogin.GetClaims();
-        //        ClaimsIdentity identity = new ClaimsIdentity(claims, OAuthDefaults.AuthenticationType);
-        //        /* Added by CTA: Please use a ClaimsPrincipal object to wrap your list of ClaimsIdentity to pass it to this method as a parameter, you can also include a scheme and an AuthenticationProperties object as well. */
-        //        await Authentication.SignInAsync(identity);
-        //    }
+            foreach (var description in descriptions)
+            {
+                var login = new ExternalLoginViewModel
+                {
+                    Name = description.DisplayName,
+                    Url = Url.RouteUrl("ExternalLogin", new
+                    {
+                        provider = description.Name,
+                        response_type = "token",
+                        client_id = "",//Startup.PublicClientId,                        
+                        redirect_uri = new Uri(Request.GetEncodedUrl(), Convert.ToBoolean(returnUrl)).AbsoluteUri,
+                        state = state
+                    }),
+                    State = state
+                };
 
-        //    return Ok();
-        //}
+                logins.Add(login);
+            }
 
-        //// GET api/Account/ExternalLogins?returnUrl=%2F&generateState=true
-        //[AllowAnonymous]
-        //[Route("ExternalLogins")]
-        //public IEnumerable<ExternalLoginViewModel> GetExternalLogins(string returnUrl, bool generateState = false)
-        //{
-        //    IEnumerable<AuthenticationScheme> descriptions = /* Added by CTA: You must declare a Microsoft.AspNetCore.Identity.SignInManager<TUser> object and access the GetExternalAuthenticationSchemesAsync method to replace this invocation. */
-        //    Authentication.GetExternalAuthenticationTypes();
-        //    List<ExternalLoginViewModel> logins = new List<ExternalLoginViewModel>();
-        //    string state;
-        //    if (generateState)
-        //    {
-        //        const int strengthInBits = 256;
-        //        state = RandomOAuthStateGenerator.Generate(strengthInBits);
-        //    }
-        //    else
-        //    {
-        //        state = null;
-        //    }
+            return Task.FromResult<IEnumerable<ExternalLoginViewModel>>(logins);
+        }
 
-        //    foreach (AuthenticationDescription description in descriptions)
-        //    {
-        //        ExternalLoginViewModel login = new ExternalLoginViewModel
-        //        {
-        //            Name = description.Caption,
-        //            Url = Url.Route("ExternalLogin", new { provider = description.AuthenticationType, response_type = "token", client_id = Startup.PublicClientId, redirect_uri = new Uri(Request.RequestUri, returnUrl).AbsoluteUri, state = state }),
-        //            State = state
-        //        };
-        //        logins.Add(login);
-        //    }
+        [AllowAnonymous]
+        [HttpPost("Register")]
+        public async Task<IActionResult> Register(RegisterBindingModel model)
+        {
+            if (ModelState.IsValid)
+            {
+                var user = new IdentityUser { UserName = model.Email };
+                var result = await userManager.CreateAsync(user, model.Password);
 
-        //    return logins;
-        //}
+                if (result.Succeeded)
+                {
 
+                    await SignInAsync(user, isPersistent: false);
+                }
+                else
+                {
+                    GetErrorResult(result);
+                }
+            }
+            return Ok();
+        }
+        private void AddErrors(Microsoft.AspNetCore.Identity.IdentityResult result)
+        {
+            foreach (var error in result.Errors)
+            {
+                ModelState.AddModelError("", error.ToString());
+            }
+        }
+        private async Task SignInAsync(IdentityUser user, bool isPersistent)
+        {
+            await signInManager.SignOutAsync();
+            var signInResult = await userManager.CreateAsync(user);
+            if (signInResult.Succeeded)
+                await signInManager.SignInAsync(user, new AuthenticationProperties() { IsPersistent = isPersistent });
+            else
+                GetErrorResult(signInResult);
+        }
 
+        [HttpPost("RegisterExternal")]
+        public async Task<IActionResult> RegisterExternal(RegisterExternalBindingModel model)
+        {
+            if (!ModelState.IsValid)
+            {
+                return BadRequest(ModelState);
+            }
 
-        //// POST api/Account/Register
-        //[AllowAnonymous]
-        //[Route("Register")]
-        //public async Task<IActionResult> Register(RegisterBindingModel model)
+            var info = await HttpContext.AuthenticateAsync("Bearer");
+
+            if (info == null)
+            {
+                return StatusCode(500, "Error retrieving external login information.");
+            }
+
+            var user = new IdentityUser { UserName = model.Email, Email = model.Email };
+
+            var result = await userManager.CreateAsync(user);
+
+            if (!result.Succeeded)
+            {
+                GetErrorResult(result);
+            }
+            var loginProvider = info.Principal.FindFirstValue(ClaimTypes.AuthenticationMethod);
+            var providerKey = info.Principal.FindFirstValue(ClaimTypes.NameIdentifier);
+            result = await userManager.AddLoginAsync(user, new UserLoginInfo(loginProvider, providerKey, loginProvider));
+
+            if (!result.Succeeded)
+            {
+                GetErrorResult(result);
+            }
+
+            return Ok();
+        }
+
+        protected override void Dispose(bool disposing)
+        {
+            if (disposing && userManager != null)
+            {
+                userManager.Dispose();
+            }
+            base.Dispose(disposing);
+        }
+
+        #region Helpers
+        //[Route("AddExternalLogin")]
+        //public async Task<IHttpActionResult> AddExternalLogin(AddExternalLoginBindingModel model)
         //{
         //    if (!ModelState.IsValid)
         //    {
         //        return BadRequest(ModelState);
         //    }
 
-        //    var user = new ApplicationUser()
+        //    Authentication.SignOut(DefaultAuthenticationTypes.ExternalCookie);
+
+        //    AuthenticationTicket ticket = AccessTokenFormat.Unprotect(model.ExternalAccessToken);
+
+        //    if (ticket == null || ticket.Identity == null || (ticket.Properties != null
+        //        && ticket.Properties.ExpiresUtc.HasValue
+        //        && ticket.Properties.ExpiresUtc.Value < DateTimeOffset.UtcNow))
         //    {
-        //        UserName = model.Email,
-        //        Email = model.Email
-        //    };
-        //    IdentityResult result = await UserManager.CreateAsync(user, model.Password);
+        //        return BadRequest("External login failure.");
+        //    }
+
+        //    ExternalLoginData externalData = ExternalLoginData.FromIdentity(ticket.Identity);
+
+        //    if (externalData == null)
+        //    {
+        //        return BadRequest("The external login is already associated with an account.");
+        //    }
+
+        //    IdentityResult result = await UserManager.AddLoginAsync(User.Identity.GetUserId(),
+        //        new UserLoginInfo(externalData.LoginProvider, externalData.ProviderKey));
+
         //    if (!result.Succeeded)
         //    {
         //        return GetErrorResult(result);
@@ -333,69 +367,16 @@ namespace PWSWebApi.Controllers
         //    return Ok();
         //}
 
-        //// POST api/Account/RegisterExternal
-        //[OverrideAuthentication]
-        //[HostAuthentication(DefaultAuthenticationTypes.ExternalBearer)]
-        //[Route("RegisterExternal")]
-        //public async Task<IActionResult> RegisterExternal(RegisterExternalBindingModel model)
-        //{
-        //    if (!ModelState.IsValid)
-        //    {
-        //        return BadRequest(ModelState);
-        //    }
-
-        //    var info = await /* Added by CTA: You must declare a Microsoft.AspNetCore.Identity.SignInManager<TUser> object and access the GetExternalLoginInfoAsync method to replace this invocation. */
-        //    Authentication.GetExternalLoginInfoAsync();
-        //    if (info == null)
-        //    {
-        //        return StatusCode(500);
-        //    }
-
-        //    var user = new ApplicationUser()
-        //    {
-        //        UserName = model.Email,
-        //        Email = model.Email
-        //    };
-        //    IdentityResult result = await UserManager.CreateAsync(user);
-        //    if (!result.Succeeded)
-        //    {
-        //        return GetErrorResult(result);
-        //    }
-
-        //    result = await UserManager.AddLoginAsync(user.Id, info.Login);
-        //    if (!result.Succeeded)
-        //    {
-        //        return GetErrorResult(result);
-        //    }
-
-        //    return Ok();
-        //}
-
-        ////protected override void Dispose(bool disposing)
-        ////{
-        ////    if (disposing && _userManager != null)
-        ////    {
-        ////        _userManager.Dispose();
-        ////        _userManager = null;
-        ////    }
-
-        ////    base.Dispose(disposing);
-        ////}
-
-        //#region Helpers
         //private IAuthenticationManager Authentication
         //{
-        //    get
-        //    {
-        //        return Request.GetOwinContext().Authentication;
-        //    }
+        //    get { return Request.GetOwinContext().Authentication; }
         //}
 
         private IActionResult GetErrorResult(IdentityResult result)
         {
             if (result == null)
             {
-                return StatusCode(500);
+                return BadRequest("An error occurred while processing your request.");
             }
 
             if (!result.Succeeded)
@@ -404,13 +385,12 @@ namespace PWSWebApi.Controllers
                 {
                     foreach (var error in result.Errors)
                     {
-                        ModelState.AddModelError("", error.Description);
+                        ModelState.AddModelError(string.Empty, error.Description);
                     }
                 }
 
                 if (ModelState.IsValid)
                 {
-                    // No ModelState errors are available to send, so just return an empty BadRequest.
                     return BadRequest();
                 }
 
@@ -423,15 +403,14 @@ namespace PWSWebApi.Controllers
         private class ExternalLoginData
         {
             public string LoginProvider { get; set; }
-
             public string ProviderKey { get; set; }
-
             public string UserName { get; set; }
 
             public IList<Claim> GetClaims()
             {
                 IList<Claim> claims = new List<Claim>();
                 claims.Add(new Claim(ClaimTypes.NameIdentifier, ProviderKey, null, LoginProvider));
+
                 if (UserName != null)
                 {
                     claims.Add(new Claim(ClaimTypes.Name, UserName, null, LoginProvider));
@@ -440,15 +419,17 @@ namespace PWSWebApi.Controllers
                 return claims;
             }
 
-            public static ExternalLoginData FromIdentity(ClaimsIdentity identity)
+            public static ExternalLoginData FromIdentity(ClaimsPrincipal principal)
             {
-                if (identity == null)
+                if (principal == null)
                 {
                     return null;
                 }
 
-                Claim providerKeyClaim = identity.FindFirst(ClaimTypes.NameIdentifier);
-                if (providerKeyClaim == null || String.IsNullOrEmpty(providerKeyClaim.Issuer) || String.IsNullOrEmpty(providerKeyClaim.Value))
+                Claim providerKeyClaim = principal.FindFirst(ClaimTypes.NameIdentifier);
+
+                if (providerKeyClaim == null || String.IsNullOrEmpty(providerKeyClaim.Issuer)
+                    || String.IsNullOrEmpty(providerKeyClaim.Value))
                 {
                     return null;
                 }
@@ -462,7 +443,7 @@ namespace PWSWebApi.Controllers
                 {
                     LoginProvider = providerKeyClaim.Issuer,
                     ProviderKey = providerKeyClaim.Value,
-                    UserName = identity.Name
+                    UserName = principal.FindFirstValue(ClaimTypes.Name)
                 };
             }
         }
@@ -470,20 +451,25 @@ namespace PWSWebApi.Controllers
         private static class RandomOAuthStateGenerator
         {
             private static RandomNumberGenerator _random = new RNGCryptoServiceProvider();
+
             public static string Generate(int strengthInBits)
             {
                 const int bitsPerByte = 8;
+
                 if (strengthInBits % bitsPerByte != 0)
                 {
                     throw new ArgumentException("strengthInBits must be evenly divisible by 8.", "strengthInBits");
                 }
 
                 int strengthInBytes = strengthInBits / bitsPerByte;
+
                 byte[] data = new byte[strengthInBytes];
                 _random.GetBytes(data);
-                return WebEncoders.Base64UrlEncode(data);
+                return HttpUtility.UrlEncode(data);
             }
         }
-        //#endregion
+
+        #endregion
     }
+    #endregion
 }

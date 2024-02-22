@@ -6,8 +6,6 @@
   <ItemGroup>
     <Compile Remove="App_Start\Startup.Auth.cs" />
     <Compile Remove="Areas\HelpPage\HelpPageAreaRegistration.cs" />
-    <Compile Remove="Controllers\AccountController.cs" />
-    <Compile Remove="Controllers\TRController.cs" />
     <Compile Remove="Controllers\ValuesController.cs" />
     <Compile Remove="handlers\AuthDelegateHandler.cs" />
     <Compile Remove="Providers\ApplicationOAuthProvider.cs" />
@@ -54,5 +52,22 @@
   <ItemGroup>
     <Folder Include="Providers\" />
     <Folder Include="Results\" />
+  </ItemGroup>
+  <ItemGroup>
+    <Reference Include="DataScope.Select.Core.RestApi.Common">
+      <HintPath>ThirdPartyDlls\DataScope.Select.Core.RestApi.Common.dll</HintPath>
+    </Reference>
+    <Reference Include="DataScope.Select.RestApi.Client">
+      <HintPath>ThirdPartyDlls\DataScope.Select.RestApi.Client.dll</HintPath>
+    </Reference>
+    <Reference Include="Datastream.DswsApi.NET4.5">
+      <HintPath>ThirdPartyDlls\Datastream.DswsApi.NET4.5.dll</HintPath>
+    </Reference>
+    <Reference Include="ThomsonReuters.Dss.Core.RestApi.Common">
+      <HintPath>ThirdPartyDlls\ThomsonReuters.Dss.Core.RestApi.Common.dll</HintPath>
+    </Reference>
+    <Reference Include="ThomsonReuters.Dss.RestApi.Client">
+      <HintPath>ThirdPartyDlls\ThomsonReuters.Dss.RestApi.Client.dll</HintPath>
+    </Reference>
   </ItemGroup>
 </Project>
