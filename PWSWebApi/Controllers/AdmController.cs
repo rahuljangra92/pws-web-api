@@ -2227,6 +2227,292 @@ namespace PWSWebApi.Controllers
                 return errorResponse;
             }
         }
+        [HttpPost]
+        [Route("getTaxLotsSearch")]
+        public HttpResponseMessage getTaxLotsSearch(
+            string UserID,
+            string TransID,
+            string NewEditTransID,
+            string AcctID,
+            string SubAcctID,
+            string SecID,
+            string Effectivedate,
+            string Processed,
+            string Edit,
+            string EditUserID
+        )
+
+        {
+            try
+            {
+                if (handlerHelper.ValidateSource(Request) is HttpResponseMessage)
+                {
+                    return (HttpResponseMessage)handlerHelper.ValidateSource(Request);
+                }
+
+                if (handlerHelper.ValidateToken(Request, UserID) != string.Empty)
+                {
+                    return new HttpResponseMessage(HttpStatusCode.Unauthorized)
+                    {
+                        Content = new StringContent(handlerHelper.ValidateToken(Request, UserID))
+                    };
+                }
+
+                Dictionary<string, dynamic> pars = new Dictionary<string, dynamic>();
+                pars.Add("@UserID", UserID);
+                if (!Helper.IgnoreAsNullParameter(TransID))
+                    pars.Add("@TransID", TransID);
+                if (!Helper.IgnoreAsNullParameter(NewEditTransID))
+                    pars.Add("@NewEditTransID", NewEditTransID);
+                if (!Helper.IgnoreAsNullParameter(AcctID))
+                    pars.Add("@AcctID", AcctID);
+                if (!Helper.IgnoreAsNullParameter(SubAcctID))
+                    pars.Add("@SubAcctID", SubAcctID);
+                if (!Helper.IgnoreAsNullParameter(SecID))
+                    pars.Add("@SecID", SecID);
+                if (!Helper.IgnoreAsNullParameter(Effectivedate))
+                    pars.Add("@Effectivedate", Effectivedate);
+                if (!Helper.IgnoreAsNullParameter(Processed))
+                    pars.Add("@Processed", Processed);
+                if (!Helper.IgnoreAsNullParameter(Edit))
+                    pars.Add("@Edit", Edit);
+                if (!Helper.IgnoreAsNullParameter(EditUserID))
+                    pars.Add("@EditUserID", EditUserID);
+
+                var data = Helper.callProcedure("[adm].[usp_TaxLot_Search]", pars);
+
+                var responseData = new { error = false, data = data };
+                var jsonResponse = JsonConvert.SerializeObject(responseData);
+
+                var response = new HttpResponseMessage(HttpStatusCode.OK)
+                {
+                    Content = new StringContent(jsonResponse, Encoding.UTF8, "application/json")
+                };
+                return response;
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine(ex.ToString());
+                Helper.AddApiLogs(connectionString, new ApiLogObject { Method = MethodBase.GetCurrentMethod().Name, Exception = ex.Message, Params = "web api", UserID = UserID });
+                var exception = "Unknown Error Occurred";
+                var errorResponse = new HttpResponseMessage(HttpStatusCode.InternalServerError)
+                {
+                    Content = new StringContent(JsonConvert.SerializeObject(new { error = true, exception = exception }))
+                };
+                errorResponse.Content.Headers.ContentType = new MediaTypeHeaderValue("application/json");
+                return errorResponse;
+            }
+        }
+        [HttpPost]
+        [Route("specificLotInsert")]
+        public HttpResponseMessage specificLotInsert(
+            string UserID,
+            string SpecLot_Assign_EditID,
+            string TransID,
+            string NewEditTransID,
+            string TaxlotmasterID,
+            string Ord,
+            string AdjShares,
+            string AdjLocalCost,
+            string AdjBaseCost,
+            string AdjMV,
+            string MVAssigned,
+            string CostAssigned,
+            string BookAssigned,
+            string Stat
+        )
+
+        {
+            try
+            {
+                if (handlerHelper.ValidateSource(Request) is HttpResponseMessage)
+                {
+                    return (HttpResponseMessage)handlerHelper.ValidateSource(Request);
+                }
+
+                if (handlerHelper.ValidateToken(Request, UserID) != string.Empty)
+                {
+                    return new HttpResponseMessage(HttpStatusCode.Unauthorized)
+                    {
+                        Content = new StringContent(handlerHelper.ValidateToken(Request, UserID))
+                    };
+                }
+
+                Dictionary<string, dynamic> pars = new Dictionary<string, dynamic>();
+
+                pars.Add("@UserID", UserID);
+
+                if (!Helper.IgnoreAsNullParameter(SpecLot_Assign_EditID))
+                    pars.Add("@SpecLot_Assign_EditID", SpecLot_Assign_EditID);
+                if (!Helper.IgnoreAsNullParameter(TransID))
+                    pars.Add("@TransID", TransID);
+                if (!Helper.IgnoreAsNullParameter(NewEditTransID))
+                    pars.Add("@NewEditTransID", NewEditTransID);
+                if (!Helper.IgnoreAsNullParameter(TaxlotmasterID))
+                    pars.Add("@TaxlotmasterID", TaxlotmasterID);
+                if (!Helper.IgnoreAsNullParameter(Ord))
+                    pars.Add("@Ord", Ord);
+                if (!Helper.IgnoreAsNullParameter(AdjShares))
+                    pars.Add("@AdjShares", AdjShares);
+                if (!Helper.IgnoreAsNullParameter(AdjLocalCost))
+                    pars.Add("@AdjLocalCost", AdjLocalCost);
+                if (!Helper.IgnoreAsNullParameter(AdjBaseCost))
+                    pars.Add("@AdjBaseCost", AdjBaseCost);
+                if (!Helper.IgnoreAsNullParameter(AdjMV))
+                    pars.Add("@AdjMV", AdjMV);
+                if (!Helper.IgnoreAsNullParameter(MVAssigned))
+                    pars.Add("@MVAssigned", MVAssigned);
+                if (!Helper.IgnoreAsNullParameter(CostAssigned))
+                    pars.Add("@CostAssigned", CostAssigned);
+                if (!Helper.IgnoreAsNullParameter(BookAssigned))
+                    pars.Add("@BookAssigned", BookAssigned);
+                if (!Helper.IgnoreAsNullParameter(Stat))
+                    pars.Add("@Stat", Stat);
+
+                var data = Helper.callProcedure("[adm].[usp_SpecLot_Assign_Insert]", pars);
+                var responseData = new { error = false, data = data };
+                var jsonResponse = JsonConvert.SerializeObject(responseData);
+
+                var response = new HttpResponseMessage(HttpStatusCode.OK)
+                {
+                    Content = new StringContent(jsonResponse, Encoding.UTF8, "application/json")
+                };
+                return response;
+            }
+            catch (Exception ex)
+            {
+
+                Console.WriteLine(ex.ToString());
+                Helper.AddApiLogs(connectionString, new ApiLogObject { Method = MethodBase.GetCurrentMethod().Name, Exception = ex.Message, Params = "web api", UserID = UserID });
+                var exception = "Unknown Error Occurred";
+                var errorResponse = new HttpResponseMessage(HttpStatusCode.InternalServerError)
+                {
+                    Content = new StringContent(JsonConvert.SerializeObject(new { error = true, exception = exception }))
+                };
+                errorResponse.Content.Headers.ContentType = new MediaTypeHeaderValue("application/json");
+                return errorResponse;
+            }
+        }
+        [HttpPost]
+        [Route("removeTaxLot")]
+        public HttpResponseMessage removeTaxLot(
+            string UserID,
+            string TransID,
+            string NewEditTransID,
+            string Edit_Clear,
+            string Assign_Clear,
+            string SpecLot_Clear,
+            string EditUserID
+        )
+
+        {
+            try
+            {
+                if (handlerHelper.ValidateSource(Request) is HttpResponseMessage)
+                {
+                    return (HttpResponseMessage)handlerHelper.ValidateSource(Request);
+                }
+
+                if (handlerHelper.ValidateToken(Request, UserID) != string.Empty)
+                {
+                    return new HttpResponseMessage(HttpStatusCode.Unauthorized)
+                    {
+                        Content = new StringContent(handlerHelper.ValidateToken(Request, UserID))
+                    };
+                }
+
+                Dictionary<string, dynamic> pars = new Dictionary<string, dynamic>();
+                pars.Add("@UserID", UserID);
+                if (!Helper.IgnoreAsNullParameter(TransID))
+                    pars.Add("@TransID", TransID);
+                if (!Helper.IgnoreAsNullParameter(NewEditTransID))
+                    pars.Add("@NewEditTransID", NewEditTransID);
+                if (!Helper.IgnoreAsNullParameter(Edit_Clear))
+                    pars.Add("@Edit_Clear", Edit_Clear);
+                if (!Helper.IgnoreAsNullParameter(Assign_Clear))
+                    pars.Add("@Assign_Clear", Assign_Clear);
+                if (!Helper.IgnoreAsNullParameter(SpecLot_Clear))
+                    pars.Add("@SpecLot_Clear", SpecLot_Clear);
+                if (!Helper.IgnoreAsNullParameter(EditUserID))
+                    pars.Add("@EditUserID", EditUserID);
+
+                var data = Helper.callProcedure("[adm].[usp_SpecLot_Assign_Delete]", pars);
+                var responseData = new { error = false, data = data };
+                var jsonResponse = JsonConvert.SerializeObject(responseData);
+
+                var response = new HttpResponseMessage(HttpStatusCode.OK)
+                {
+                    Content = new StringContent(jsonResponse, Encoding.UTF8, "application/json")
+                };
+                return response;
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine(ex.ToString());
+                Helper.AddApiLogs(connectionString, new ApiLogObject { Method = MethodBase.GetCurrentMethod().Name, Exception = ex.Message, Params = "web api", UserID = UserID });
+                var exception = "Unknown Error Occurred";
+                var errorResponse = new HttpResponseMessage(HttpStatusCode.InternalServerError)
+                {
+                    Content = new StringContent(JsonConvert.SerializeObject(new { error = true, exception = exception }))
+                };
+                errorResponse.Content.Headers.ContentType = new MediaTypeHeaderValue("application/json");
+                return errorResponse;
+            }
+        }
+        [HttpPost]
+        [Route("saveTaxLot")]
+        public HttpResponseMessage saveTaxLot(
+            string UserID,
+            string TransID,
+            string NewEditTransID
+        )
+
+        {
+            try
+            {
+                if (handlerHelper.ValidateSource(Request) is HttpResponseMessage)
+                {
+                    return (HttpResponseMessage)handlerHelper.ValidateSource(Request);
+                }
+
+                if (handlerHelper.ValidateToken(Request, UserID) != string.Empty)
+                {
+                    return new HttpResponseMessage(HttpStatusCode.Unauthorized)
+                    {
+                        Content = new StringContent(handlerHelper.ValidateToken(Request, UserID))
+                    };
+                }
+
+                Dictionary<string, dynamic> pars = new Dictionary<string, dynamic>();
+                pars.Add("@UserID", UserID);
+                if (!Helper.IgnoreAsNullParameter(TransID))
+                    pars.Add("@TransID", TransID);
+                if (!Helper.IgnoreAsNullParameter(NewEditTransID))
+                    pars.Add("@NewEditTransID", NewEditTransID);
+
+                var data = Helper.callProcedure("[adm].[usp_SpecLot_Assign_Save]", pars);
+                var responseData = new { error = false, data = data };
+                var jsonResponse = JsonConvert.SerializeObject(responseData);
+
+                var response = new HttpResponseMessage(HttpStatusCode.OK)
+                {
+                    Content = new StringContent(jsonResponse, Encoding.UTF8, "application/json")
+                };
+                return response;
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine(ex.ToString());
+                Helper.AddApiLogs(connectionString, new ApiLogObject { Method = MethodBase.GetCurrentMethod().Name, Exception = ex.Message, Params = "web api", UserID = UserID });
+                var exception = "Unknown Error Occurred";
+                var errorResponse = new HttpResponseMessage(HttpStatusCode.InternalServerError)
+                {
+                    Content = new StringContent(JsonConvert.SerializeObject(new { error = true, exception = exception }))
+                };
+                errorResponse.Content.Headers.ContentType = new MediaTypeHeaderValue("application/json");
+                return errorResponse;
+            }
+        }
 
         [HttpPost]
         [Route("saverptmodel")]

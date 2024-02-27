@@ -587,52 +587,51 @@ namespace PWSWebApi.Controllers
 
             try
             {
-                var pars = new Dictionary<string, dynamic>
-            {
-                { "@UserID", UserID },
-                { "@Pending", Pending },
-                { "@Processed", Processed },
-                { "@TransIDs", TransIDs },
-                { "@AcctIDs", AcctIDs },
-                { "@SecIDs", SecIDs },
-                { "@UserGroupIDs", UserGroupIDs },
-                { "@LoadSourceIDs", LoadSourceIDs },
-                { "@DPIDs", DPIDs },
-                { "@BaseCCYIDs", BaseCCYIDs },
-                { "@TradeCCYIDs", TradeCCYIDs },
-                { "@TxnBaseAmtLow", TxnBaseAmtLow },
-                { "@TxnBaseAmtHigh", TxnBaseAmtHigh },
-                { "@TxnAmtLow", TxnAmtLow },
-                { "@TxnAmtHigh", TxnAmtHigh },
-                { "@NetTxnBaseAmtLow", NetTxnBaseAmtLow },
-                { "@NetTxnBaseAmtHigh", NetTxnBaseAmtHigh },
-                { "@NetTxnAmtLow", NetTxnAmtLow },
-                { "@NetTxnAmtHigh", NetTxnAmtHigh },
-                { "@EffectiveDateStart", EffectiveDateStart },
-                { "@EffectiveDateEnd", EffectiveDateEnd },
-                { "@TradeDateStart", TradeDateStart },
-                { "@TradeDateEnd", TradeDateEnd },
-                { "@SettleDateStart", SettleDateStart },
-                { "@SettleDateEnd", SettleDateEnd },
-                { "@AcquisitionTradeDateStart", AcquisitionTradeDateStart },
-                { "@AcquisitionTradeDateEnd", AcquisitionTradeDateEnd },
-                { "@AcquisitionSettleDateStart", AcquisitionSettleDateStart },
-                { "@AcquisitionSettleDateEnd", AcquisitionSettleDateEnd },
-                { "@TCodeIDs", TCodeIDs },
-                { "@Comment", Comment },
-                { "@ShareAmtLow", ShareAmtLow },
-                { "@ShareAmtHigh", ShareAmtHigh },
-                { "@SettleCCYIDs", SettleCCYIDs },
-                { "@RMs", RMs },
-                { "@TxnSettleAmtLow", TxnSettleAmtLow },
-                { "@TxnSettleAmtHigh", TxnSettleAmtHigh },
-                { "@NetTxnSettleAmtLow", NetTxnSettleAmtLow },
-                { "@NetTxnSettleAmtHigh", NetTxnSettleAmtHigh },
-                { "@Final", Final },
-                { "@DPTransIDs", DPTransIDs }
-            };
+                Dictionary<string, dynamic> pars = new Dictionary<string, dynamic>();
+                pars.Add("@UserID", UserID);
+                pars.Add("@Pending", Pending);
+                pars.Add("@Processed", Processed);
+                pars.Add("@TransIDs", TransIDs);
+                pars.Add("@AcctIDs", AcctIDs);
+                pars.Add("@SecIDs", SecIDs);
+                pars.Add("@UserGroupIDs", UserGroupIDs);
+                pars.Add("@LoadSourceIDs", LoadSourceIDs);
+                pars.Add("@DPIDs", DPIDs);
+                pars.Add("@BaseCCYIDs", BaseCCYIDs);
+                pars.Add("@TradeCCYIDs", TradeCCYIDs);
+                pars.Add("@TxnBaseAmtLow", TxnBaseAmtLow);
+                pars.Add("@TxnBaseAmtHigh", TxnBaseAmtHigh);
+                pars.Add("@TxnAmtLow", TxnAmtLow);
+                pars.Add("@TxnAmtHigh", TxnAmtHigh);
+                pars.Add("@NetTxnBaseAmtLow", NetTxnBaseAmtLow);
+                pars.Add("@NetTxnBaseAmtHigh", NetTxnBaseAmtHigh);
+                pars.Add("@NetTxnAmtLow", NetTxnAmtLow);
+                pars.Add("@NetTxnAmtHigh", NetTxnAmtHigh);
+                pars.Add("@EffectiveDateStart", EffectiveDateStart);
+                pars.Add("@EffectiveDateEnd", EffectiveDateEnd);
+                pars.Add("@TradeDateStart", TradeDateStart);
+                pars.Add("@TradeDateEnd", TradeDateEnd);
+                pars.Add("@SettleDateStart", SettleDateStart);
+                pars.Add("@SettleDateEnd", SettleDateEnd);
+                pars.Add("@AcquisitionTradeDateStart", AcquisitionTradeDateStart);
+                pars.Add("@AcquisitionTradeDateEnd", AcquisitionTradeDateEnd);
+                pars.Add("@AcquisitionSettleDateStart", AcquisitionSettleDateStart);
+                pars.Add("@AcquisitionSettleDateEnd", AcquisitionSettleDateEnd);
+                pars.Add("@TCodeIDs", TCodeIDs);
+                pars.Add("@Comment", Comment);
+                pars.Add("@ShareAmtLow", ShareAmtLow);
+                pars.Add("@ShareAmtHigh", ShareAmtHigh);
+                pars.Add("@SettleCCYIDs", SettleCCYIDs);
+                pars.Add("@RMs", RMs);
+                pars.Add("@TxnSettleAmtLow", TxnSettleAmtLow);
+                pars.Add("@TxnSettleAmtHigh", TxnSettleAmtHigh);
+                pars.Add("@NetTxnSettleAmtLow", NetTxnSettleAmtLow);
+                pars.Add("@NetTxnSettleAmtHigh", NetTxnSettleAmtHigh);
+                pars.Add("@DPTransIDs", DPTransIDs);
+                if (!Helper.IgnoreAsNullParameter(Final))
+                    pars.Add("@Final", Final);
 
-                var d = "";// callProcedure("adm.usp_Trans_Search", pars);
+                var d = callProcedure("adm.usp_Trans_Search", pars);
 
                 return Ok(new { messsage = "", errors = false, success = true, data = d });
             }
@@ -2048,7 +2047,8 @@ namespace PWSWebApi.Controllers
                 pars.Add("@ShareAmtLow", ShareAmtLow);
                 pars.Add("@ShareAmtHigh", ShareAmtHigh);
                 pars.Add("@Comment", Comment);
-                pars.Add("@Final", Final);
+                if (!Helper.IgnoreAsNullParameter(Final))
+                    pars.Add("@Final", Final);
 
                 var data = Helper.callProcedure("[adm].[usp_Trans_Search]", pars);
                 return Ok(new { error = false, data = data });
